@@ -25,19 +25,9 @@ package nsv
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/Masterminds/semver/v3"
 	git "github.com/purpleclay/gitz"
-)
-
-type Increment int
-
-const (
-	NoIncrement Increment = iota
-	PatchIncrement
-	MinorIncrement
-	MajorIncrement
 )
 
 type Options struct {
@@ -95,76 +85,4 @@ func NextVer(gitc *git.Client, opts Options) error {
 	}
 
 	return nil
-}
-
-// DetectIncrement ...
-func DetectIncrement(log []git.LogEntry) (Increment, int) {
-	mode := NoIncrement
-	match := -1
-	for i, entry := range log {
-		// Check for the existence of a conventional commit type
-		idx := strings.Index(entry.Message, ": ")
-		if idx == -1 {
-			continue
-		}
-
-		leadingType := strings.ToUpper(entry.Message[:idx])
-		if leadingType[idx-1] == '!' || multilineBreaking(entry.Message) {
-			return MajorIncrement, i
-		}
-
-		// Only feat and fix types now make a difference
-		if leadingType[0] != 'F' {
-			continue
-		}
-
-		if mode == MinorIncrement && match > -1 {
-			continue
-		}
-
-		if contains(leadingType, "FEAT") {
-			mode = MinorIncrement
-			match = i
-		} else if contains(leadingType, "FIX") {
-			mode = PatchIncrement
-			match = i
-		}
-	}
-
-	return mode, match
-}
-
-func contains(str string, prefix string) bool {
-	if str == prefix {
-		return true
-	}
-
-	if strings.HasPrefix(str, prefix) {
-		if len(str) > len(prefix) &&
-			(str[len(prefix)] == '(' && str[len(str)-1] == ')') {
-			return true
-		}
-	}
-
-	return false
-}
-
-func multilineBreaking(msg string) bool {
-	n := strings.Count(msg, "\n")
-	if n == 0 {
-		return false
-	}
-
-	idx := strings.LastIndex(msg, "\n")
-
-	if idx == len(msg) {
-		// There is a newline at the end of the string, so jump back one
-		if idx = strings.LastIndex(msg[:len(msg)-1], "\n"); idx == -1 {
-			return false
-		}
-	}
-
-	footer := msg[idx+1:]
-	return strings.HasPrefix(footer, "BREAKING CHANGE: ") ||
-		strings.HasPrefix(footer, "BREAKING-CHANGE: ")
 }
