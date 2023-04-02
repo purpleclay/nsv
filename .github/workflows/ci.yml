@@ -21,8 +21,6 @@
 name: ci
 on:
   push:
-    tags:
-      - "v*.*.*"
     branches:
       - main
     paths:
@@ -46,19 +44,10 @@ jobs:
   # against macos and windows are considerably slower
   test:
     uses: purpleclay/github/.github/workflows/go-test.yml@main
-    with:
-      go-version: ${{ vars.GO_VERSION }}
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  test-by-os:
-    if: "!startsWith(github.ref, 'refs/tags/')"
     strategy:
       matrix:
-        os: [macos-latest]
-    uses: purpleclay/github/.github/workflows/go-test.yml@main
+        os: [ubuntu-latest, macos-latest]
     with:
-      os: ${{ matrix.os }}
       go-version: ${{ vars.GO_VERSION }}
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
