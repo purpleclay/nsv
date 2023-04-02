@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-./nsv
+/nsv
 
 # Test binary, built with `go test -c`
 *.test
