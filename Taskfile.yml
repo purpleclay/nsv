@@ -20,6 +20,19 @@
 
 version: "3"
 
+vars:
+  GIT_COMMIT:
+    sh: git rev-parse HEAD
+  GIT_SHA:
+    sh: git rev-parse --short HEAD
+  GIT_BRANCH:
+    sh: git branch --show-current
+  LDFLAGS: >
+    -X main.version=dev-{{.GIT_SHA}}
+    -X main.gitCommit={{.GIT_COMMIT}}
+    -X main.gitBranch={{.GIT_BRANCH}}
+    -X main.buildDate={{now | date "2006-01-02T15:04:05Z07:00"}}
+
 tasks:
   default:
     desc: Runs all of the default tasks
@@ -32,6 +45,7 @@ tasks:
       - task: deps
       - task: unit-test
       - task: lint
+      - task: build
 
   deps:
     desc: Install all dependencies
@@ -53,6 +67,11 @@ tasks:
       REPORT_FORMAT: '{{default "colored-line-number" .REPORT_FORMAT}}'
     cmds:
       - golangci-lint run --timeout 5m0s --out-format {{.REPORT_FORMAT}}
+
+  build:
+      desc: Build the binary
+      cmds:
+        - go build -ldflags '-s -w {{.LDFLAGS}}' .
 
   format:
     desc: Format the code using gofumpt
