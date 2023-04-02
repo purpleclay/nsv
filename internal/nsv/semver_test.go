@@ -21,3 +21,126 @@ SOFTWARE.
 */
 
 package nsv_test
+
+import (
+	"bytes"
+	"os"
+	"testing"
+
+	git "github.com/purpleclay/gitz"
+	"github.com/purpleclay/gitz/gittest"
+	"github.com/purpleclay/nsv/internal/nsv"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+// TODO: fix commits
+
+func TestNextVersion(t *testing.T) {
+	log := `(main, origin/main) docs: bbb
+fix: aaa
+(tag: 0.1.0) feat: ccc
+ci: ddd`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	var buf bytes.Buffer
+	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+	require.NoError(t, err)
+	assert.Equal(t, "0.1.1", buf.String())
+}
+
+// TODO: breaking not increment major {0.1.0 feat!, 0.1.0 feat:, 0.0.1 patch}
+
+func TestNextVersionFirstVersion(t *testing.T) {
+	tests := []struct {
+		name     string
+		log      string
+		expected string
+	}{
+		{
+			name:     "Patch",
+			log:      "fix: this is a fix",
+			expected: "0.0.1",
+		},
+		{
+			name:     "Minor",
+			log:      "feat: this is a feature",
+			expected: "0.1.0",
+		},
+		// TODO: handle major (should adhere to semantic spec)
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gittest.InitRepository(t, gittest.WithLog(tt.log))
+			gitc, _ := git.NewClient()
+
+			var buf bytes.Buffer
+			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, buf.String())
+		})
+	}
+}
+
+// TODO: rename ~ Appends prefix automatically
+
+func TestNextVersionMonoRepoFirstVersion(t *testing.T) {
+	log := `ci: sdsdsd
+chore: sdsdsdsd
+docs: dsfjkhsdljfhsdfljkh`
+	gittest.InitRepository(t, gittest.WithLog(log), gittest.WithFiles("search/main.go", "store/main.go"))
+	gittest.StageFile(t, "search/main.go")
+	gittest.Commit(t, "feat(search): awesome search functionality")
+	gittest.StageFile(t, "store/main.go")
+	gittest.Commit(t, "fix(store): fix bug in the store")
+
+	os.Chdir("search")
+	gitc, _ := git.NewClient()
+
+	var buf bytes.Buffer
+	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+	require.NoError(t, err)
+	assert.Equal(t, "search/0.1.0", buf.String())
+}
+
+func TestNextVersionPreservesTagPrefix(t *testing.T) {
+	tests := []struct {
+		name     string
+		log      string
+		expected string
+	}{
+		{
+			name: "VPrefix",
+			log: `(main, origin/main) feat: aaaa
+docs: sdsd
+chore: sdsd
+(tag: v1.0.0) feat: bbbb`,
+			expected: "v1.1.0",
+		},
+		{
+			// TODO: what does a mono-repo log look like for a directory
+			name: "MonoRepoPrefix",
+			log: `(main, origin/main) fix: dhdhdhdhdh
+docs: hhfhfhfhf
+ci: hhdhdhdh
+(tag: component/v0.2.0) feat: sdlkjfhsdljhsdlkfjhldfk`,
+			expected: "component/v0.2.1",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gittest.InitRepository(t, gittest.WithLog(tt.log))
+			gitc, _ := git.NewClient()
+
+			var buf bytes.Buffer
+			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, buf.String())
+		})
+	}
+}

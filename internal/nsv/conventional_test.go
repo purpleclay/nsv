@@ -36,7 +36,6 @@ func TestDetectIncrement(t *testing.T) {
 		name     string
 		commit   string
 		expected nsv.Increment
-		// TODO: check position
 	}{
 		{
 			name:     "NoIncrement",
@@ -215,6 +214,8 @@ Breaking-Change: this is a breaking change`,
 // globals are used to prevent any compiler optimizations
 var gInc nsv.Increment
 var gPos int
+
+// TODO: write some commit messages here
 
 func BenchmarkDetectIncrement(b *testing.B) {
 	log := []git.LogEntry{

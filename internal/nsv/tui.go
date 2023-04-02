@@ -33,11 +33,11 @@ import (
 )
 
 var (
-	faint   = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
-	border  = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
-	matched = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
-	hash    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
-	tag     = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
+	faintStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
+	borderStyle  = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
+	matchedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
+	hashStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
+	tagStyle     = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
 )
 
 type Summary struct {
@@ -55,25 +55,17 @@ func PrintSummary(out io.Writer, summary Summary) {
 		}
 
 		log = append(log, lipgloss.JoinHorizontal(lipgloss.Left,
-			hash.Render(entry.AbbrevHash),
+			hashStyle.Render(entry.AbbrevHash),
 			" ",
 			wordwrap.String(entry.Message, 100),
-			matched.Render(marker)))
+			matchedStyle.Render(marker)))
 	}
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
-		lipgloss.JoinHorizontal(lipgloss.Left, tag.Render(summary.Tags[0]), " ... ", tag.Render(summary.Tags[1])),
-		border.Render(strings.Join(log, "\n")),
+		"\n",
+		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render(summary.Tags[0]), " ... ", tagStyle.Render(summary.Tags[1])),
+		borderStyle.Render(strings.Join(log, "\n")),
 	)
 
 	fmt.Fprintf(out, pane)
-	/*
-		tag ... tag
-		----------------------------
-		abbrev-hash message (reflow)
-		abbrev-hash message          << matched
-		----------------------------
-
-		tag (highlight which bit has changed) -> transformed into tag (next)
-	*/
 }

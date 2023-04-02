@@ -47,7 +47,6 @@ const (
 	noMatch        = -1
 )
 
-// DetectIncrement ...
 func DetectIncrement(log []git.LogEntry) (Increment, int) {
 	mode := NoIncrement
 	match := noMatch

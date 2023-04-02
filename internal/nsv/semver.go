@@ -23,12 +23,25 @@ SOFTWARE.
 package nsv
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
 
 	"github.com/Masterminds/semver/v3"
 	git "github.com/purpleclay/gitz"
 )
+
+const (
+	vPrefix       = 'v'
+	firstVer      = "0.0.0"
+	versionFormat = "{{ .Prefix }}{{ .Version }}"
+)
+
+var versionTmpl = template.Must(template.New("version").Parse(versionFormat))
 
 type Options struct {
 	StdOut io.Writer
@@ -36,33 +49,101 @@ type Options struct {
 	Show   bool
 }
 
-// NextVer ...
-func NextVer(gitc *git.Client, opts Options) error {
-	tags, _ := gitc.Tags(git.WithSortBy(git.VersionDesc))
+type context struct {
+	TagPrefix string
+	LogPath   string
+}
 
-	// TODO: inspect the tags
-	// TODO: if there is 1, then get log using range ...
-	// TODO: if there are 2, then get log using range ...
-	// TODO: move this logic into gitz
-
-	// TODO: from HEAD to last tag (is this supported in gitz?)
-
-	log, _ := gitc.Log(git.WithRefRange(tags[0], tags[1]))
-	inc, pos := DetectIncrement(log.Commits)
-
-	if inc == NoIncrement {
-		return nil
+func execContext(gitc *git.Client) (*context, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
 	}
 
-	// Determine the next semantic version
+	relPath, err := gitc.ToRelativePath(cwd)
+	if err != nil {
+		return nil, err
+	}
 
-	// TODO: if it starts with a 'v' strip off when calculating next semver
-	ver, err := semver.StrictNewVersion(tags[0])
+	if relPath == git.RelativeAtRoot {
+		return &context{TagPrefix: "", LogPath: ""}, nil
+	}
+
+	logPath := relPath
+	if logPath == filepath.Base(cwd) {
+		logPath = ""
+	}
+
+	return &context{TagPrefix: relPath, LogPath: logPath}, nil
+}
+
+type tag struct {
+	Prefix  string
+	SemVer  string
+	Version string
+}
+
+func parseTag(raw string) tag {
+	lastSlash := 0
+	if idx := strings.LastIndex(raw, "/"); idx > -1 {
+		lastSlash = idx + 1
+	}
+
+	semv := raw[lastSlash:]
+	if semv[0] == vPrefix {
+		semv = semv[1:]
+	}
+
+	return tag{
+		Prefix:  raw[:lastSlash],
+		SemVer:  semv,
+		Version: raw[lastSlash:],
+	}
+}
+
+func (t tag) bump(semv string) tag {
+	ver := semv
+	if t.Version[0] == vPrefix {
+		ver = fmt.Sprintf("%c%s", vPrefix, ver)
+	}
+
+	return tag{
+		Prefix:  t.Prefix,
+		SemVer:  semv,
+		Version: ver,
+	}
+}
+
+func NextVersion(gitc *git.Client, opts Options) error {
+	ctx, err := execContext(gitc)
 	if err != nil {
 		return err
 	}
 
-	// TODO: understand the semantic version specification
+	ltag, err := latestTag(gitc, ctx.TagPrefix)
+	if err != nil {
+		return err
+	}
+
+	log, err := gitc.Log(git.WithPaths(ctx.LogPath), git.WithRefRange(git.HeadRef, ltag))
+	if err != nil {
+		return err
+	}
+
+	inc, pos := DetectIncrement(log.Commits)
+	if inc == NoIncrement {
+		return nil
+	}
+
+	if ltag == "" {
+		ltag = firstVersion(ctx.TagPrefix)
+	}
+
+	pTag := parseTag(ltag)
+	ver, err := semver.StrictNewVersion(pTag.SemVer)
+	if err != nil {
+		return err
+	}
 
 	var bumpedVer semver.Version
 	switch inc {
@@ -73,16 +154,49 @@ func NextVer(gitc *git.Client, opts Options) error {
 	case PatchIncrement:
 		bumpedVer = ver.IncPatch()
 	}
+	nextTag := pTag.bump(bumpedVer.String())
+
+	var nextV bytes.Buffer
+	versionTmpl.Execute(&nextV, nextTag)
+	fmt.Fprintf(opts.StdOut, nextV.String())
 
 	if opts.Show {
 		PrintSummary(opts.StdErr, Summary{
-			Tags:  tags,
+			Tags:  []string{git.HeadRef, nextV.String()},
 			Log:   log.Commits,
 			Match: pos,
 		})
-	} else {
-		fmt.Fprintf(opts.StdOut, bumpedVer.String())
+	}
+	return nil
+}
+
+func latestTag(gitc *git.Client, prefix string) (string, error) {
+	prefixFilter := func(tag string) bool {
+		if prefix == "" {
+			return true
+		}
+
+		return strings.HasPrefix(tag, prefix+"/")
 	}
 
-	return nil
+	tags, err := gitc.Tags(git.WithShellGlob("**/*.*.*"),
+		git.WithSortBy(git.VersionDesc),
+		git.WithFilters(prefixFilter),
+		git.WithCount(1))
+	if err != nil {
+		return "", err
+	}
+
+	if len(tags) == 0 {
+		return "", nil
+	}
+
+	return tags[0], nil
+}
+
+func firstVersion(prefix string) string {
+	if prefix == "" {
+		return firstVer
+	}
+	return fmt.Sprintf("%s/%s", prefix, firstVer)
 }

@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/muesli/reflow v0.3.0
-	github.com/purpleclay/gitz v0.3.3
+	github.com/purpleclay/gitz v0.4.1
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.2
 )

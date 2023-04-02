@@ -50,8 +50,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 
 	cmd := &cobra.Command{
 		Use:           "nsv",
-		Short:         "",
-		Long:          "",
+		Short:         "Generate the next semantic version",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -60,7 +59,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 				return err
 			}
 
-			return nsv.NextVer(gitc, opts)
+			return nsv.NextVersion(gitc, opts)
 		},
 	}
 
@@ -99,7 +98,7 @@ func versionCmd(out io.Writer, buildInfo BuildDetails) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVar(&short, "short", false, "only print the semantic version number")
+	flags.BoolVar(&short, "short", false, "only print the version number")
 
 	return cmd
 }
