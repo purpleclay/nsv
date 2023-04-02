@@ -83,7 +83,7 @@ func DetectIncrement(log []git.LogEntry) (Increment, int) {
 	return mode, match
 }
 
-func contains(str string, prefix string) bool {
+func contains(str, prefix string) bool {
 	if str == prefix {
 		return true
 	}

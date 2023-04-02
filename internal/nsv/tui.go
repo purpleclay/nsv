@@ -33,7 +33,6 @@ import (
 )
 
 var (
-	faintStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
 	borderStyle  = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
 	matchedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
 	hashStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
@@ -67,5 +66,5 @@ func PrintSummary(out io.Writer, summary Summary) {
 		borderStyle.Render(strings.Join(log, "\n")),
 	)
 
-	fmt.Fprintf(out, pane)
+	fmt.Fprint(out, pane)
 }

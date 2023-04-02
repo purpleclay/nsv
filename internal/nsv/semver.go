@@ -158,7 +158,7 @@ func NextVersion(gitc *git.Client, opts Options) error {
 
 	var nextV bytes.Buffer
 	versionTmpl.Execute(&nextV, nextTag)
-	fmt.Fprintf(opts.StdOut, nextV.String())
+	fmt.Fprint(opts.StdOut, nextV.String())
 
 	if opts.Show {
 		PrintSummary(opts.StdErr, Summary{
