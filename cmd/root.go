@@ -66,7 +66,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	flags := cmd.Flags()
 	flags.BoolVar(&opts.Show, "show", false, "show how the next semantic version was calculated")
 
-	cmd.AddCommand(versionCmd(out, buildInfo))
+	cmd.AddCommand(versionCmd(out, buildInfo), manCmd(out))
 	return cmd.Execute()
 }
 

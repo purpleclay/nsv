@@ -27,5 +27,5 @@ mkdir completions
 
 # Generate the shell completion scripts
 for SH in bash zsh fish; do
-	go run main.go completion "${SH}" > "completions/nsv.${SH}"
+	go run . completion "${SH}" > "completions/nsv.${SH}"
 done
