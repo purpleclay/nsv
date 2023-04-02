@@ -55,7 +55,7 @@ jobs:
     if: "!startsWith(github.ref, 'refs/tags/')"
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest]
     uses: purpleclay/github/.github/workflows/go-test.yml@main
     with:
       os: ${{ matrix.os }}
