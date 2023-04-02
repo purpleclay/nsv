@@ -1,0 +1,70 @@
+# Copyright (c) 2023 Purple Clay
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# in the Software without restriction, including without limitation the rights
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+name: ci
+on:
+  push:
+    tags:
+      - "v*.*.*"
+    branches:
+      - main
+    paths:
+      - "**/*.go"
+      - "*.go"
+      - "go.mod"
+      - "go.sum"
+  pull_request:
+    paths:
+      - "**/*.go"
+      - "*.go"
+      - "go.mod"
+      - "go.sum"
+
+permissions:
+  contents: read
+
+jobs:
+  # By splitting testing into its own job will ensure the needs: clause for
+  # static-analysis runs without waiting on the entire matrix. Jobs that run
+  # against macos and windows are considerably slower
+  test:
+    uses: purpleclay/github/.github/workflows/go-test.yml@main
+    with:
+      go-version: ${{ vars.GO_VERSION }}
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  test-by-os:
+    if: "!startsWith(github.ref, 'refs/tags/')"
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    uses: purpleclay/github/.github/workflows/go-test.yml@main
+    with:
+      os: ${{ matrix.os }}
+      go-version: ${{ vars.GO_VERSION }}
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    uses: purpleclay/github/.github/workflows/golangci-lint.yml@main
+    with:
+      version: ${{ vars.GOLANGCI_LINT_VERSION }}
+      go-version: ${{ vars.GO_VERSION }}
