@@ -89,11 +89,8 @@ changelog:
 sboms:
   - artifacts: archive
 
-# Use Keyless experimental signing with cosign, see: https://github.com/sigstore/cosign/blob/main/KEYLESS.md
 signs:
   - cmd: cosign
-    env:
-      - COSIGN_EXPERIMENTAL=1
     certificate: "${artifact}.pem"
     output: true
     artifacts: checksum
@@ -102,6 +99,7 @@ signs:
       - "--output-certificate=${certificate}"
       - "--output-signature=${signature}"
       - "${artifact}"
+      - --yes
 
 brews:
   - name: nsv
