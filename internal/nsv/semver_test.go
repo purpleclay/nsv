@@ -144,3 +144,37 @@ ci: hhdhdhdh
 		})
 	}
 }
+
+func TestNextVersionWithFormat(t *testing.T) {
+	format := "v{{ .Version }}"
+
+	tests := []struct {
+		name     string
+		log      string
+		expected string
+	}{
+		{
+			name:     "NewVersion",
+			log:      "(main) feat: this is a new feature",
+			expected: "v0.1.0",
+		},
+		{
+			name: "ExistingVersion",
+			log: `(main) feat: this is another feature
+(tag: v0.1.0) feat: this is a new feature`,
+			expected: "v0.2.0",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gittest.InitRepository(t, gittest.WithLog(tt.log))
+			gitc, _ := git.NewClient()
+
+			var buf bytes.Buffer
+			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf, VersionFormat: format})
+
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, buf.String())
+		})
+	}
+}

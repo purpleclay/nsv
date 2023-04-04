@@ -41,12 +41,13 @@ const (
 	versionFormat = "{{ .Prefix }}{{ .Version }}"
 )
 
-var versionTmpl = template.Must(template.New("version").Parse(versionFormat))
+var versionTmpl = template.Must(template.New("default-format").Parse(versionFormat))
 
 type Options struct {
-	StdOut io.Writer
-	StdErr io.Writer
-	Show   bool
+	StdOut        io.Writer `env:"-"`
+	StdErr        io.Writer `env:"-"`
+	Show          bool      `env:"NSV_SHOW"`
+	VersionFormat string    `env:"NSV_FORMAT"`
 }
 
 type context struct {
@@ -77,13 +78,14 @@ func execContext(gitc *git.Client) (*context, error) {
 	return &context{TagPrefix: relPath, LogPath: logPath}, nil
 }
 
-type tag struct {
+type Tag struct {
 	Prefix  string
 	SemVer  string
 	Version string
+	raw     string
 }
 
-func parseTag(raw string) tag {
+func ParseTag(raw string) (Tag, error) {
 	lastSlash := 0
 	if idx := strings.LastIndex(raw, "/"); idx > -1 {
 		lastSlash = idx + 1
@@ -94,24 +96,52 @@ func parseTag(raw string) tag {
 		semv = semv[1:]
 	}
 
-	return tag{
+	if _, err := semver.StrictNewVersion(semv); err != nil {
+		return Tag{}, err
+	}
+
+	return Tag{
 		Prefix:  raw[:lastSlash],
+		raw:     raw,
 		SemVer:  semv,
 		Version: raw[lastSlash:],
-	}
+	}, nil
 }
 
-func (t tag) bump(semv string) tag {
+func (t Tag) Bump(semv string) Tag {
 	ver := semv
 	if t.Version[0] == vPrefix {
 		ver = fmt.Sprintf("%c%s", vPrefix, ver)
 	}
 
-	return tag{
+	return Tag{
 		Prefix:  t.Prefix,
 		SemVer:  semv,
 		Version: ver,
 	}
+}
+
+func (t Tag) Format(format string) string {
+	var tagf bytes.Buffer
+	if format == "" {
+		versionTmpl.Execute(&tagf, t)
+		return tagf.String()
+	}
+
+	// TODO: handle error (do we handle this earlier?)
+	tmpl, _ := template.New("custom-format").Parse(format)
+	tmpl.Execute(&tagf, t)
+
+	fmted := tagf.String()
+	lastSlash := 0
+	if idx := strings.LastIndex(fmted, "/"); idx > -1 {
+		lastSlash = idx + 1
+	}
+
+	if fmted[lastSlash:lastSlash+2] == "vv" {
+		return fmted[:lastSlash] + fmted[lastSlash+1:]
+	}
+	return fmted
 }
 
 func NextVersion(gitc *git.Client, opts Options) error {
@@ -139,7 +169,7 @@ func NextVersion(gitc *git.Client, opts Options) error {
 		ltag = firstVersion(ctx.TagPrefix)
 	}
 
-	pTag := parseTag(ltag)
+	pTag, _ := ParseTag(ltag)
 	ver, err := semver.StrictNewVersion(pTag.SemVer)
 	if err != nil {
 		return err
@@ -154,15 +184,13 @@ func NextVersion(gitc *git.Client, opts Options) error {
 	case PatchIncrement:
 		bumpedVer = ver.IncPatch()
 	}
-	nextTag := pTag.bump(bumpedVer.String())
-
-	var nextV bytes.Buffer
-	versionTmpl.Execute(&nextV, nextTag)
-	fmt.Fprint(opts.StdOut, nextV.String())
+	nextTag := pTag.Bump(bumpedVer.String())
+	nextVer := nextTag.Format(opts.VersionFormat)
+	fmt.Fprint(opts.StdOut, nextVer)
 
 	if opts.Show {
 		PrintSummary(opts.StdErr, Summary{
-			Tags:  []string{git.HeadRef, nextV.String()},
+			Tags:  []string{git.HeadRef, nextVer},
 			Log:   log.Commits,
 			Match: pos,
 		})

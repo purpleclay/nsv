@@ -37,6 +37,8 @@ var (
 	matchedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
 	hashStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
 	tagStyle     = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
+	ellipses     = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render("...")
+	chevron      = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
 )
 
 type Summary struct {
@@ -62,9 +64,22 @@ func PrintSummary(out io.Writer, summary Summary) {
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
 		"\n",
-		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render(summary.Tags[0]), " ... ", tagStyle.Render(summary.Tags[1])),
+		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render(summary.Tags[0]), ellipses, tagStyle.Render(summary.Tags[1])),
 		borderStyle.Render(strings.Join(log, "\n")),
 	)
+
+	fmt.Fprint(out, pane)
+}
+
+func PrintFormat(out io.Writer, tag Tag, format string) {
+	tagf := tag.Format(format)
+	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.raw, chevron, format, chevron, tagf, "\n")
+
+	pane := lipgloss.JoinVertical(lipgloss.Top,
+		header,
+		fmt.Sprintf("{{.Prefix}} %s%s", chevron, tag.Prefix),
+		fmt.Sprintf("{{.SemVer}} %s%s", chevron, tag.SemVer),
+		fmt.Sprintf("{{.Version}}%s%s", chevron, tag.Version))
 
 	fmt.Fprint(out, pane)
 }
