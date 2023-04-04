@@ -37,14 +37,16 @@ var (
 	matchedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
 	hashStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
 	tagStyle     = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
+	feintStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
 	ellipses     = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render("...")
 	chevron      = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
 )
 
 type Summary struct {
-	Tags  []string
-	Log   []git.LogEntry
-	Match int
+	Tags   []string
+	Log    []git.LogEntry
+	LogDir string
+	Match  int
 }
 
 func PrintSummary(out io.Writer, summary Summary) {
@@ -62,9 +64,18 @@ func PrintSummary(out io.Writer, summary Summary) {
 			matchedStyle.Render(marker)))
 	}
 
+	logDir := ""
+	if summary.LogDir != "" {
+		logDir = lipgloss.JoinHorizontal(lipgloss.Left, feintStyle.Render("log directory: "), summary.LogDir)
+	}
+
 	pane := lipgloss.JoinVertical(lipgloss.Top,
 		"\n",
-		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render(summary.Tags[0]), ellipses, tagStyle.Render(summary.Tags[1])),
+		lipgloss.JoinHorizontal(lipgloss.Left,
+			tagStyle.Render(summary.Tags[0]),
+			ellipses,
+			tagStyle.Copy().MarginRight(1).Render(summary.Tags[1]),
+			logDir),
 		borderStyle.Render(strings.Join(log, "\n")),
 	)
 

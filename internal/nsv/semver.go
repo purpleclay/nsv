@@ -72,7 +72,7 @@ func execContext(gitc *git.Client) (*context, error) {
 
 	logPath := relPath
 	if logPath == filepath.Base(cwd) {
-		logPath = ""
+		logPath = git.RelativeAtRoot
 	}
 
 	return &context{TagPrefix: relPath, LogPath: logPath}, nil
@@ -128,7 +128,7 @@ func (t Tag) Format(format string) string {
 		return tagf.String()
 	}
 
-	// TODO: handle error (do we handle this earlier?)
+	// TODO: handle error (should we handle this earlier?)
 	tmpl, _ := template.New("custom-format").Parse(format)
 	tmpl.Execute(&tagf, t)
 
@@ -190,9 +190,10 @@ func NextVersion(gitc *git.Client, opts Options) error {
 
 	if opts.Show {
 		PrintSummary(opts.StdErr, Summary{
-			Tags:  []string{git.HeadRef, nextVer},
-			Log:   log.Commits,
-			Match: pos,
+			Tags:   []string{git.HeadRef, nextVer},
+			Log:    log.Commits,
+			LogDir: ctx.TagPrefix,
+			Match:  pos,
 		})
 	}
 	return nil
