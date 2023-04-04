@@ -32,6 +32,8 @@ import (
 )
 
 func TestDetectIncrement(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		commit   string
@@ -98,6 +100,8 @@ BREAKING-CHANGE: this is a breaking change`,
 }
 
 func TestDetectIncrementFindsHighestIncrement(t *testing.T) {
+	t.Parallel()
+
 	log := []git.LogEntry{
 		{Message: "ci: support dependency scanning in workflows"},
 		{Message: "feat: support dependency injection of database tier"},
@@ -116,6 +120,8 @@ BREAKING CHANGE: this is a breaking change`,
 }
 
 func TestDetectIncrementStrictness(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		commit   string
@@ -152,6 +158,8 @@ BREAKING-CHANGE:this is a breaking change`,
 }
 
 func TestDetectIncrementCaseInsensitiveLabel(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		commit   string
@@ -181,6 +189,8 @@ func TestDetectIncrementCaseInsensitiveLabel(t *testing.T) {
 }
 
 func TestDetectIncrementCaseSensitiveBreaking(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name     string
 		commit   string
