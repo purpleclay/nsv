@@ -34,13 +34,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TODO: fix commits
-
 func TestNextVersion(t *testing.T) {
-	log := `(main, origin/main) docs: bbb
-fix: aaa
-(tag: 0.1.0) feat: ccc
-ci: ddd`
+	log := `(main, origin/main) docs: document new search improvements
+fix(search): search is not being aggregated correctly
+(tag: 0.1.0) feat(search): support aggregations for search analytics
+ci: add parallel testing support to workflow`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
@@ -51,8 +49,6 @@ ci: ddd`
 	assert.Equal(t, "0.1.1", buf.String())
 }
 
-// TODO: breaking not increment major {0.1.0 feat!, 0.1.0 feat:, 0.0.1 patch}
-
 func TestNextVersionFirstVersion(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -61,15 +57,14 @@ func TestNextVersionFirstVersion(t *testing.T) {
 	}{
 		{
 			name:     "Patch",
-			log:      "fix: this is a fix",
+			log:      "fix: incorrectly displaying results in tui",
 			expected: "0.0.1",
 		},
 		{
 			name:     "Minor",
-			log:      "feat: this is a feature",
+			log:      "feat: add new tui for displaying job summary",
 			expected: "0.1.0",
 		},
-		// TODO: handle major (should adhere to semantic spec)
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -85,17 +80,13 @@ func TestNextVersionFirstVersion(t *testing.T) {
 	}
 }
 
-// TODO: rename ~ Appends prefix automatically
-
-func TestNextVersionMonoRepoFirstVersion(t *testing.T) {
-	log := `ci: sdsdsd
-chore: sdsdsdsd
-docs: dsfjkhsdljfhsdfljkh`
+func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
+	log := `feat(trends)!: breaking change to capturing user trends`
 	gittest.InitRepository(t, gittest.WithLog(log), gittest.WithFiles("search/main.go", "store/main.go"))
 	gittest.StageFile(t, "search/main.go")
-	gittest.Commit(t, "feat(search): awesome search functionality")
+	gittest.Commit(t, "feat(search): add support to search across user trends for recommendations")
 	gittest.StageFile(t, "store/main.go")
-	gittest.Commit(t, "fix(store): fix bug in the store")
+	gittest.Commit(t, "fix(store): fixed timestamp formatting issues")
 
 	os.Chdir("search")
 	gitc, _ := git.NewClient()
@@ -115,20 +106,18 @@ func TestNextVersionPreservesTagPrefix(t *testing.T) {
 	}{
 		{
 			name: "VPrefix",
-			log: `(main, origin/main) feat: aaaa
-docs: sdsd
-chore: sdsd
-(tag: v1.0.0) feat: bbbb`,
+			log: `(main, origin/main) feat(ui): rebrand existing components with new theme
+docs: update documentation with breaking change
+(tag: v1.0.0) feat(ui)!: breaking redesign of search ui`,
 			expected: "v1.1.0",
 		},
 		{
-			// TODO: what does a mono-repo log look like for a directory
 			name: "MonoRepoPrefix",
-			log: `(main, origin/main) fix: dhdhdhdhdh
-docs: hhfhfhfhf
-ci: hhdhdhdh
-(tag: component/v0.2.0) feat: sdlkjfhsdljhsdlkfjhldfk`,
-			expected: "component/v0.2.1",
+			log: `(HEAD -> main) fix(cache): incorrect sorting of metadata cache
+docs: update documentation with latest cache improvement
+ci: configure workflow to run benchmarks
+(tag: cache/v0.2.0) feat(cache): `,
+			expected: "cache/v0.2.1",
 		},
 	}
 	for _, tt := range tests {
@@ -155,13 +144,13 @@ func TestNextVersionWithFormat(t *testing.T) {
 	}{
 		{
 			name:     "NewVersion",
-			log:      "(main) feat: this is a new feature",
+			log:      "(main) feat(broker): support asynchronous publishing to broker",
 			expected: "v0.1.0",
 		},
 		{
 			name: "ExistingVersion",
-			log: `(main) feat: this is another feature
-(tag: v0.1.0) feat: this is a new feature`,
+			log: `(main) feat(broker): enable tls authentication
+(tag: v0.1.0) feat(broker): support asynchronous publishing to broker`,
 			expected: "v0.2.0",
 		},
 	}

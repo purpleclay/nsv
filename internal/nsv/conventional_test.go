@@ -215,20 +215,26 @@ Breaking-Change: this is a breaking change`,
 var gInc nsv.Increment
 var gPos int
 
-// TODO: write some commit messages here
-
 func BenchmarkDetectIncrement(b *testing.B) {
 	log := []git.LogEntry{
-		{Message: "docs:"},
-		{Message: "ci:"},
-		{Message: "feat(parser):"},
-		{Message: "chore:"},
-		{Message: "feat(ui):"},
-		{Message: "fix:"},
-		{Message: "fix(ui):"},
-		{Message: "feat:"},
-		{Message: "ci:"},
-		{Message: "refactor:"},
+		{Message: "docs: generate documentation using material for mkdocs"},
+		{Message: "ci: turn on automatic analysis of code using deepsource"},
+		{Message: "feat(ui): add support to drag and drop columns within table"},
+		{Message: "chore: update project description within README"},
+		{Message: `feat(deps): bump github.com/aws/aws-sdk-go-v2/service/route53 from 1.27.0 to 1.27.1
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>`},
+		{Message: "fix(parser): incorrect tokenization of conventional commit messages"},
+		{Message: `chore(deps): bump actions/dependency-review-action from 2 to 3 (#156)
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>`},
+		{Message: "feat(store): add ability to take and skip data retrieved from the store"},
+		{Message: "ci: support parallel running of go tests"},
+		{Message: `refactor(api): combine existing methods to reduce complexity of api
+
+BREAKING-CHANGE: backwards compatibility with v1 is no longer supported`},
 	}
 	b.ResetTimer()
 
