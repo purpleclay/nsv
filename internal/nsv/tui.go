@@ -68,3 +68,16 @@ func PrintSummary(out io.Writer, summary Summary) {
 
 	fmt.Fprint(out, pane)
 }
+
+func PrintFormat(out io.Writer, tag Tag, format string) {
+	tagf := tag.Format(format)
+	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.raw, " >> ", format, " >> ", tagf, "\n")
+
+	pane := lipgloss.JoinVertical(lipgloss.Top,
+		header,
+		fmt.Sprintf("{{.Prefix}}%s%s", " >> ", tag.Prefix),
+		fmt.Sprintf("{{.SemVer}}%s%s", " >> ", tag.SemVer),
+		fmt.Sprintf("{{.Version}}%s%s", " >> ", tag.Version))
+
+	fmt.Fprint(out, pane)
+}

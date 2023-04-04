@@ -29,6 +29,7 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/caarlos0/env/v7"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
@@ -45,7 +46,6 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	opts := nsv.Options{
 		StdOut: out,
 		StdErr: os.Stderr,
-		Show:   false,
 	}
 
 	cmd := &cobra.Command{
@@ -54,6 +54,10 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
 			gitc, err := git.NewClient()
 			if err != nil {
 				return err
@@ -65,8 +69,11 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 
 	flags := cmd.Flags()
 	flags.BoolVar(&opts.Show, "show", false, "show how the next semantic version was calculated")
+	flags.StringVar(&opts.VersionFormat, "format", "", "provide a go template for changing the default version format")
 
-	cmd.AddCommand(versionCmd(out, buildInfo), manCmd(out))
+	cmd.AddCommand(versionCmd(out, buildInfo),
+		manCmd(out),
+		formatCmd(out))
 	return cmd.Execute()
 }
 
@@ -74,8 +81,7 @@ func versionCmd(out io.Writer, buildInfo BuildDetails) *cobra.Command {
 	var short bool
 	cmd := &cobra.Command{
 		Use:   "version",
-		Short: "",
-		Long:  "",
+		Short: "Print build time version information",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if short {
 				fmt.Fprintf(out, buildInfo.Version)
