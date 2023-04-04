@@ -89,6 +89,8 @@ BREAKING-CHANGE: this is a breaking change`,
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			inc, _ := nsv.DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
@@ -147,6 +149,8 @@ BREAKING-CHANGE:this is a breaking change`,
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			inc, _ := nsv.DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
@@ -178,6 +182,8 @@ func TestDetectIncrementCaseInsensitiveLabel(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			inc, _ := nsv.DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
@@ -211,6 +217,8 @@ Breaking-Change: this is a breaking change`,
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			inc, _ := nsv.DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
