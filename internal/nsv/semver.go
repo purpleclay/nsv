@@ -36,12 +36,9 @@ import (
 )
 
 const (
-	vPrefix       = 'v'
-	firstVer      = "0.0.0"
-	versionFormat = "{{ .Prefix }}{{ .Version }}"
+	vPrefix  = 'v'
+	firstVer = "0.0.0"
 )
-
-var versionTmpl = template.Must(template.New("default-format").Parse(versionFormat))
 
 type Options struct {
 	StdOut        io.Writer `env:"-"`
