@@ -128,7 +128,6 @@ func (t Tag) Format(format string) string {
 		return tagf.String()
 	}
 
-	// TODO: handle error (should we handle this earlier?)
 	tmpl, _ := template.New("custom-format").Parse(format)
 	tmpl.Execute(&tagf, t)
 

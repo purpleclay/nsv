@@ -21,7 +21,7 @@
 name: CI Enhancement
 description: Suggest a new CI enhancement
 title: "[CI]: "
-labels: [ci, enhancement, triage]
+labels: [ci, triage]
 assignees:
   - purpleclay
 body:
