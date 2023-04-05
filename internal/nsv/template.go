@@ -25,7 +25,8 @@ package nsv
 import (
 	"bufio"
 	"bytes"
-	"errors"
+	"fmt"
+	"io"
 	"reflect"
 	"strings"
 	"text/template"
@@ -34,6 +35,14 @@ import (
 const versionFormat = "{{.Prefix}}{{.Version}}"
 
 var versionTmpl = template.Must(template.New("default-format").Parse(versionFormat))
+
+type UnknownTemplateFieldError struct {
+	Field string
+}
+
+func (e UnknownTemplateFieldError) Error() string {
+	return fmt.Sprintf("template field {{%s}} is not recognised and would resolve to an invalid semantic version", e.Field)
+}
 
 func TemplateFields() map[string]struct{} {
 	fields := map[string]struct{}{}
@@ -50,7 +59,8 @@ func TemplateFields() map[string]struct{} {
 }
 
 func CheckTemplate(tmpl string) error {
-	if _, err := template.New("version-format").Parse(tmpl); err != nil {
+	checkTmpl, err := template.New("version-format").Parse(tmpl)
+	if err != nil {
 		return err
 	}
 
@@ -58,13 +68,11 @@ func CheckTemplate(tmpl string) error {
 	fields := extractFields(tmpl)
 	for _, field := range fields {
 		if _, supported := lookup[field]; !supported {
-			// TODO: custom error that should be raised (reference in documentation)
-			return errors.New("template field is not supported and will resolve to an invalid semantic version")
+			return UnknownTemplateFieldError{Field: field}
 		}
 	}
 
-	// TODO: execute the template against a default tag that exercises all of the runs
-	return nil
+	return checkTmpl.Execute(io.Discard, Tag{Prefix: "ui/", SemVer: "0.1.0", Version: "v0.1.0"})
 }
 
 func extractFields(tmpl string) []string {
@@ -73,13 +81,14 @@ func extractFields(tmpl string) []string {
 
 	fields := make([]string, 0)
 	for scanner.Scan() {
-		fields = append(fields, scanner.Text())
+		if field := scanner.Text(); field != "" {
+			fields = append(fields, field)
+		}
 	}
 
 	return fields
 }
 
-// TODO: write basic test to ensure this works
 func TokenizeFields(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	if atEOF && len(data) == 0 {
 		return 0, nil, nil
