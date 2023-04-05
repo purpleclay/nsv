@@ -234,8 +234,10 @@ Breaking-Change: this is a breaking change`,
 }
 
 // globals are used to prevent any compiler optimizations
-var gInc nsv.Increment
-var gPos int
+var (
+	gInc nsv.Increment
+	gPos int
+)
 
 func BenchmarkDetectIncrement(b *testing.B) {
 	log := []git.LogEntry{
