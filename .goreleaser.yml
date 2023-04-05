@@ -108,7 +108,7 @@ brews:
       name: homebrew-tap
     folder: Formula
     homepage: "https://github.com/purpleclay/nsv"
-    description: "Next Semantic Version"
+    description: "Manage your semantic versioning without any config"
     license: MIT
     install: |
       bin.install "nsv"
@@ -131,7 +131,7 @@ nfpms:
   - file_name_template: "{{ .ConventionalFileName }}"
     id: packages
     homepage: "https://github.com/purpleclay/nsv"
-    description: "Next Semantic Version"
+    description: "Manage your semantic versioning without any config"
     maintainer: Purple Clay <purpleclaygh@gmail.com>
     license: MIT
     vendor: Purple Clay

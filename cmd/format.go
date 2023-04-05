@@ -31,7 +31,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var longDesc = `A playground for discovering go template support
+var formatLongDesc = `A playground for discovering go template support.
 
 Discover ways of formatting your repository tag using the in-built
 go template annotations.
@@ -51,7 +51,7 @@ func formatCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "format <tag>",
 		Short: "A playground for discovering go template support",
-		Long:  longDesc,
+		Long:  formatLongDesc,
 		Args:  cobra.ExactArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return env.Parse(&opts)

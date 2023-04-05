@@ -1,7 +1,7 @@
 # nsv
 
-Calculate the next semantic version without any config. Just type:
+Manage your semantic versioning without any config. Just type:
 
 ```go
-nsv
+nsv next
 ```
