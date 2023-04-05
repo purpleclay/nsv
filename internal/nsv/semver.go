@@ -36,12 +36,9 @@ import (
 )
 
 const (
-	vPrefix       = 'v'
-	firstVer      = "0.0.0"
-	versionFormat = "{{ .Prefix }}{{ .Version }}"
+	vPrefix  = 'v'
+	firstVer = "0.0.0"
 )
-
-var versionTmpl = template.Must(template.New("default-format").Parse(versionFormat))
 
 type Options struct {
 	StdOut        io.Writer `env:"-"`
@@ -124,12 +121,12 @@ func (t Tag) Bump(semv string) Tag {
 func (t Tag) Format(format string) string {
 	var tagf bytes.Buffer
 	if format == "" {
-		versionTmpl.Execute(&tagf, t)
+		_ = versionTmpl.Execute(&tagf, t)
 		return tagf.String()
 	}
 
 	tmpl, _ := template.New("custom-format").Parse(format)
-	tmpl.Execute(&tagf, t)
+	_ = tmpl.Execute(&tagf, t)
 
 	fmted := tagf.String()
 	lastSlash := 0

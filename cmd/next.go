@@ -56,6 +56,10 @@ func nextCmd(out io.Writer) *cobra.Command {
 			return env.Parse(&opts)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
+				return err
+			}
+
 			gitc, err := git.NewClient()
 			if err != nil {
 				return err
