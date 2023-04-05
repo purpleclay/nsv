@@ -1,0 +1,26 @@
+linters:
+  disable-all: true
+  enable:
+    - errname
+    - forbidigo
+    - godox
+    - goerr113
+    - gofumpt
+    - ireturn
+    - misspell
+    - musttag
+    - revive
+    - tagliatelle
+    - thelper
+
+linters-settings:
+  forbidigo:
+    forbid:
+      - 'ioutil\.*'
+  tagliatelle:
+    case:
+      use-field-name: false
+      rules:
+        json: snake
+        toml: snake
+        yaml: snake
