@@ -40,6 +40,15 @@ const (
 	firstVer = "0.0.0"
 )
 
+type Increment int
+
+const (
+	NoIncrement Increment = iota
+	PatchIncrement
+	MinorIncrement
+	MajorIncrement
+)
+
 type Options struct {
 	StdOut        io.Writer `env:"-"`
 	StdErr        io.Writer `env:"-"`
@@ -165,6 +174,8 @@ func NextVersion(gitc *git.Client, opts Options) error {
 		ltag = firstVersion(ctx.TagPrefix)
 	}
 
+	// --- this is a logical unit of code, bump.go
+
 	pTag, _ := ParseTag(ltag)
 	ver, err := semver.StrictNewVersion(pTag.SemVer)
 	if err != nil {
@@ -174,6 +185,8 @@ func NextVersion(gitc *git.Client, opts Options) error {
 	var bumpedVer semver.Version
 	switch inc {
 	case MajorIncrement:
+		// TODO: if major version is 0, then fallthrough into minor
+		// TODO: if hint exists to force major, then ignore previous logic
 		bumpedVer = ver.IncMajor()
 	case MinorIncrement:
 		bumpedVer = ver.IncMinor()
@@ -182,6 +195,7 @@ func NextVersion(gitc *git.Client, opts Options) error {
 	}
 	nextTag := pTag.Bump(bumpedVer.String())
 	nextVer := nextTag.Format(opts.VersionFormat)
+
 	fmt.Fprint(opts.StdOut, nextVer)
 
 	if opts.Show {

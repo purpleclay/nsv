@@ -28,15 +28,6 @@ import (
 	git "github.com/purpleclay/gitz"
 )
 
-type Increment int
-
-const (
-	NoIncrement Increment = iota
-	PatchIncrement
-	MinorIncrement
-	MajorIncrement
-)
-
 const (
 	colonSpace     = ": "
 	featUpper      = "FEAT"
