@@ -65,6 +65,11 @@ func TestNextVersionFirstVersion(t *testing.T) {
 			log:      "feat: add new tui for displaying job summary",
 			expected: "0.1.0",
 		},
+		{
+			name:     "Major",
+			log:      "feat!: somehow we have a breaking change for the first commit",
+			expected: "0.1.0",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -78,6 +83,33 @@ func TestNextVersionFirstVersion(t *testing.T) {
 			require.Equal(t, tt.expected, buf.String())
 		})
 	}
+}
+
+func TestNextVersionMajorZeroSemV(t *testing.T) {
+	log := `(main, origin/main) refactor!: switch to v0.1 of the schema which has no backwards compatibility
+(tag: 0.1.2) fix: issues with v0.0.8 of schema`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	var buf bytes.Buffer
+	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+	require.NoError(t, err)
+	require.Equal(t, "0.2.0", buf.String())
+}
+
+func TestNextVersionMajorZeroSemVForceMajor(t *testing.T) {
+	log := `> (main, origin/main) feat!: everything is now stable ready for v1
+nsv: force~major
+> (tag: 0.9.9) fix: stability issues around long running database connectivity`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	var buf bytes.Buffer
+	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+
+	require.NoError(t, err)
+	require.Equal(t, "1.0.0", buf.String())
 }
 
 func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {

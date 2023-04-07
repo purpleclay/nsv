@@ -165,8 +165,9 @@ func NextVersion(gitc *git.Client, opts Options) error {
 		return err
 	}
 
+	cmd := DetectCommand(log.Commits)
 	inc, pos := DetectIncrement(log.Commits)
-	if inc == NoIncrement {
+	if cmd.Force == NoIncrement && inc == NoIncrement {
 		return nil
 	}
 
@@ -174,27 +175,10 @@ func NextVersion(gitc *git.Client, opts Options) error {
 		ltag = firstVersion(ctx.TagPrefix)
 	}
 
-	// --- this is a logical unit of code, bump.go
-
-	pTag, _ := ParseTag(ltag)
-	ver, err := semver.StrictNewVersion(pTag.SemVer)
+	nextVer, err := bump(ltag, opts.VersionFormat, inc, cmd)
 	if err != nil {
 		return err
 	}
-
-	var bumpedVer semver.Version
-	switch inc {
-	case MajorIncrement:
-		// TODO: if major version is 0, then fallthrough into minor
-		// TODO: if hint exists to force major, then ignore previous logic
-		bumpedVer = ver.IncMajor()
-	case MinorIncrement:
-		bumpedVer = ver.IncMinor()
-	case PatchIncrement:
-		bumpedVer = ver.IncPatch()
-	}
-	nextTag := pTag.Bump(bumpedVer.String())
-	nextVer := nextTag.Format(opts.VersionFormat)
 
 	fmt.Fprint(opts.StdOut, nextVer)
 
@@ -238,4 +222,34 @@ func firstVersion(prefix string) string {
 		return firstVer
 	}
 	return fmt.Sprintf("%s/%s", prefix, firstVer)
+}
+
+func bump(ver, format string, inc Increment, cmd Command) (string, error) {
+	pTag, _ := ParseTag(ver)
+	semv, err := semver.StrictNewVersion(pTag.SemVer)
+	if err != nil {
+		return "", err
+	}
+
+	var bumpedVer semver.Version
+	if inc == MajorIncrement && semv.Major() == 0 {
+		// Support SemVer Major 0 (0.y.z) workflow, https://semver.org/#spec-item-4
+		inc = MinorIncrement
+	}
+
+	if cmd.Force != NoIncrement {
+		inc = cmd.Force
+	}
+
+	switch inc {
+	case MajorIncrement:
+		bumpedVer = semv.IncMajor()
+	case MinorIncrement:
+		bumpedVer = semv.IncMinor()
+	case PatchIncrement:
+		bumpedVer = semv.IncPatch()
+	}
+
+	nextTag := pTag.Bump(bumpedVer.String())
+	return nextTag.Format(format), nil
 }
