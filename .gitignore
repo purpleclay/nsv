@@ -20,3 +20,9 @@ unittest-cover.txt
 completions/
 dist/
 manpages/
+
+# Ignore IDEs
+.vscode
+
+# Material for MkDocs
+.cache
