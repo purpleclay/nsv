@@ -3,15 +3,15 @@ icon: material/basketball
 status: new
 ---
 
-# Explore with the Playground
+# Explore using the Playground
 
 <span class="rounded-pill">:material-test-tube: experimental</span>
 
-Explore using `nsv` directly within the tool by launching the in-built playground.
+Explore using `nsv` by launching the in-built playground.
 
 ## Version templating
 
-TODO
+Discover how the internal go template is used when generating the next semantic version:
 
 ```sh
 nsv playground --with '{{.Version}}'

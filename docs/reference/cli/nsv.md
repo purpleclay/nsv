@@ -2,26 +2,30 @@
 icon: material/console
 ---
 
-# Command Line
+# nsv
 
-Toggle EC2 IMDS features
+```text
+Manage your semantic versioning without any config
+```
 
 ## Usage
 
 ```text
-dns53 imds [flags]
+nsv [command]
+```
+
+## Commands
+
+```text
+completion  Generate the autocompletion script for the specified shell
+format      A playground for discovering go template support
+help        Help about any command
+next        Generate the next semantic version
+version     Print build time version information
 ```
 
 ## Flags
 
 ```text
--h, --help                            help for imds
-    --instance-metadata-tags string   toggle the inclusion of EC2 instance tags within IMDS (on|off)
-```
-
-## Global Flags
-
-```text
---profile string   the AWS named profile to use when loading credentials
---region string    the AWS region to use when querying AWS
+-h, --help   help for nsv
 ```

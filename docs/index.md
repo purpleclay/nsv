@@ -4,13 +4,13 @@ title: Convention-based semantic versioning without a config file
 
 # NSV
 
-NSV (Next Semantic Version) is a convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!
+`nsv` (Next Semantic Version) is a convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!
 
 ## Why another versioning tool
 
 There are many semantic versioning tools already out there! But they typically require some configuration or custom scripting in your CI system to make them work. No one likes managing config; it is error-prone, and the slightest tweak ultimately triggers a cascade of change across your projects.
 
-Step in NSV. Designed to make intelligent semantic versioning decisions about your project without needing a config file. Entirely convention-based, you can adapt your workflow from within your commit message.
+`nsv` makes intelligent semantic versioning decisions about your project without needing a config file. It is convention-based and adapts to your semantic workflow by analyzing your commit messages.
 
 The power is at your fingertips.
 

@@ -5,7 +5,7 @@ status: new
 
 # Next Semantic Version
 
-NSV core principles of being context-aware and convention-based without a config file let you achieve most of your semantic versioning needs by simply running:
+`nsv` core principles of being <u>context-aware</u> and <u>convention-based</u> will let you achieve almost all of your semantic versioning needs when running:
 
 ```sh
 nsv next
@@ -13,7 +13,7 @@ nsv next
 
 By scanning all commit messages within the latest release, `nsv` understands the author's intent and prints the next semantic version to stdout.
 
-If you want to see what is happening under the hood, ask it:
+If you want to see what is happening under the hood you can use the `--show` flag:
 
 ```sh
 nsv next --show
@@ -23,7 +23,7 @@ nsv next --show
 EXAMPLE OF OUTPUT
 ```
 
-If you need to customize its behavior, environment variables, CLI flags, or [commands](./commands.md) can be used.
+If you need to customize its behavior further, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.
 
 ## Monorepos as first-class citizens
 

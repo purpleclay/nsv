@@ -2,26 +2,29 @@
 icon: material/console
 ---
 
-# Command Line
+# nsv next
 
-Toggle EC2 IMDS features
+```text
+Generate the next semantic version based on the
+conventional commit history of your repository.
+
+Environment Variables:
+
+| Name       | Description                                       |
+|------------|---------------------------------------------------|
+| NSV_FORMAT | set a go template for formatting the provided tag |
+```
 
 ## Usage
 
 ```text
-dns53 imds [flags]
+nsv next [flags]
 ```
 
 ## Flags
 
 ```text
--h, --help                            help for imds
-    --instance-metadata-tags string   toggle the inclusion of EC2 instance tags within IMDS (on|off)
-```
-
-## Global Flags
-
-```text
---profile string   the AWS named profile to use when loading credentials
---region string    the AWS region to use when querying AWS
+    --format string   provide a go template for changing the default version format
+-h, --help            help for next
+    --show            show how the next semantic version was generated
 ```
