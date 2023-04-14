@@ -3,7 +3,7 @@ module github.com/purpleclay/nsv
 go 1.20
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.0
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/caarlos0/env/v7 v7.1.0
 	github.com/charmbracelet/lipgloss v0.7.1
 	github.com/muesli/mango-cobra v1.2.0
