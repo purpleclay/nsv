@@ -31,7 +31,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var formatLongDesc = `A playground for discovering go template support.
+var playgroundLongDesc = `A playground for discovering go template support.
 
 Discover ways of formatting your repository tag using the in-built
 go template annotations.
@@ -42,16 +42,16 @@ Environment Variables:
 |------------|---------------------------------------------------|
 | NSV_FORMAT | set a go template for formatting the provided tag |`
 
-func formatCmd(out io.Writer) *cobra.Command {
+func playgroundCmd(out io.Writer) *cobra.Command {
 	opts := nsv.Options{
 		StdOut: out,
 		StdErr: os.Stderr,
 	}
 
 	cmd := &cobra.Command{
-		Use:   "format <tag>",
+		Use:   "playground <tag>",
 		Short: "A playground for discovering go template support",
-		Long:  formatLongDesc,
+		Long:  playgroundLongDesc,
 		Args:  cobra.ExactArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return env.Parse(&opts)
@@ -72,7 +72,7 @@ func formatCmd(out io.Writer) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.StringVar(&opts.VersionFormat, "with", "", "a go template for formatting the provided tag")
+	flags.StringVar(&opts.VersionFormat, "format", "", "a go template for formatting the provided tag")
 
 	return cmd
 }

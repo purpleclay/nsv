@@ -26,6 +26,6 @@ nsv format <tag> [flags]
 ## Flags
 
 ```text
--h, --help          help for format
-    --with string   a go template for formatting the provided tag
+-h, --help            help for format
+    --format string   a go template for formatting the provided tag
 ```
