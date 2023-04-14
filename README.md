@@ -24,7 +24,7 @@ Check out the latest [documentation](https://docs.purpleclay.dev/nsv/)
 
 ## Badges
 
-[![Build status](https://img.shields.io/github/actions/workflow/status/purpleclay/gitz/ci.yml?style=flat-square&logo=go)](https://github.com/purpleclay/gitz/actions?workflow=ci)
+[![Build status](https://img.shields.io/github/actions/workflow/status/purpleclay/nsv/ci.yml?style=flat-square&logo=go)](https://github.com/purpleclay/nsv/actions?workflow=ci)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](/LICENSE)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/purpleclay/gitz.svg?style=flat-square)](go.mod)
-[![DeepSource](https://deepsource.io/gh/purpleclay/gitz.svg/?label=active+issues&token=2-tKXUipTIAHTEf3c_owhaJZ)](https://deepsource.io/gh/purpleclay/gitz/?ref=repository-badge)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/purpleclay/nsv.svg?style=flat-square)](go.mod)
+[![DeepSource](https://app.deepsource.com/gh/purpleclay/nsv.svg/?label=active+issues&token=1JHae42sEcDRhZdEe-tfiPEv)](https://app.deepsource.com/gh/purpleclay/nsv/?ref=repository-badge)

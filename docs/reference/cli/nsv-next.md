@@ -5,8 +5,8 @@ icon: material/console
 # nsv next
 
 ```text
-Generate the next semantic version based on the
-conventional commit history of your repository.
+Generate the next semantic version based on the conventional commit history
+of your repository.
 
 Environment Variables:
 

@@ -32,8 +32,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nextLongDesc = `Generate the next semantic version based on the
-conventional commit history of your repository.
+var nextLongDesc = `Generate the next semantic version based on the conventional commit history
+of your repository.
 
 Environment Variables:
 
