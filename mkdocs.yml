@@ -52,6 +52,7 @@ nav:
           - License: license.md
   - Reference:
       - Environment Variables: reference/env-vars.md
+      - Version Templating: reference/templating.md
       - CLI:
           - nsv: reference/cli/nsv.md
           - nsv next: reference/cli/nsv-next.md
