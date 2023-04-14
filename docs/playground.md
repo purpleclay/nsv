@@ -13,12 +13,16 @@ Explore using `nsv` by launching the in-built playground.
 
 Discover how the internal go template is used when generating the next semantic version:
 
-```sh
-nsv playground --with '{{.Version}}'
+```{ .sh .no-select }
+nsv playground ui/v0.1.0 --format '{{.Version}}'
 ```
 
-```text
-TODO show output
+```{ .text .no-select .no-copy }
+ui/v0.1.0 >> {{.Version}} >> v0.1.0
+
+{{.Prefix}}  >> ui/
+{{.SemVer}}  >> 0.1.0
+{{.Version}} >> v0.1.0
 ```
 
 ## Command composition

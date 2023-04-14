@@ -24,7 +24,8 @@ nsv next [flags]
 ## Flags
 
 ```text
-    --format string   provide a go template for changing the default version format
+    --format string   provide a go template for changing the default
+                      version format
 -h, --help            help for next
     --show            show how the next semantic version was generated
 ```

@@ -7,7 +7,7 @@ status: new
 
 `nsv` core principles of being <u>context-aware</u> and <u>convention-based</u> will let you achieve almost all of your semantic versioning needs when running:
 
-```sh
+```{ .sh .no-select }
 nsv next
 ```
 
@@ -15,12 +15,21 @@ By scanning all commit messages within the latest release, `nsv` understands the
 
 If you want to see what is happening under the hood you can use the `--show` flag:
 
-```sh
+```{ .sh .no-select }
 nsv next --show
 ```
 
-```text
-EXAMPLE OF OUTPUT
+```{ .text .no-select .no-copy }
+0.1.0
+
+ HEAD  ...  0.1.0
+────────────────────────────────────────────────────
+c6bfdda fix: fix to the store
+a0a1e2b feat: new exciting search feature << matched
+83def28 ci: configure workflows
+b8a7daf chore: scaffold project
+6c05c93 initialize repository
+────────────────────────────────────────────────────
 ```
 
 If you need to customize its behavior further, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.
@@ -29,7 +38,7 @@ If you need to customize its behavior further, [environment variables](./referen
 
 Monorepo support is not an afterthought. By being context-aware, `nsv` can detect if it runs outside the repository root and calculates the next semantic version based on its location.
 
-```text
+```{ .text .no-select .no-copy }
 awesome-app
   ui           << ui/v0.2.1
     ...
@@ -43,7 +52,7 @@ awesome-app
 
 Internally `nsv` utilizes a go template when constructing the next semantic version:
 
-```sh
+```{ .sh .no-select }
 {{.Prefix}}{{.Version}}
 ```
 
@@ -51,13 +60,13 @@ Runtime customization of this template is available. For example, you can enforc
 
 === "ENV"
 
-    ```sh
+    ```{ .sh .no-select }
     NSV_FORMAT="{{.SemVer}}" nsv next
     ```
 
 === "CLI"
 
-    ```sh
+    ```{ .sh .no-select }
     nsv next --format "{{.SemVer}}"
     ```
 

@@ -9,18 +9,18 @@ status: new
 
 Conventional Commits is an excellent standard, but sometimes it doesn't fit our semantic versioning needs. Let's consider <u>major version zero</u> application development from the Semantic Versioning (`SemVer`) [2.0](https://semver.org/) specification:
 
-```text
-Major version zero (0.y.z) is for initial development. Anything MAY
-change at any time. The public API SHOULD NOT be considered stable.
+```{ .text .no-select .no-copy }
+Major version zero (0.y.z) is for initial development. Anything MAY change at
+any time. The public API SHOULD NOT be considered stable.
 ```
 
 All changes within this workflow are not considered stable and could be breaking. Relying purely on the conventional commit standard would cause a major increment for every commit containing a breaking change prefix or footer. As `nsv` is SemVer compliant, a major increment will not happen within this workflow unless explicitly instructed to do so with a command:
 
-```text
-feat: sdfjshdfksjdhfskhfsfksdfhsdjkfhjksdhfkjshfjsdjf
+```{ .text .no-select .no-copy hl_lines="6" }
+feat!: expose new sorting functionality over API
 
-skdfjhsldfhsldkfhskldfjhsdkfhskdjfhskjdfhkjsdfhjsdhfksjdhfkjsdhfksjdhf
-sdhfskjdfhskfhskjdhfkjsdfhksjdfhksjdhfjsdhfjkhfdskh
+To enable support for server-side sorting, the existing structure of the request
+body has been modified to compartmentalize sorting criteria
 
 nsv: force~major
 ```
