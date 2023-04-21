@@ -101,6 +101,46 @@ signs:
       - "${artifact}"
       - --yes
 
+docker_signs:
+  - cmd: cosign
+    artifacts: manifests
+    output: true
+    args:
+    - 'sign'
+    - '${artifact}@${digest}'
+    - --yes
+
+dockers:
+  - image_templates:
+    - 'purpleclay/nsv:{{ .Tag }}-amd64'
+    - 'ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64'
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--label=org.opencontainers.image.description=A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
+    - "--label=org.opencontainers.image.created={{.Date}}"
+    - "--label=org.opencontainers.image.name={{.ProjectName}}"
+    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+    - "--label=org.opencontainers.image.version={{.Version}}"
+    - "--label=org.opencontainers.image.source={{.GitURL}}"
+    - "--platform=linux/amd64"
+  - image_templates:
+    - 'purpleclay/nsv:{{ .Tag }}-arm64'
+    - 'ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64'
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--label=org.opencontainers.image.description=A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
+    - "--label=org.opencontainers.image.created={{.Date}}"
+    - "--label=org.opencontainers.image.name={{.ProjectName}}"
+    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+    - "--label=org.opencontainers.image.version={{.Version}}"
+    - "--label=org.opencontainers.image.source={{.GitURL}}"
+    - "--platform=linux/arm64"
+    goarch: arm64
+
 brews:
   - name: nsv
     tap:
@@ -108,7 +148,7 @@ brews:
       name: homebrew-tap
     folder: Formula
     homepage: "https://github.com/purpleclay/nsv"
-    description: "Manage your semantic versioning without any config"
+    description: "A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
     license: MIT
     install: |
       bin.install "nsv"
@@ -131,7 +171,7 @@ nfpms:
   - file_name_template: "{{ .ConventionalFileName }}"
     id: packages
     homepage: "https://github.com/purpleclay/nsv"
-    description: "Manage your semantic versioning without any config"
+    description: "A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
     maintainer: Purple Clay <purpleclaygh@gmail.com>
     license: MIT
     vendor: Purple Clay
