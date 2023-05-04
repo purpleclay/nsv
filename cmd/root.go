@@ -49,7 +49,8 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	cmd.AddCommand(versionCmd(out, buildInfo),
 		manCmd(out),
 		playgroundCmd(out),
-		nextCmd(out))
+		nextCmd(out),
+		tagCmd())
 
 	return cmd.Execute()
 }

@@ -56,7 +56,7 @@ tasks:
     desc: Run the unit tests
     vars:
       TEST_FORMAT: '{{default "" .TEST_FORMAT}}'
-      COVER_PROFILE: '{{default "unittest-cover.txt" .COVER_PROFILE}}'
+      COVER_PROFILE: '{{default "coverage.out" .COVER_PROFILE}}'
       TEST_OPTIONS: '{{default "-short -race -vet=off -shuffle=on" .TEST_OPTIONS}}'
     cmds:
       - go test {{.TEST_OPTIONS}} -covermode=atomic -coverprofile={{.COVER_PROFILE}} {{.TEST_FORMAT}} ./...

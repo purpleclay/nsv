@@ -23,7 +23,7 @@ SOFTWARE.
 package cmd
 
 import (
-	"io"
+	"bytes"
 	"os"
 
 	"github.com/caarlos0/env/v7"
@@ -32,8 +32,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nextLongDesc = `Generate the next semantic version based on the conventional commit history
-of your repository.
+var tagLongDesc = `Tag the repository with the next semantic version based on the conventional
+commit history of your repository.
 
 Environment Variables:
 
@@ -41,16 +41,18 @@ Environment Variables:
 |------------|---------------------------------------------------|
 | NSV_FORMAT | set a go template for formatting the provided tag |`
 
-func nextCmd(out io.Writer) *cobra.Command {
+func tagCmd() *cobra.Command {
+	var buf bytes.Buffer
+
 	opts := nsv.Options{
-		StdOut: out,
+		StdOut: &buf,
 		StdErr: os.Stderr,
 	}
 
 	cmd := &cobra.Command{
-		Use:   "next",
-		Short: "Generate the next semantic version",
-		Long:  nextLongDesc,
+		Use:   "tag",
+		Short: "Tag the repository with the next semantic version",
+		Long:  tagLongDesc,
 		Args:  cobra.NoArgs,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return env.Parse(&opts)
@@ -61,7 +63,16 @@ func nextCmd(out io.Writer) *cobra.Command {
 				return err
 			}
 
-			return nextVersion(gitc, opts)
+			if err := nextVersion(gitc, opts); err != nil {
+				return err
+			}
+
+			tag := buf.String()
+			if tag == "" {
+				return nil
+			}
+
+			return tagAndPush(gitc, tag)
 		},
 	}
 
@@ -72,10 +83,11 @@ func nextCmd(out io.Writer) *cobra.Command {
 	return cmd
 }
 
-func nextVersion(gitc *git.Client, opts nsv.Options) error {
-	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
+func tagAndPush(gitc *git.Client, ref string) error {
+	if _, err := gitc.Tag(ref); err != nil {
 		return err
 	}
 
-	return nsv.NextVersion(gitc, opts)
+	_, err := gitc.PushRef(ref)
+	return err
 }
