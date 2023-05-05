@@ -37,9 +37,12 @@ commit history of your repository.
 
 Environment Variables:
 
-| Name       | Description                                       |
-|------------|---------------------------------------------------|
-| NSV_FORMAT | set a go template for formatting the provided tag |`
+| Name              | Description                                                   |
+|-------------------|---------------------------------------------------------------|
+| NSV_FORMAT        | provide a go template for changing the default version format |
+| NSV_SHOW          | show how the next semantic version was generated              |
+| NSV_TAG_ANNOTATED | use an annotated tag instead of a lightweight tag             |
+| NSV_TAG_MESSAGE   | a custom message for the tag, implies an annotated tag        |`
 
 func tagCmd() *cobra.Command {
 	var buf bytes.Buffer
@@ -72,19 +75,30 @@ func tagCmd() *cobra.Command {
 				return nil
 			}
 
-			return tagAndPush(gitc, tag)
+			return tagAndPush(gitc, tag, opts)
 		},
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVar(&opts.Show, "show", false, "show how the next semantic version was generated")
-	flags.StringVar(&opts.VersionFormat, "format", "", "provide a go template for changing the default version format")
+	flags.BoolVarP(&opts.AnnotatedTag, "annotated", "a", false, "use an annotated tag instead of a lightweight tag")
+	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
+	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, implies an annotated tag")
+	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 
 	return cmd
 }
 
-func tagAndPush(gitc *git.Client, ref string) error {
-	if _, err := gitc.Tag(ref); err != nil {
+func tagAndPush(gitc *git.Client, ref string, opts nsv.Options) error {
+	var tagOptions []git.CreateTagOption
+	if opts.AnnotatedTag || opts.TagMessage != "" {
+		msg := opts.TagMessage
+		if msg == "" {
+			msg = "chore: tagged by nsv with " + ref
+		}
+		tagOptions = append(tagOptions, git.WithAnnotation(msg))
+	}
+
+	if _, err := gitc.Tag(ref, tagOptions...); err != nil {
 		return err
 	}
 
