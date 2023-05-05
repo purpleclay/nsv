@@ -89,7 +89,7 @@ func tagCmd() *cobra.Command {
 }
 
 func tagAndPush(gitc *git.Client, ref string, opts nsv.Options) error {
-	tagOptions := []git.CreateTagOption{}
+	var tagOptions []git.CreateTagOption
 	if opts.AnnotatedTag || opts.TagMessage != "" {
 		msg := opts.TagMessage
 		if msg == "" {
