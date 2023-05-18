@@ -50,7 +50,6 @@ const (
 )
 
 type Options struct {
-	AnnotatedTag  bool      `env:"NSV_TAG_ANNOTATED"`
 	StdOut        io.Writer `env:"-"`
 	StdErr        io.Writer `env:"-"`
 	Show          bool      `env:"NSV_SHOW"`

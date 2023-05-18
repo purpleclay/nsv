@@ -24,6 +24,7 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 
 	"github.com/caarlos0/env/v7"
@@ -41,8 +42,8 @@ Environment Variables:
 |-------------------|---------------------------------------------------------------|
 | NSV_FORMAT        | provide a go template for changing the default version format |
 | NSV_SHOW          | show how the next semantic version was generated              |
-| NSV_TAG_ANNOTATED | use an annotated tag instead of a lightweight tag             |
-| NSV_TAG_MESSAGE   | a custom message for the tag, implies an annotated tag        |`
+| NSV_TAG_MESSAGE   | a custom message for the tag, overrides the default message   |
+|                   | of: chore: <version> tagged by nsv                            |`
 
 func tagCmd() *cobra.Command {
 	var buf bytes.Buffer
@@ -80,25 +81,19 @@ func tagCmd() *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVarP(&opts.AnnotatedTag, "annotated", "a", false, "use an annotated tag instead of a lightweight tag")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
-	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, implies an annotated tag")
+	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: <version> tagged by nsv")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 
 	return cmd
 }
 
 func tagAndPush(gitc *git.Client, ref string, opts nsv.Options) error {
-	var tagOptions []git.CreateTagOption
-	if opts.AnnotatedTag || opts.TagMessage != "" {
-		msg := opts.TagMessage
-		if msg == "" {
-			msg = "chore: tagged by nsv with " + ref
-		}
-		tagOptions = append(tagOptions, git.WithAnnotation(msg))
+	if opts.TagMessage == "" {
+		opts.TagMessage = fmt.Sprintf("chore: %s tagged by nsv", ref)
 	}
 
-	if _, err := gitc.Tag(ref, tagOptions...); err != nil {
+	if _, err := gitc.Tag(ref, git.WithAnnotation(opts.TagMessage)); err != nil {
 		return err
 	}
 
