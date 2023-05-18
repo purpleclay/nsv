@@ -20,7 +20,7 @@
 
 FROM cgr.dev/chainguard/wolfi-base
 
-RUN apk add --no-cache git git-lfs tini
+RUN apk add --no-cache git git-lfs gnupg tini
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/nsv"]
 
