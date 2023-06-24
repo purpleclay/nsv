@@ -43,7 +43,7 @@ Environment Variables:
 | NSV_FORMAT        | provide a go template for changing the default version format |
 | NSV_SHOW          | show how the next semantic version was generated              |
 | NSV_TAG_MESSAGE   | a custom message for the tag, overrides the default message   |
-|                   | of: chore: <version> tagged by nsv                            |`
+|                   | of: chore: tagged <version> by nsv                            |`
 
 func tagCmd() *cobra.Command {
 	var buf bytes.Buffer
@@ -90,7 +90,7 @@ func tagCmd() *cobra.Command {
 
 func tagAndPush(gitc *git.Client, ref string, opts nsv.Options) error {
 	if opts.TagMessage == "" {
-		opts.TagMessage = fmt.Sprintf("chore: %s tagged by nsv", ref)
+		opts.TagMessage = fmt.Sprintf("chore: tagged %s by nsv", ref)
 	}
 
 	if _, err := gitc.Tag(ref, git.WithAnnotation(opts.TagMessage)); err != nil {
