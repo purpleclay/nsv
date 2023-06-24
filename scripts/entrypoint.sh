@@ -5,4 +5,4 @@ if [ -n "$GPG_PRIVATE_KEY" ]; then
   echo
 fi
 
-exec nsv $@
+exec nsv "$@"
