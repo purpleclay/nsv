@@ -84,11 +84,10 @@ go install github.com/purpleclay/nsv@latest
 
 ### Bash Script
 
-To install the latest version using a bash script:
+To install the latest version using a script:
 
 ```sh
-curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install \
-  | bash
+sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)"
 ```
 
 Download a specific version using the `-v` flag. The script uses `sudo` by default but can be disabled through the `--no-sudo` flag.

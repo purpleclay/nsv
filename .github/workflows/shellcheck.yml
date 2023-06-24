@@ -18,16 +18,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-FROM alpine:3.18
+name: shellcheck
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
 
-RUN apk add --no-cache git git-lfs gnupg tini curl
-RUN sh -c "$(curl https://raw.githubusercontent.com/purpleclay/gpg-import/main/scripts/install)"
+permissions:
+  contents: read
 
-ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
-CMD ["--help"]
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    name: shellcheck
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-COPY nsv_*.apk /tmp/
-RUN apk add --no-cache --allow-untrusted /tmp/nsv_*.apk && rm /tmp/nsv_*.apk
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
