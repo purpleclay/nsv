@@ -109,8 +109,6 @@ plugins:
       branch: main
   - minify:
       minify_html: !ENV [CI, false]
-  - optimize:
-      enabled: !ENV [CI, false]
   - search
   - social
   - typeset
