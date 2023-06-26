@@ -90,11 +90,11 @@ To install the latest version using a script:
 sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)"
 ```
 
-Download a specific version using the `-v` flag. The script uses `sudo` by default but can be disabled through the `--no-sudo` flag.
+Download a specific version using the `-v` flag. The script uses `sudo` by default but can be disabled through the `--no-sudo` flag. You can also provide a different installation directory from the default `/usr/local/bin` by using the `-d` flag:
 
 ```sh
-curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install \
-  | bash -s -- -v v0.1.0 --no-sudo
+sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)" \
+  -- -v v0.1.0 --no-sudo -d ./bin
 ```
 
 ## Manual download of binary

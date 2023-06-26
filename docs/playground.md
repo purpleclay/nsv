@@ -1,6 +1,5 @@
 ---
 icon: material/basketball
-status: new
 ---
 
 # Explore using the Playground

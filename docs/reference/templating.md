@@ -1,6 +1,5 @@
 ---
 icon: material/application-cog-outline
-status: new
 ---
 
 # Version Customization with Templates

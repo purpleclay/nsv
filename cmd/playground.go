@@ -72,7 +72,7 @@ func playgroundCmd(out io.Writer) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.StringVar(&opts.VersionFormat, "format", "", "a go template for formatting the provided tag")
+	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 
 	return cmd
 }
