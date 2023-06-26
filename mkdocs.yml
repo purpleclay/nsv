@@ -65,6 +65,7 @@ nav:
       - Next Version: next-version.md
       - Semantic Commands: commands.md
       - Playground: playground.md
+      - Tag Version: tag-version.md
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md
@@ -77,6 +78,7 @@ nav:
           - nsv: reference/cli/nsv.md
           - nsv next: reference/cli/nsv-next.md
           - nsv playground: reference/cli/nsv-playground.md
+          - nsv tag: reference/cli/nsv-tag.md
 
 extra:
   social:
@@ -98,13 +100,17 @@ extra:
 
 plugins:
   - git-revision-date-localized:
+      enabled: !ENV [CI, false]
       enable_creation_date: true
       type: timeago
   - git-committers:
-      repository: purpleclay/gitz
+      enabled: !ENV [CI, false]
+      repository: purpleclay/nsv
       branch: main
   - minify:
-      minify_html: true
+      minify_html: !ENV [CI, false]
+  - optimize:
+      enabled: !ENV [CI, false]
   - search
   - social
   - typeset

@@ -1,6 +1,5 @@
 ---
 icon: material/apple-keyboard-command
-status: new
 ---
 
 # Control your workflow with Commands

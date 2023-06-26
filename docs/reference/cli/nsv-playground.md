@@ -4,7 +4,7 @@ icon: material/console
 
 # nsv playground
 
-```text
+```{ .text .no-select .no-copy }
 A playground for discovering go template support.
 
 Discover ways of formatting your repository tag using the in-built
@@ -19,13 +19,14 @@ Environment Variables:
 
 ## Usage
 
-```text
-nsv format <tag> [flags]
+```{ .text .no-select .no-copy }
+nsv playground <tag> [flags]
 ```
 
 ## Flags
 
-```text
--h, --help            help for format
-    --format string   a go template for formatting the provided tag
+```{ .text .no-select .no-copy }
+-f, --format string   provide a go template for changing the default version
+                      format
+-h, --help            help for playground
 ```

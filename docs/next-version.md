@@ -1,6 +1,5 @@
 ---
 icon: material/tag-arrow-up-outline
-status: new
 ---
 
 # Next Semantic Version
