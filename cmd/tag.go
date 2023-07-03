@@ -33,17 +33,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var tagLongDesc = `Tag the repository with the next semantic version based on the conventional
-commit history of your repository.
+var tagLongDesc = `Tag the repository with the next semantic version based on the conventional commit history of
+your repository.
 
 Environment Variables:
 
-| Name              | Description                                                   |
-|-------------------|---------------------------------------------------------------|
-| NSV_FORMAT        | provide a go template for changing the default version format |
-| NSV_SHOW          | show how the next semantic version was generated              |
-| NSV_TAG_MESSAGE   | a custom message for the tag, overrides the default message   |
-|                   | of: chore: tagged release <version>                           |`
+| Name            | Description                                                   |
+|-----------------|---------------------------------------------------------------|
+| NO_COLOR        | switch to using an ASCII color profile within the terminal    |
+| NSV_FORMAT      | provide a go template for changing the default version format |
+| NSV_SHOW        | show how the next semantic version was generated              |
+| NSV_TAG_MESSAGE | a custom message for the tag, overrides the default message   |
+|                 | of: chore: tagged release <version>                           |`
 
 func tagCmd() *cobra.Command {
 	var buf bytes.Buffer

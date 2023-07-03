@@ -32,13 +32,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nextLongDesc = `Generate the next semantic version based on the conventional commit history
-of your repository.
+var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
 Environment Variables:
 
 | Name       | Description                                                   |
 |------------|---------------------------------------------------------------|
+| NO_COLOR   | switch to using an ASCII color profile within the terminal    |
 | NSV_FORMAT | provide a go template for changing the default version format |
 | NSV_SHOW   | show how the next semantic version was generated              |`
 
