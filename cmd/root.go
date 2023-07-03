@@ -28,6 +28,10 @@ import (
 	"io"
 	"runtime"
 
+	"github.com/caarlos0/env/v7"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/termenv"
+	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
 )
 
@@ -39,12 +43,27 @@ type BuildDetails struct {
 }
 
 func Execute(out io.Writer, buildInfo BuildDetails) error {
+	opts := nsv.Options{}
+
 	cmd := &cobra.Command{
 		Use:           "nsv",
 		Short:         "Manage your semantic versioning without any config",
 		SilenceUsage:  true,
 		SilenceErrors: true,
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			if opts.NoColor {
+				lipgloss.SetColorProfile(termenv.Ascii)
+			}
+			return nil
+		},
 	}
+
+	flags := cmd.PersistentFlags()
+	flags.BoolVar(&opts.NoColor, "no-color", false, "switch to using an ASCII color profile within the terminal")
 
 	cmd.AddCommand(versionCmd(out, buildInfo),
 		manCmd(out),

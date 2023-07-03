@@ -82,9 +82,9 @@ func tagCmd() *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
-	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: tagged release <version>")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
+	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: tagged release <version>")
+	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
 	return cmd
 }
