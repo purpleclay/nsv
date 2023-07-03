@@ -36,6 +36,7 @@ builds:
     goos:
       - linux
       - darwin
+      - windows
     goarch:
       - amd64
       - arm
@@ -55,9 +56,14 @@ archives:
     builds:
       - nsv
     rlcp: true
+    format_overrides:
+      - goos: windows
+        format: zip
     files:
       - README.md
       - LICENSE
+      - completions/*
+      - manpages/*
 
 checksum:
   name_template: "checksums.txt"
