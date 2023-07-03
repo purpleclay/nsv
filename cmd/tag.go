@@ -76,7 +76,7 @@ func tagCmd() *cobra.Command {
 				return nil
 			}
 
-			fmt.Fprintf(os.Stdout, buf.String())
+			fmt.Fprint(os.Stdout, buf.String())
 			return tagAndPush(gitc, tag, opts)
 		},
 	}
