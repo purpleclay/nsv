@@ -32,13 +32,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nextLongDesc = `Generate the next semantic version based on the conventional commit history
-of your repository.
+var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
 Environment Variables:
 
 | Name       | Description                                                   |
 |------------|---------------------------------------------------------------|
+| NO_COLOR   | switch to using an ASCII color profile within the terminal    |
 | NSV_FORMAT | provide a go template for changing the default version format |
 | NSV_SHOW   | show how the next semantic version was generated              |`
 
@@ -67,8 +67,8 @@ func nextCmd(out io.Writer) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
+	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
 	return cmd
 }

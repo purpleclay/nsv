@@ -28,8 +28,34 @@ import (
 	"io"
 	"runtime"
 
+	"github.com/caarlos0/env/v7"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/termenv"
+	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
 )
+
+var rootLongDesc = `NSV (Next Semantic Version) is a convention-based semantic versioning tool that
+leans on the power of conventional commits to make versioning your software a breeze!.
+
+## Why another versioning tool
+
+There are many semantic versioning tools already out there! But they typically require some
+configuration or custom scripting in your CI system to make them work. No one likes managing
+config; it is error-prone, and the slightest tweak ultimately triggers a cascade of change
+across your projects.
+
+Step in NSV. Designed to make intelligent semantic versioning decisions about your project
+without needing a config file. Entirely convention-based, you can adapt your workflow from
+within your commit message.
+
+The power is at your fingertips.
+
+Global Environment Variables:
+
+| Name     | Description                                                   |
+|----------|---------------------------------------------------------------|
+| NO_COLOR | switch to using an ASCII color profile within the terminal    |`
 
 type BuildDetails struct {
 	Version   string `json:"version,omitempty"`
@@ -39,12 +65,28 @@ type BuildDetails struct {
 }
 
 func Execute(out io.Writer, buildInfo BuildDetails) error {
+	opts := nsv.Options{}
+
 	cmd := &cobra.Command{
 		Use:           "nsv",
 		Short:         "Manage your semantic versioning without any config",
+		Long:          rootLongDesc,
 		SilenceUsage:  true,
 		SilenceErrors: true,
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			if opts.NoColor {
+				lipgloss.SetColorProfile(termenv.Ascii)
+			}
+			return nil
+		},
 	}
+
+	flags := cmd.PersistentFlags()
+	flags.BoolVar(&opts.NoColor, "no-color", false, "switch to using an ASCII color profile within the terminal")
 
 	cmd.AddCommand(versionCmd(out, buildInfo),
 		manCmd(out),

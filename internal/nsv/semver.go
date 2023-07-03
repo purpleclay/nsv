@@ -50,6 +50,7 @@ const (
 )
 
 type Options struct {
+	NoColor       bool      `env:"NO_COLOR"`
 	StdOut        io.Writer `env:"-"`
 	StdErr        io.Writer `env:"-"`
 	Show          bool      `env:"NSV_SHOW"`
