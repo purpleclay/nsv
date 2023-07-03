@@ -29,7 +29,10 @@ on:
       - "go.mod"
       - "go.sum"
   pull_request:
+    branches:
+      - main
     paths:
+      - .github/workflows/ci.yml
       - "**/*.go"
       - "*.go"
       - "go.mod"
@@ -46,7 +49,7 @@ jobs:
     uses: purpleclay/github/.github/workflows/go-test.yml@main
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     with:
       go-version: ${{ vars.GO_VERSION }}
     secrets:
