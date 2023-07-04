@@ -382,6 +382,8 @@ and
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -779,7 +781,7 @@ and
   <span class="md-ellipsis">
     
   
-    Other Bits
+    Docker
   
 
     
@@ -792,6 +794,92 @@ and
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/running/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Other Bits
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1237,19 +1325,43 @@ and
 
 <h1 id="tag-the-next-semantic-version">Tag the Next Semantic Version<a class="headerlink" href="#tag-the-next-semantic-version" title="Permanent link">&para;</a></h1>
 <p>Let <code>nsv</code> tag your repository with the next calculated semantic version:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nsv<span class="w"> </span>tag
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nsv<span class="w"> </span>tag
 </span></code></pre></div>
 <p>An annotated tag will be created with the default commit message of <code>chore: tagged release &lt;version&gt;</code>.</p>
-<h2 id="using-a-custom-tag-message">Using a custom tag message<a class="headerlink" href="#using-a-custom-tag-message" title="Permanent link">&para;</a></h2>
-<p>If you are not happy with the commit message, then feel free to change it:</p>
+<p>If you want to see what is happening under the hood:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">ENV</label><label for="__tabbed_1_2">CLI</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">NSV_TAG_MESSAGE</span><span class="o">=</span><span class="s2">&quot;chore: this is a custom message&quot;</span><span class="w"> </span>nsv<span class="w"> </span>tag
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">NSV_SHOW</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>nsv<span class="w"> </span>tag
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nsv<span class="w"> </span>tag<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;chore: this is a custom message&quot;</span>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nsv<span class="w"> </span>tag<span class="w"> </span>--show
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="language-text no-select no-copy highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>0.1.0
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a> HEAD  ...  0.1.0
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>────────────────────────────────────────────────────
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>c6bfdda fix: fix to the store
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>a0a1e2b feat: new exciting search feature &lt;&lt; matched
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>83def28 ci: configure workflows
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>b8a7daf chore: scaffold project
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>6c05c93 initialize repository
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>────────────────────────────────────────────────────
+</span></code></pre></div>
+<h2 id="using-a-custom-tag-message">Using a custom tag message<a class="headerlink" href="#using-a-custom-tag-message" title="Permanent link">&para;</a></h2>
+<p>If you are not happy with the commit message, then feel free to change it:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">ENV</label><label for="__tabbed_2_2">CLI</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">NSV_TAG_MESSAGE</span><span class="o">=</span><span class="s2">&quot;chore: this is a custom message&quot;</span><span class="w"> </span>nsv<span class="w"> </span>tag
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>nsv<span class="w"> </span>tag<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;chore: this is a custom message&quot;</span>
 </span></code></pre></div>
 </div>
 </div>

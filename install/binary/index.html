@@ -382,6 +382,8 @@ and
       
         
       
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
@@ -870,7 +872,7 @@ and
   <span class="md-ellipsis">
     
   
-    Other Bits
+    Docker
   
 
     
@@ -883,6 +885,92 @@ and
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/running/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Other Bits
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1428,21 +1516,21 @@ and
 <h2 id="package-managers">Package Managers<a class="headerlink" href="#package-managers" title="Permanent link">&para;</a></h2>
 <h3 id="homebrew">Homebrew<a class="headerlink" href="#homebrew" title="Permanent link">&para;</a></h3>
 <p>To use <a href="https://brew.sh/">Homebrew</a>:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>brew<span class="w"> </span>install<span class="w"> </span>purpleclay/tap/nsv
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>brew<span class="w"> </span>install<span class="w"> </span>purpleclay/tap/nsv
 </span></code></pre></div>
 <h3 id="apt">Apt<a class="headerlink" href="#apt" title="Permanent link">&para;</a></h3>
 <p>To install using the <a href="https://ubuntu.com/server/docs/package-management">apt</a> package manager:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;deb [trusted=yes] https://fury.purpleclay.dev/apt/ /&#39;</span><span class="w"> </span><span class="se">\</span>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;deb [trusted=yes] https://fury.purpleclay.dev/apt/ /&#39;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/purpleclay.list
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nsv
 </span></code></pre></div>
 <p>You may need to install the <code>ca-certificates</code> package if you encounter <a href="https://gemfury.com/help/could-not-verify-ssl-certificate/">trust issues</a> with regard to the Gemfury certificate:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ca-certificates
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ca-certificates
 </span></code></pre></div>
 <h3 id="yum">Yum<a class="headerlink" href="#yum" title="Permanent link">&para;</a></h3>
 <p>To install using the yum package manager:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;[purpleclay]</span>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;[purpleclay]</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s1">name=purpleclay</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s1">baseurl=https://fury.purpleclay.dev/yum/</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s1">enabled=1</span>
@@ -1451,54 +1539,55 @@ and
 </span></code></pre></div>
 <h3 id="aur">Aur<a class="headerlink" href="#aur" title="Permanent link">&para;</a></h3>
 <p>To install from the <a href="https://archlinux.org/">aur</a> using <a href="https://github.com/Jguer/yay">yay</a>:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>yay<span class="w"> </span>-S<span class="w"> </span>nsv-bin
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>yay<span class="w"> </span>-S<span class="w"> </span>nsv-bin
 </span></code></pre></div>
 <h3 id="linux-packages">Linux Packages<a class="headerlink" href="#linux-packages" title="Permanent link">&para;</a></h3>
 <p>Download and manually install one of the <code>.deb</code>, <code>.rpm</code> or <code>.apk</code> packages from the <a href="https://github.com/purpleclay/nsv/releases">Releases</a> page.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Apt</label><label for="__tabbed_1_2">Yum</label><label for="__tabbed_1_3">Apk</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nsv_*.deb
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nsv_*.deb
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>yum<span class="w"> </span>localinstall<span class="w"> </span>nsv_*.rpm
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>yum<span class="w"> </span>localinstall<span class="w"> </span>nsv_*.rpm
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>--no-cache<span class="w"> </span>--allow-untrusted<span class="w"> </span>nsv_*.apk
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>--no-cache<span class="w"> </span>--allow-untrusted<span class="w"> </span>nsv_*.apk
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h3 id="go-install">Go Install<a class="headerlink" href="#go-install" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>go<span class="w"> </span>install<span class="w"> </span>github.com/purpleclay/nsv@latest
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>go<span class="w"> </span>install<span class="w"> </span>github.com/purpleclay/nsv@latest
 </span></code></pre></div>
 <h3 id="bash-script">Bash Script<a class="headerlink" href="#bash-script" title="Permanent link">&para;</a></h3>
 <p>To install the latest version using a script:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install<span class="k">)</span><span class="s2">&quot;</span>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install<span class="k">)</span><span class="s2">&quot;</span>
 </span></code></pre></div>
 <p>Download a specific version using the <code>-v</code> flag. The script uses <code>sudo</code> by default but can be disabled through the <code>--no-sudo</code> flag. You can also provide a different installation directory from the default <code>/usr/local/bin</code> by using the <code>-d</code> flag:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--<span class="w"> </span>-v<span class="w"> </span>v0.1.0<span class="w"> </span>--no-sudo<span class="w"> </span>-d<span class="w"> </span>./bin
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--<span class="w"> </span>-v<span class="w"> </span>v0.3.0<span class="w"> </span>--no-sudo<span class="w"> </span>-d<span class="w"> </span>./bin
 </span></code></pre></div>
 <h2 id="manual-download-of-binary">Manual download of binary<a class="headerlink" href="#manual-download-of-binary" title="Permanent link">&para;</a></h2>
 <p>Head over to the <a href="https://github.com/purpleclay/nsv/releases">Releases</a> page on GitHub and download any release artefact. Unpack the <code>nsv</code> binary and add it to your <code>PATH</code>.</p>
 <h2 id="verifying-a-binary-with-cosign">Verifying a binary with cosign<a class="headerlink" href="#verifying-a-binary-with-cosign" title="Permanent link">&para;</a></h2>
-<p>All binaries can be verified using <a href="https://github.com/sigstore/cosign">cosign</a>.</p>
+<p>All binaries can be verified using the checksum file and <a href="https://github.com/sigstore/cosign">cosign</a>.</p>
 <ol>
-<li>Download the checksum files that need to be verified:</li>
+<li>Download the checksum file:</li>
 </ol>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt<span class="w"> </span>-O
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt.sig<span class="w"> </span>-O
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt.pem<span class="w"> </span>-O
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-sL<span class="w"> </span>https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt<span class="w"> </span>-O
 </span></code></pre></div>
 <ol>
-<li>Verify the signature of the checksum file:</li>
+<li>Verify the signature of the file:</li>
 </ol>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cosign<span class="w"> </span>verify-blob<span class="w"> </span>--cert<span class="w"> </span>checksums.txt.pem<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--signature<span class="w"> </span>checksums.txt.sig<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>checksums.txt
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cosign<span class="w"> </span>verify-blob<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>--certificate-identity<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.3.0&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s1">&#39;https://token.actions.githubusercontent.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span>--cert<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.pem&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>--signature<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.sig&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>checksums.txt
 </span></code></pre></div>
 <ol>
 <li>Download any release artifact and verify its SHA256 signature matches the entry within the checksum file:</li>
