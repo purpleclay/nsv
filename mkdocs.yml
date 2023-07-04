@@ -69,6 +69,8 @@ nav:
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md
+      - Docker:
+          - Run with Docker: docker/running.md
       - Other Bits:
           - License: license.md
   - Reference:

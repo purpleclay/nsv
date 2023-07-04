@@ -12,7 +12,7 @@ You can use various package managers to install the `nsv` binary. Take your pick
 
 To use [Homebrew](https://brew.sh/):
 
-```sh
+```{ .sh .no-select }
 brew install purpleclay/tap/nsv
 ```
 
@@ -20,7 +20,7 @@ brew install purpleclay/tap/nsv
 
 To install using the [apt](https://ubuntu.com/server/docs/package-management) package manager:
 
-```sh
+```{ .sh .no-select }
 echo 'deb [trusted=yes] https://fury.purpleclay.dev/apt/ /' \
   | sudo tee /etc/apt/sources.list.d/purpleclay.list
 sudo apt update
@@ -29,7 +29,7 @@ sudo apt install -y nsv
 
 You may need to install the `ca-certificates` package if you encounter [trust issues](https://gemfury.com/help/could-not-verify-ssl-certificate/) with regard to the Gemfury certificate:
 
-```sh
+```{ .sh .no-select }
 sudo apt update && sudo apt install -y ca-certificates
 ```
 
@@ -37,7 +37,7 @@ sudo apt update && sudo apt install -y ca-certificates
 
 To install using the yum package manager:
 
-```sh
+```{ .sh .no-select }
 echo '[purpleclay]
 name=purpleclay
 baseurl=https://fury.purpleclay.dev/yum/
@@ -50,7 +50,7 @@ sudo yum install -y nsv
 
 To install from the [aur](https://archlinux.org/) using [yay](https://github.com/Jguer/yay):
 
-```sh
+```{ .sh .no-select }
 yay -S nsv-bin
 ```
 
@@ -60,25 +60,25 @@ Download and manually install one of the `.deb`, `.rpm` or `.apk` packages from 
 
 === "Apt"
 
-    ```sh
+    ```{ .sh .no-select }
     sudo apt install nsv_*.deb
     ```
 
 === "Yum"
 
-    ```sh
+    ```{ .sh .no-select }
     sudo yum localinstall nsv_*.rpm
     ```
 
 === "Apk"
 
-    ```sh
+    ```{ .sh .no-select }
     sudo apk add --no-cache --allow-untrusted nsv_*.apk
     ```
 
 ### Go Install
 
-```sh
+```{ .sh .no-select }
 go install github.com/purpleclay/nsv@latest
 ```
 
@@ -86,15 +86,15 @@ go install github.com/purpleclay/nsv@latest
 
 To install the latest version using a script:
 
-```sh
+```{ .sh .no-select }
 sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)"
 ```
 
 Download a specific version using the `-v` flag. The script uses `sudo` by default but can be disabled through the `--no-sudo` flag. You can also provide a different installation directory from the default `/usr/local/bin` by using the `-d` flag:
 
-```sh
+```{ .sh .no-select }
 sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)" \
-  -- -v v0.1.0 --no-sudo -d ./bin
+  -- -v v0.3.0 --no-sudo -d ./bin
 ```
 
 ## Manual download of binary
@@ -103,21 +103,22 @@ Head over to the [Releases](https://github.com/purpleclay/nsv/releases) page on 
 
 ## Verifying a binary with cosign
 
-All binaries can be verified using [cosign](https://github.com/sigstore/cosign).
+All binaries can be verified using the checksum file and [cosign](https://github.com/sigstore/cosign).
 
-1. Download the checksum files that need to be verified:
+1. Download the checksum file:
 
    ```sh
-   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt -O
-   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt.sig -O
-   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.1.0/checksums.txt.pem -O
+   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt -O
    ```
 
-1. Verify the signature of the checksum file:
+1. Verify the signature of the file:
 
    ```sh
-   cosign verify-blob --cert checksums.txt.pem \
-     --signature checksums.txt.sig \
+   cosign verify-blob \
+     --certificate-identity 'https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.3.0' \
+     --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+     --cert 'https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.pem' \
+     --signature 'https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.sig' \
      checksums.txt
    ```
 

@@ -13,6 +13,7 @@ If you need to customize the behavior of `nsv` you can use the supported environ
 
 | Variable Name     | Description                                                                            |
 | ----------------- | -------------------------------------------------------------------------------------- |
+| `NO_COLOR`        | switch to using an ASCII color profile within the terminal                             |
 | `NSV_FORMAT`      | set a go template for formatting the provided tag                                      |
 | `NSV_SHOW`        | show how the next semantic version was generated                                       |
 | `NSV_TAG_MESSAGE` | a custom message for the tag, overrides the default: `chore: tagged release <version>` |
