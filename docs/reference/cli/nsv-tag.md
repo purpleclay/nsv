@@ -13,6 +13,8 @@ Environment Variables:
 
 | Name            | Description                                              |
 |-----------------|----------------------------------------------------------|
+| NO_COLOR        | switch to using an ASCII color profile within the        |
+|                 | terminal                                                 |
 | NSV_FORMAT      | provide a go template for changing the default version   |
 |                 | format                                                   |
 | NSV_SHOW        | show how the next semantic version was generated         |
@@ -35,4 +37,10 @@ nsv tag [flags]
 -m, --message string   a custom message for the tag, overrides the default
                        message of: chore: <version> tagged by nsv
 -s, --show             show how the next semantic version was generated
+```
+
+## Global Flags
+
+```{ .text .no-select .no-copy }
+--no-color   switch to using an ASCII color profile within the terminal
 ```

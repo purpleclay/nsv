@@ -7,11 +7,38 @@ status: new
 
 Let `nsv` tag your repository with the next calculated semantic version:
 
-```sh
+```{ .sh .no-select }
 nsv tag
 ```
 
 An annotated tag will be created with the default commit message of `chore: tagged release <version>`.
+
+If you want to see what is happening under the hood:
+
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_SHOW=true nsv tag
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv tag --show
+    ```
+
+```{ .text .no-select .no-copy }
+0.1.0
+
+ HEAD  ...  0.1.0
+────────────────────────────────────────────────────
+c6bfdda fix: fix to the store
+a0a1e2b feat: new exciting search feature << matched
+83def28 ci: configure workflows
+b8a7daf chore: scaffold project
+6c05c93 initialize repository
+────────────────────────────────────────────────────
+```
 
 ## Using a custom tag message
 

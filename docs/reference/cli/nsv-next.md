@@ -30,3 +30,9 @@ nsv next [flags]
 -h, --help            help for next
 -s, --show            show how the next semantic version was generated
 ```
+
+## Global Flags
+
+```{ .text .no-select .no-copy }
+--no-color   switch to using an ASCII color profile within the terminal
+```

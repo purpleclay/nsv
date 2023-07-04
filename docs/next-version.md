@@ -12,11 +12,19 @@ nsv next
 
 By scanning all commit messages within the latest release, `nsv` understands the author's intent and prints the next semantic version to stdout.
 
-If you want to see what is happening under the hood you can use the `--show` flag:
+If you want to see what is happening under the hood:
 
-```{ .sh .no-select }
-nsv next --show
-```
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_SHOW=true nsv next
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv next --show
+    ```
 
 ```{ .text .no-select .no-copy }
 0.1.0
