@@ -5,7 +5,7 @@ status: new
 
 # Using the GitHub action
 
-To get up and running within a GitHub workflow, simply include the publicly available `nsv-action` from the GitHub Actions [marketplace](https://github.com/marketplace/actions/nsv-next-semantic-version). Full details on `inputs`, `outputs` and `environment variables` can be found on the documentation.
+To get up and running within a GitHub workflow, include the publicly available `nsv-action` from the GitHub Actions [marketplace](https://github.com/marketplace/actions/nsv-next-semantic-version). You can find details on setting `inputs`, `outputs`, and `environment variables` in the documentation.
 
 ## Tagging a repository
 
@@ -31,10 +31,8 @@ jobs:
       - name: NSV
         uses: purpleclay/nsv-action@v1
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }} # (1)!
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 ```
-
-1. If you don't wish to use a GPG key to sign the tags, you must set the committer details within the git config yourself. No user impersonation is supported within `nsv`
 
 ## Triggering another workflow
 
@@ -66,7 +64,6 @@ jobs:
 ## Capturing the next tag
 
 You can capture the next tag without tagging the repository by setting the `next-only` input to true.
-
 
 ```{.yaml linenums="1" hl_lines="19"}
 name: ci

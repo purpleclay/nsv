@@ -5,9 +5,11 @@ status: new
 
 # Using the GitLab template
 
-TODO, include link to official documentation on how to use it
+To get up and running within a GitLab pipeline, include the publicly available `nsv` GitLab [template](https://gitlab.com/purpleclay/nsv). You can find details on setting `environment variables` in the documentation.
 
 ## Tagging a repository
 
-```yaml
+```{.yaml linenums="1"}
+include:
+  - https://gitlab.com/purpleclay/nsv/-/raw/main/nsv.gitlab-ci.yml
 ```
