@@ -17,6 +17,7 @@ The power is at your fingertips.
 - Context-aware, it automatically switches to a monorepo workflow.
 - Extend the power of your commits through commands to dynamically change your semantic release workflow.
 - Explore how to use it within the purpose-built playground.
+- Get up and running in seconds within GitHub and GitLab with the available [action](https://github.com/purpleclay/nsv-action) or [template](https://gitlab.com/purpleclay/nsv).
 
 ## Documentation
 
