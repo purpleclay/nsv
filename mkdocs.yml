@@ -66,6 +66,8 @@ nav:
       - Semantic Commands: commands.md
       - Playground: playground.md
       - Tag Version: tag-version.md
+      - Github Action: github-action.md
+      - GitLab Template: gitlab-template.md
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md

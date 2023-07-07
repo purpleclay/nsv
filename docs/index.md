@@ -21,3 +21,4 @@ The power is at your fingertips.
 - <u>Context-aware</u>, it automatically switches to a monorepo workflow.
 - Extend the power of your commits through <u>commands</u> to dynamically change your semantic release workflow. <span class="rounded-pill">:material-test-tube: experimental</span>
 - Explore how to use it within the purpose-built playground. <span class="rounded-pill">:material-test-tube: experimental</span>
+- Get up and running in seconds within GitHub :material-github: and GitLab :material-gitlab: with the available <u>[action](https://github.com/purpleclay/nsv-action)</u> or <u>[template](https://gitlab.com/purpleclay/nsv)</u>.
