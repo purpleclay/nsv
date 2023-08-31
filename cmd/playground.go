@@ -24,7 +24,6 @@ package cmd
 
 import (
 	"io"
-	"os"
 
 	"github.com/caarlos0/env/v7"
 	"github.com/purpleclay/nsv/internal/nsv"
@@ -43,10 +42,7 @@ Environment Variables:
 | NSV_FORMAT | set a go template for formatting the provided tag |`
 
 func playgroundCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{
-		StdOut: out,
-		StdErr: os.Stderr,
-	}
+	opts := nsv.Options{}
 
 	cmd := &cobra.Command{
 		Use:   "playground <tag>",

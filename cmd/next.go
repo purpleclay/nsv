@@ -23,8 +23,8 @@ SOFTWARE.
 package cmd
 
 import (
+	"fmt"
 	"io"
-	"os"
 
 	"github.com/caarlos0/env/v7"
 	git "github.com/purpleclay/gitz"
@@ -43,10 +43,7 @@ Environment Variables:
 | NSV_SHOW   | show how the next semantic version was generated              |`
 
 func nextCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{
-		StdOut: out,
-		StdErr: os.Stderr,
-	}
+	opts := nsv.Options{}
 
 	cmd := &cobra.Command{
 		Use:   "next",
@@ -62,7 +59,13 @@ func nextCmd(out io.Writer) *cobra.Command {
 				return err
 			}
 
-			return nextVersion(gitc, opts)
+			next, err := nextVersion(gitc, opts)
+			if err != nil {
+				return err
+			}
+
+			printNext(out, next, opts)
+			return nil
 		},
 	}
 
@@ -73,10 +76,18 @@ func nextCmd(out io.Writer) *cobra.Command {
 	return cmd
 }
 
-func nextVersion(gitc *git.Client, opts nsv.Options) error {
+func nextVersion(gitc *git.Client, opts nsv.Options) (*nsv.Next, error) {
 	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
-		return err
+		return nil, err
 	}
 
 	return nsv.NextVersion(gitc, opts)
+}
+
+func printNext(out io.Writer, next *nsv.Next, opts nsv.Options) {
+	fmt.Fprint(out, next.Tag)
+
+	if opts.Show {
+		nsv.PrintSummary(out, next)
+	}
 }

@@ -29,7 +29,6 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
-	git "github.com/purpleclay/gitz"
 )
 
 var (
@@ -42,18 +41,11 @@ var (
 	chevron      = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
 )
 
-type Summary struct {
-	Tags   []string
-	Log    []git.LogEntry
-	LogDir string
-	Match  int
-}
-
-func PrintSummary(out io.Writer, summary Summary) {
-	log := make([]string, 0, len(summary.Log))
-	for i, entry := range summary.Log {
+func PrintSummary(out io.Writer, next *Next) {
+	log := make([]string, 0, len(next.Log))
+	for i, entry := range next.Log {
 		var marker string
-		if i == summary.Match {
+		if i == next.Match {
 			marker = " << matched"
 		}
 
@@ -65,16 +57,16 @@ func PrintSummary(out io.Writer, summary Summary) {
 	}
 
 	logDir := ""
-	if summary.LogDir != "" {
-		logDir = lipgloss.JoinHorizontal(lipgloss.Left, feintStyle.Render("log directory: "), summary.LogDir)
+	if next.LogDir != "" {
+		logDir = lipgloss.JoinHorizontal(lipgloss.Left, feintStyle.Render("log directory: "), next.LogDir)
 	}
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
 		"\n",
 		lipgloss.JoinHorizontal(lipgloss.Left,
-			tagStyle.Render(summary.Tags[0]),
+			tagStyle.Render("HEAD"),
 			ellipses,
-			tagStyle.Copy().MarginRight(1).Render(summary.Tags[1]),
+			tagStyle.Copy().MarginRight(1).Render(next.Tag),
 			logDir),
 		borderStyle.Render(strings.Join(log, "\n")),
 	)

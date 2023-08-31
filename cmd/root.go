@@ -92,7 +92,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		manCmd(out),
 		playgroundCmd(out),
 		nextCmd(out),
-		tagCmd())
+		tagCmd(out))
 
 	return cmd.Execute()
 }
