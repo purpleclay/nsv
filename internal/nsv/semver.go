@@ -25,7 +25,6 @@ package nsv
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -50,12 +49,10 @@ const (
 )
 
 type Options struct {
-	NoColor       bool      `env:"NO_COLOR"`
-	StdOut        io.Writer `env:"-"`
-	StdErr        io.Writer `env:"-"`
-	Show          bool      `env:"NSV_SHOW"`
-	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
-	VersionFormat string    `env:"NSV_FORMAT"`
+	NoColor       bool   `env:"NO_COLOR"`
+	Show          bool   `env:"NSV_SHOW"`
+	TagMessage    string `env:"NSV_TAG_MESSAGE"`
+	VersionFormat string `env:"NSV_FORMAT"`
 }
 
 type context struct {
@@ -151,26 +148,33 @@ func (t Tag) Format(format string) string {
 	return fmted
 }
 
-func NextVersion(gitc *git.Client, opts Options) error {
+type Next struct {
+	Tag    string
+	Log    []git.LogEntry
+	LogDir string
+	Match  int
+}
+
+func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	ctx, err := execContext(gitc)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	ltag, err := latestTag(gitc, ctx.TagPrefix)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	log, err := gitc.Log(git.WithPaths(ctx.LogPath), git.WithRefRange(git.HeadRef, ltag))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	cmd := DetectCommand(log.Commits)
 	inc, pos := DetectIncrement(log.Commits)
 	if cmd.Force == NoIncrement && inc == NoIncrement {
-		return nil
+		return nil, nil
 	}
 
 	if ltag == "" {
@@ -179,20 +183,15 @@ func NextVersion(gitc *git.Client, opts Options) error {
 
 	nextVer, err := bump(ltag, opts.VersionFormat, inc, cmd)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fmt.Fprint(opts.StdOut, nextVer)
-
-	if opts.Show {
-		PrintSummary(opts.StdErr, Summary{
-			Tags:   []string{git.HeadRef, nextVer},
-			Log:    log.Commits,
-			LogDir: ctx.TagPrefix,
-			Match:  pos,
-		})
-	}
-	return nil
+	return &Next{
+		Tag:    nextVer,
+		Log:    log.Commits,
+		LogDir: ctx.TagPrefix,
+		Match:  pos,
+	}, nil
 }
 
 func latestTag(gitc *git.Client, prefix string) (string, error) {

@@ -23,7 +23,6 @@ SOFTWARE.
 package nsv_test
 
 import (
-	"bytes"
 	"os"
 	"testing"
 
@@ -42,11 +41,13 @@ ci: add parallel testing support to workflow`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	var buf bytes.Buffer
-	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
-
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
 	require.NoError(t, err)
-	assert.Equal(t, "0.1.1", buf.String())
+
+	assert.Equal(t, "0.1.1", next.Tag)
+	assert.Equal(t, 1, next.Match)
+	assert.Equal(t, "fix(search): search is not being aggregated correctly", next.Log[next.Match].Message)
+	assert.Empty(t, next.LogDir)
 }
 
 func TestNextVersionFirstVersion(t *testing.T) {
@@ -76,11 +77,10 @@ func TestNextVersionFirstVersion(t *testing.T) {
 			gittest.InitRepository(t, gittest.WithLog(tt.log))
 			gitc, _ := git.NewClient()
 
-			var buf bytes.Buffer
-			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+			next, err := nsv.NextVersion(gitc, nsv.Options{})
 
 			require.NoError(t, err)
-			require.Equal(t, tt.expected, buf.String())
+			require.Equal(t, tt.expected, next.Tag)
 		})
 	}
 }
@@ -91,25 +91,23 @@ func TestNextVersionMajorZeroSemV(t *testing.T) {
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	var buf bytes.Buffer
-	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
 
 	require.NoError(t, err)
-	require.Equal(t, "0.2.0", buf.String())
+	require.Equal(t, "0.2.0", next.Tag)
 }
 
 func TestNextVersionMajorZeroSemVForceMajor(t *testing.T) {
-	log := `> (main, origin/main) feat!: everything is now stable ready for v1
+	log := `> (main, origin/main) feat: everything is now stable ready for v1
 nsv: force~major
 > (tag: 0.9.9) fix: stability issues around long running database connectivity`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	var buf bytes.Buffer
-	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
 
 	require.NoError(t, err)
-	require.Equal(t, "1.0.0", buf.String())
+	require.Equal(t, "1.0.0", next.Tag)
 }
 
 func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
@@ -123,11 +121,10 @@ func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
 	os.Chdir("search")
 	gitc, _ := git.NewClient()
 
-	var buf bytes.Buffer
-	err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
 
 	require.NoError(t, err)
-	assert.Equal(t, "search/0.1.0", buf.String())
+	assert.Equal(t, "search/0.1.0", next.Tag)
 }
 
 func TestNextVersionPreservesTagPrefix(t *testing.T) {
@@ -157,11 +154,10 @@ ci: configure workflow to run benchmarks
 			gittest.InitRepository(t, gittest.WithLog(tt.log))
 			gitc, _ := git.NewClient()
 
-			var buf bytes.Buffer
-			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf})
+			next, err := nsv.NextVersion(gitc, nsv.Options{})
 
 			require.NoError(t, err)
-			require.Equal(t, tt.expected, buf.String())
+			require.Equal(t, tt.expected, next.Tag)
 		})
 	}
 }
@@ -191,11 +187,10 @@ func TestNextVersionWithFormat(t *testing.T) {
 			gittest.InitRepository(t, gittest.WithLog(tt.log))
 			gitc, _ := git.NewClient()
 
-			var buf bytes.Buffer
-			err := nsv.NextVersion(gitc, nsv.Options{StdOut: &buf, VersionFormat: format})
+			next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format})
 
 			require.NoError(t, err)
-			require.Equal(t, tt.expected, buf.String())
+			require.Equal(t, tt.expected, next.Tag)
 		})
 	}
 }
