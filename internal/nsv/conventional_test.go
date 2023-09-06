@@ -35,56 +35,66 @@ func TestDetectIncrement(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name     string
-		commit   string
-		expected nsv.Increment
+		name   string
+		commit string
+		inc    nsv.Increment
+		match  nsv.Match
 	}{
 		{
-			name:     "NoIncrement",
-			commit:   "chore(deps): bump action from 1.0.1 to 1.1.0",
-			expected: nsv.NoIncrement,
+			name:   "NoIncrement",
+			commit: "chore(deps): bump action from 1.0.1 to 1.1.0",
+			inc:    nsv.NoIncrement,
+			match:  nsv.Match{},
 		},
 		{
-			name:     "FixPatchIncrement",
-			commit:   "fix: incorrect cache retrieval based on key",
-			expected: nsv.PatchIncrement,
+			name:   "FixPatchIncrement",
+			commit: "fix: incorrect cache retrieval based on key",
+			inc:    nsv.PatchIncrement,
+			match:  nsv.Match{Start: 0, End: 3},
 		},
 		{
-			name:     "FixScopedPatchIncrement",
-			commit:   "fix(ui): paging issue within the search table",
-			expected: nsv.PatchIncrement,
+			name:   "FixScopedPatchIncrement",
+			commit: "fix(ui): paging issue within the search table",
+			inc:    nsv.PatchIncrement,
+			match:  nsv.Match{Start: 0, End: 7},
 		},
 		{
-			name:     "FeatMinorIncrement",
-			commit:   "feat: add new grep feature to cli",
-			expected: nsv.MinorIncrement,
+			name:   "FeatMinorIncrement",
+			commit: "feat: add new grep feature to cli",
+			inc:    nsv.MinorIncrement,
+			match:  nsv.Match{Start: 0, End: 4},
 		},
 		{
-			name:     "FeatScopedMinorIncrement",
-			commit:   "feat(search): add fuzzy finding to predictive search",
-			expected: nsv.MinorIncrement,
+			name:   "FeatScopedMinorIncrement",
+			commit: "feat(search): add fuzzy finding to predictive search",
+			inc:    nsv.MinorIncrement,
+			match:  nsv.Match{Start: 0, End: 12},
 		},
 		{
-			name:     "BangMajorIncrement",
-			commit:   "refactor!: rename fields within cli context",
-			expected: nsv.MajorIncrement,
+			name:   "BangMajorIncrement",
+			commit: "refactor!: rename fields within cli context",
+			inc:    nsv.MajorIncrement,
+			match:  nsv.Match{Start: 0, End: 9},
 		},
 		{
-			name:     "BangScopedMajorIncrement",
-			commit:   "fix(api)!: rewrite of existing API",
-			expected: nsv.MajorIncrement,
+			name:   "BangScopedMajorIncrement",
+			commit: "fix(api)!: rewrite of existing API",
+			inc:    nsv.MajorIncrement,
+			match:  nsv.Match{Start: 0, End: 9},
 		},
 		{
 			name: "BreakingFooterMajorIncrement",
 			commit: `perf: rewrite sorting algorithm and public interface
 BREAKING CHANGE: this is a breaking change`,
-			expected: nsv.MajorIncrement,
+			inc:   nsv.MajorIncrement,
+			match: nsv.Match{Start: 53, End: 68},
 		},
 		{
 			name: "HyphenatedBreakingFooterMajorIncrement",
 			commit: `fix(ui): incorrect sizing of components during window resize
 BREAKING-CHANGE: this is a breaking change`,
-			expected: nsv.MajorIncrement,
+			inc:   nsv.MajorIncrement,
+			match: nsv.Match{Start: 61, End: 76},
 		},
 	}
 	for _, tt := range tests {
@@ -92,12 +102,14 @@ BREAKING-CHANGE: this is a breaking change`,
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			inc, _ := nsv.DetectIncrement([]git.LogEntry{
+			inc, match := nsv.DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
 			})
-			require.Equal(t, tt.expected, inc, "failed to match increment")
+			require.Equal(t, tt.inc, inc, "failed to match increment")
+			require.Equal(t, tt.match.Start, match.Start, "failed to match starting index")
+			require.Equal(t, tt.match.End, match.End, "failed to match end index")
 		})
 	}
 }
@@ -116,10 +128,10 @@ BREAKING CHANGE: this is a breaking change`,
 		},
 		{Message: "docs: build documentation using material for mkdocs"},
 	}
-	inc, pos := nsv.DetectIncrement(log)
+	inc, match := nsv.DetectIncrement(log)
 
 	assert.Equal(t, nsv.MajorIncrement, inc)
-	assert.Equal(t, 3, pos)
+	assert.Equal(t, 3, match.Index)
 }
 
 func TestDetectIncrementStrictness(t *testing.T) {
@@ -235,8 +247,8 @@ Breaking-Change: this is a breaking change`,
 
 // globals are used to prevent any compiler optimizations
 var (
-	gInc nsv.Increment
-	gPos int
+	gInc   nsv.Increment
+	gMatch nsv.Match
 )
 
 func BenchmarkDetectIncrement(b *testing.B) {
@@ -263,10 +275,10 @@ BREAKING-CHANGE: backwards compatibility with v1 is no longer supported`},
 	b.ResetTimer()
 
 	var inc nsv.Increment
-	var pos int
+	var m nsv.Match
 	for n := 0; n < b.N; n++ {
-		inc, pos = nsv.DetectIncrement(log)
+		inc, m = nsv.DetectIncrement(log)
 	}
 	gInc = inc
-	gPos = pos
+	gMatch = m
 }

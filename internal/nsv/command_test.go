@@ -35,39 +35,47 @@ func TestDetectCommandForce(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name     string
-		commit   string
-		expected nsv.Increment
+		name   string
+		commit string
+		inc    nsv.Increment
+		match  nsv.Match
 	}{
 		{
 			name: "PatchIncrement",
-			commit: `group together filtering and sorting components
+			commit: `group together filtering and sorting of components to ensure
+results are displayed to the user in the expected format
 nsv:force~patch`,
-			expected: nsv.PatchIncrement,
+			inc:   nsv.PatchIncrement,
+			match: nsv.Match{Start: 118, End: 133},
 		},
 		{
 			name: "MinorIncrement",
 			commit: `include code examples around test library usage
-nsv: force~minor`,
-			expected: nsv.MinorIncrement,
+nsv: force~minor
+`,
+			inc:   nsv.MinorIncrement,
+			match: nsv.Match{Start: 48, End: 64},
 		},
 		{
 			name: "MajorIncrement",
 			commit: `fix broken badges on README
 NSV: force~major`,
-			expected: nsv.MajorIncrement,
+			inc:   nsv.MajorIncrement,
+			match: nsv.Match{Start: 28, End: 44},
 		},
 	}
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			cmd := nsv.DetectCommand([]git.LogEntry{
+			cmd, match := nsv.DetectCommand([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
 			})
-			require.Equal(t, tt.expected, cmd.Force, "failed to match increment")
+			require.Equal(t, tt.inc, cmd.Force, "failed to match increment")
+			require.Equal(t, tt.match.Start, match.Start, "failed to match starting index")
+			require.Equal(t, tt.match.End, match.End, "failed to match end index")
 		})
 	}
 }
@@ -92,7 +100,7 @@ Signed-off-by: dependabot[bot] <support@github.com>
 Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>`},
 	}
 
-	cmd := nsv.DetectCommand(log)
+	cmd, _ := nsv.DetectCommand(log)
 	assert.Equal(t, nsv.MajorIncrement, cmd.Force)
 }
 
@@ -108,7 +116,7 @@ Closes #7
 nsv: force~ignore`},
 	}
 
-	cmd := nsv.DetectCommand(log)
+	cmd, _ := nsv.DetectCommand(log)
 	assert.Equal(t, nsv.NoIncrement, cmd.Force)
 }
 
@@ -141,8 +149,10 @@ nsv: force~minor`},
 	b.ResetTimer()
 
 	var cmd nsv.Command
+	var match nsv.Match
 	for n := 0; n < b.N; n++ {
-		cmd = nsv.DetectCommand(log)
+		cmd, match = nsv.DetectCommand(log)
 	}
 	gCmd = cmd
+	gMatch = match
 }

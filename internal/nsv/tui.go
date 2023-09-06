@@ -24,7 +24,6 @@ package nsv
 
 import (
 	"fmt"
-	"io"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
@@ -32,51 +31,65 @@ import (
 )
 
 var (
-	borderStyle  = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
-	matchedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).Bold(true)
-	hashStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
-	tagStyle     = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
-	feintStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
-	ellipses     = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render("...")
-	chevron      = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
+	borderStyle    = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
+	hashStyle      = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
+	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
+	tagStyle       = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
+	feintStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
+	ellipses       = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render("...")
+	chevron        = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
+	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
 )
 
-func PrintSummary(out io.Writer, next *Next) {
+func PrintSummary(next Next, opts Options) {
+	if opts.NoColor {
+		tagStyle = tagStyle.UnsetPadding()
+	}
+
 	log := make([]string, 0, len(next.Log))
 	for i, entry := range next.Log {
+		msg := entry.Message
+
 		var marker string
-		if i == next.Match {
-			marker = " << matched"
+		if i == next.Match.Index {
+			marker = checkMark.Render()
+
+			matched := msg[next.Match.Start:next.Match.End]
+			replace := matched
+			if opts.NoColor {
+				replace = fmt.Sprintf(">>%s<<", replace)
+			}
+			msg = strings.Replace(msg, matched, highlightStyle.Render(replace), 1)
 		}
 
-		log = append(log, lipgloss.JoinHorizontal(lipgloss.Left,
-			hashStyle.Render(entry.AbbrevHash),
-			" ",
-			wordwrap.String(entry.Message, 100),
-			matchedStyle.Render(marker)))
+		log = append(log, lipgloss.JoinHorizontal(
+			lipgloss.Left,
+			marker,
+			lipgloss.JoinVertical(
+				lipgloss.Top,
+				hashStyle.Render(entry.AbbrevHash),
+				wordwrap.String(msg, 80)),
+		))
 	}
 
 	logDir := ""
 	if next.LogDir != "" {
-		logDir = lipgloss.JoinHorizontal(lipgloss.Left, feintStyle.Render("log directory: "), next.LogDir)
+		logDir = feintStyle.Render(fmt.Sprintf(" (%s)", next.LogDir))
 	}
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
 		"\n",
-		lipgloss.JoinHorizontal(lipgloss.Left,
-			tagStyle.Render("HEAD"),
-			ellipses,
-			tagStyle.Copy().MarginRight(1).Render(next.Tag),
-			logDir),
-		borderStyle.Render(strings.Join(log, "\n")),
+		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render("HEAD"), logDir),
+		borderStyle.Render(strings.Join(log, "\n\n")),
+		tagStyle.Render(next.PrevTag),
 	)
 
-	fmt.Fprint(out, pane)
+	fmt.Fprint(opts.Err, pane)
 }
 
-func PrintFormat(out io.Writer, tag Tag, format string) {
-	tagf := tag.Format(format)
-	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.raw, chevron, format, chevron, tagf, "\n")
+func PrintFormat(tag Tag, opts Options) {
+	tagf := tag.Format(opts.VersionFormat)
+	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.raw, chevron, opts.VersionFormat, chevron, tagf, "\n")
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
 		header,
@@ -84,5 +97,5 @@ func PrintFormat(out io.Writer, tag Tag, format string) {
 		fmt.Sprintf("{{.SemVer}} %s%s", chevron, tag.SemVer),
 		fmt.Sprintf("{{.Version}}%s%s", chevron, tag.Version))
 
-	fmt.Fprint(out, pane)
+	fmt.Fprint(opts.Err, pane)
 }

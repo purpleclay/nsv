@@ -38,9 +38,10 @@ const (
 	noMatch        = -1
 )
 
-func DetectIncrement(log []git.LogEntry) (Increment, int) {
+func DetectIncrement(log []git.LogEntry) (Increment, Match) {
 	mode := NoIncrement
-	match := noMatch
+	match := Match{Index: noMatch}
+
 	for i, entry := range log {
 		// Check for the existence of a conventional commit type
 		idx := strings.Index(entry.Message, colonSpace)
@@ -49,8 +50,12 @@ func DetectIncrement(log []git.LogEntry) (Increment, int) {
 		}
 
 		leadingType := strings.ToUpper(entry.Message[:idx])
-		if leadingType[idx-1] == breakingBang || multilineBreaking(entry.Message) {
-			return MajorIncrement, i
+		if leadingType[idx-1] == breakingBang {
+			return MajorIncrement, Match{Index: i, End: idx}
+		}
+
+		if found, start, end := multilineBreaking(entry.Message); found {
+			return MajorIncrement, Match{Index: i, Start: start, End: end}
 		}
 
 		// Only feat and fix types now make a difference. Both have the same first letter
@@ -58,16 +63,16 @@ func DetectIncrement(log []git.LogEntry) (Increment, int) {
 			continue
 		}
 
-		if mode == MinorIncrement && match > noMatch {
+		if mode == MinorIncrement && match.Index > noMatch {
 			continue
 		}
 
 		if contains(leadingType, featUpper) {
 			mode = MinorIncrement
-			match = i
+			match = Match{Index: i, End: idx}
 		} else if contains(leadingType, fixUpper) {
 			mode = PatchIncrement
-			match = i
+			match = Match{Index: i, End: idx}
 		}
 	}
 
@@ -89,22 +94,25 @@ func contains(str, prefix string) bool {
 	return false
 }
 
-func multilineBreaking(msg string) bool {
+func multilineBreaking(msg string) (bool, int, int) {
 	n := strings.Count(msg, "\n")
 	if n == 0 {
-		return false
+		return false, noMatch, noMatch
 	}
 
 	idx := strings.LastIndex(msg, "\n")
-
 	if idx == len(msg) {
 		// There is a newline at the end of the string, so jump back one
 		if idx = strings.LastIndex(msg[:len(msg)-1], "\n"); idx == -1 {
-			return false
+			return false, noMatch, noMatch
 		}
 	}
 
 	footer := msg[idx+1:]
-	return strings.HasPrefix(footer, "BREAKING CHANGE: ") ||
-		strings.HasPrefix(footer, "BREAKING-CHANGE: ")
+	if strings.HasPrefix(footer, breaking) ||
+		strings.HasPrefix(footer, breakingHyphen) {
+		return true, idx + 1, (idx + len(breaking)) - 1
+	}
+
+	return false, noMatch, noMatch
 }

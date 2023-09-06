@@ -47,7 +47,10 @@ Environment Variables:
 |                 | of: chore: tagged release <version>                           |`
 
 func tagCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{}
+	opts := nsv.Options{
+		Err: os.Stderr,
+		Out: out,
+	}
 
 	cmd := &cobra.Command{
 		Use:   "tag",
@@ -68,11 +71,11 @@ func tagCmd(out io.Writer) *cobra.Command {
 				return err
 			}
 
-			if next.Tag == "" {
+			if next == nil {
 				return nil
 			}
 
-			printNext(out, next, opts)
+			printNext(next, opts)
 			return tagAndPush(gitc, next, opts)
 		},
 	}
@@ -121,7 +124,7 @@ func impersonateConfig(gitc *git.Client, next *nsv.Next) ([]string, error) {
 		return nil, nil
 	}
 
-	hash := next.Log[next.Match].Hash
+	hash := next.Log[next.Match.Index].Hash
 	commits, err := gitc.ShowCommits(hash)
 	if err != nil {
 		return nil, err

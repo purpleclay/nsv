@@ -45,8 +45,8 @@ ci: add parallel testing support to workflow`
 	require.NoError(t, err)
 
 	assert.Equal(t, "0.1.1", next.Tag)
-	assert.Equal(t, 1, next.Match)
-	assert.Equal(t, "fix(search): search is not being aggregated correctly", next.Log[next.Match].Message)
+	assert.Equal(t, 1, next.Match.Index)
+	assert.Equal(t, "fix(search): search is not being aggregated correctly", next.Log[next.Match.Index].Message)
 	assert.Empty(t, next.LogDir)
 }
 
@@ -99,7 +99,7 @@ func TestNextVersionMajorZeroSemV(t *testing.T) {
 
 func TestNextVersionMajorZeroSemVForceMajor(t *testing.T) {
 	log := `> (main, origin/main) feat: everything is now stable ready for v1
-nsv: force~major
+nsv:force~major
 > (tag: 0.9.9) fix: stability issues around long running database connectivity`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
