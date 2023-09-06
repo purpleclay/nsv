@@ -32,6 +32,7 @@ linters:
     - revive
     - tagliatelle
     - thelper
+    - unused
 
 linters-settings:
   forbidigo:

@@ -36,7 +36,6 @@ var (
 	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
 	tagStyle       = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
 	feintStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
-	ellipses       = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render("...")
 	chevron        = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
 	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
 )
