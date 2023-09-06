@@ -40,41 +40,72 @@ type Command struct {
 	Force Increment
 }
 
-func DetectCommand(log []git.LogEntry) Command {
+func DetectCommand(log []git.LogEntry) (Command, Match) {
 	force := NoIncrement
-	for _, entry := range log {
-		eol := strings.Index(entry.Message, "\n")
-		if eol == -1 || eol == len(entry.Message) {
+	match := Match{}
+
+	for i, entry := range log {
+		msg := strings.TrimSpace(entry.Message)
+		idx := strings.LastIndex(msg, "\n")
+		if idx == -1 {
 			continue
 		}
 
-		footers := strings.SplitAfter(entry.Message[eol:], "\n")
-		for _, footer := range footers {
-			if len(footer) < len(command) || strings.ToUpper(footer[:len(command)]) != command {
-				continue
-			}
-
-			command := strings.TrimSpace(footer[len(command):])
-			if command == forceIgnore {
-				force = NoIncrement
-				goto command
-			}
-
-			if force == MajorIncrement {
-				break
-			}
-
-			switch command {
-			case forceMajor:
-				force = MajorIncrement
-			case forceMinor:
-				force = MinorIncrement
-			case forcePatch:
-				force = PatchIncrement
-			}
+		footer := msg[idx+1:]
+		if strings.ToUpper(footer[:len(command)]) != command {
+			continue
 		}
+
+		cmd := strings.TrimSpace(footer[len(command):])
+		match = Match{Index: i, Start: idx + 1, End: (idx + len(footer)) + 1}
+
+		if cmd == forceIgnore {
+			force = NoIncrement
+			goto command
+		}
+
+		if force == MajorIncrement {
+			break
+		}
+
+		switch cmd {
+		case forceMajor:
+			force = MajorIncrement
+		case forceMinor:
+			force = MinorIncrement
+		case forcePatch:
+			force = PatchIncrement
+		}
+
+		// for _, footer := range footers {
+		// 	if len(footer) < len(command) || strings.ToUpper(footer[:len(command)]) != command {
+		// 		continue
+		// 	}
+		// 	cmd := strings.TrimSpace(footer[len(command):])
+
+		// 	// Capture the match
+		// 	match = Match{Index: i, Start: eol + 1, End: len(command) + len(cmd)}
+
+		// 	if command == forceIgnore {
+		// 		force = NoIncrement
+		// 		goto command
+		// 	}
+
+		// 	if force == MajorIncrement {
+		// 		break
+		// 	}
+
+		// 	switch command {
+		// 	case forceMajor:
+		// 		force = MajorIncrement
+		// 	case forceMinor:
+		// 		force = MinorIncrement
+		// 	case forcePatch:
+		// 		force = PatchIncrement
+		// 	}
+		// }
 	}
 
 command:
-	return Command{Force: force}
+	return Command{Force: force}, match
 }

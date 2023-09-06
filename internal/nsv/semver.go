@@ -25,6 +25,7 @@ package nsv
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -49,10 +50,12 @@ const (
 )
 
 type Options struct {
-	NoColor       bool   `env:"NO_COLOR"`
-	Show          bool   `env:"NSV_SHOW"`
-	TagMessage    string `env:"NSV_TAG_MESSAGE"`
-	VersionFormat string `env:"NSV_FORMAT"`
+	Err           io.Writer `env:"-"`
+	NoColor       bool      `env:"NO_COLOR"`
+	Out           io.Writer `env:"-"`
+	Show          bool      `env:"NSV_SHOW"`
+	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
+	VersionFormat string    `env:"NSV_FORMAT"`
 }
 
 type context struct {
@@ -149,10 +152,17 @@ func (t Tag) Format(format string) string {
 }
 
 type Next struct {
-	Tag    string
-	Log    []git.LogEntry
-	LogDir string
-	Match  int
+	Log     []git.LogEntry
+	LogDir  string
+	Match   Match
+	PrevTag string
+	Tag     string
+}
+
+type Match struct {
+	End   int
+	Index int
+	Start int
 }
 
 func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
@@ -171,9 +181,15 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		return nil, err
 	}
 
-	cmd := DetectCommand(log.Commits)
-	inc, pos := DetectIncrement(log.Commits)
-	if cmd.Force == NoIncrement && inc == NoIncrement {
+	// Detect commands first as they have a higher precedence over conventional commits
+	var inc Increment
+	cmd, match := DetectCommand(log.Commits)
+
+	inc = cmd.Force
+	if inc == NoIncrement {
+		inc, match = DetectIncrement(log.Commits)
+	}
+	if inc == NoIncrement {
 		return nil, nil
 	}
 
@@ -187,10 +203,11 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	}
 
 	return &Next{
-		Tag:    nextVer,
-		Log:    log.Commits,
-		LogDir: ctx.TagPrefix,
-		Match:  pos,
+		PrevTag: ltag,
+		Tag:     nextVer,
+		Log:     log.Commits,
+		LogDir:  ctx.TagPrefix,
+		Match:   match,
 	}, nil
 }
 
