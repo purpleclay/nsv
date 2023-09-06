@@ -73,7 +73,7 @@ func PrintSummary(next Next, opts Options) {
 
 	logDir := ""
 	if next.LogDir != "" {
-		logDir = feintStyle.Render(fmt.Sprintf(" (%s)", next.LogDir))
+		logDir = feintStyle.Render(fmt.Sprintf(" (dir: %s)", next.LogDir))
 	}
 
 	pane := lipgloss.JoinVertical(lipgloss.Top,
