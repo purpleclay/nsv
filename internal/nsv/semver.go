@@ -27,7 +27,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -79,7 +78,7 @@ func execContext(gitc *git.Client) (*context, error) {
 	}
 
 	logPath := relPath
-	if logPath == filepath.Base(cwd) {
+	if strings.HasSuffix(cwd, logPath) {
 		logPath = git.RelativeAtRoot
 	}
 
