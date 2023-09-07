@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -82,7 +83,10 @@ func execContext(gitc *git.Client) (*context, error) {
 		logPath = git.RelativeAtRoot
 	}
 
-	return &context{TagPrefix: relPath, LogPath: logPath}, nil
+	return &context{
+		TagPrefix: filepath.Base(relPath),
+		LogPath:   logPath,
+	}, nil
 }
 
 type Tag struct {
