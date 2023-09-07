@@ -112,13 +112,13 @@ nsv:force~major
 
 func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
 	log := `feat(trends)!: breaking change to capturing user trends`
-	gittest.InitRepository(t, gittest.WithLog(log), gittest.WithFiles("search/main.go", "store/main.go"))
-	gittest.StageFile(t, "search/main.go")
+	gittest.InitRepository(t, gittest.WithLog(log), gittest.WithFiles("src/search/main.go", "src/store/main.go"))
+	gittest.StageFile(t, "src/search/main.go")
 	gittest.Commit(t, "feat(search): add support to search across user trends for recommendations")
-	gittest.StageFile(t, "store/main.go")
+	gittest.StageFile(t, "src/store/main.go")
 	gittest.Commit(t, "fix(store): fixed timestamp formatting issues")
 
-	os.Chdir("search")
+	os.Chdir("src/search")
 	gitc, _ := git.NewClient()
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{})
