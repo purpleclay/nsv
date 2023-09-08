@@ -1,5 +1,6 @@
 ---
 icon: material/tag-arrow-up-outline
+status: new
 ---
 
 # Next Semantic Version
@@ -29,14 +30,21 @@ If you want to see what is happening under the hood:
 ```{ .text .no-select .no-copy }
 0.1.0
 
- HEAD  ...  0.1.0
+HEAD
 ────────────────────────────────────────────────────
-c6bfdda fix: fix to the store
-a0a1e2b feat: new exciting search feature << matched
-83def28 ci: configure workflows
-b8a7daf chore: scaffold project
-6c05c93 initialize repository
+c6bfdda
+fix: fix to the store
+
+✓ a0a1e2b
+   >>feat<<: new exciting search feature
+
+83def28
+ci: configure workflows
+
+6c05c93
+initialize repository
 ────────────────────────────────────────────────────
+0.0.0
 ```
 
 If you need to customize its behavior further, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.

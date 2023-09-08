@@ -1,6 +1,5 @@
 ---
 icon: material/gitlab
-status: new
 ---
 
 # Using the GitLab template
