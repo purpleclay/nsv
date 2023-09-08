@@ -1,6 +1,5 @@
 ---
 icon: material/github
-status: new
 ---
 
 # Using the GitHub action
