@@ -34,6 +34,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type MissingPathsError struct {
+	Paths []string
+}
+
+func (e MissingPathsError) Error() string {
+	return "paths do not exist within the current repository: " + strings.Join(e.Paths, ", ")
+}
+
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
 Environment Variables:
@@ -99,7 +107,7 @@ func pathsExist(paths []string) error {
 	}
 
 	if len(notFound) > 0 {
-		return fmt.Errorf("path does not exist within the current repository '%s'", strings.Join(notFound, ","))
+		return MissingPathsError{Paths: notFound}
 	}
 
 	return nil
