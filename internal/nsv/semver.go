@@ -53,6 +53,7 @@ type Options struct {
 	Err           io.Writer `env:"-"`
 	NoColor       bool      `env:"NO_COLOR"`
 	Out           io.Writer `env:"-"`
+	Paths         []string  `env:"-"`
 	Show          bool      `env:"NSV_SHOW"`
 	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
 	VersionFormat string    `env:"NSV_FORMAT"`
@@ -63,15 +64,19 @@ type context struct {
 	LogPath   string
 }
 
-func execContext(gitc *git.Client) (*context, error) {
+func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 
-	relPath, err := gitc.ToRelativePath(cwd)
-	if err != nil {
-		return nil, err
+	var relPath string
+	if len(opts.Paths) > 0 {
+		relPath = opts.Paths[0]
+	} else {
+		if relPath, err = gitc.ToRelativePath(cwd); err != nil {
+			return nil, err
+		}
 	}
 
 	if relPath == git.RelativeAtRoot {
@@ -169,7 +174,7 @@ type Match struct {
 }
 
 func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
-	ctx, err := execContext(gitc)
+	ctx, err := resolveContext(gitc, opts)
 	if err != nil {
 		return nil, err
 	}

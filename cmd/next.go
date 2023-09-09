@@ -26,12 +26,21 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/caarlos0/env/v7"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
 )
+
+type MissingPathsError struct {
+	Paths []string
+}
+
+func (e MissingPathsError) Error() string {
+	return "paths do not exist within the current repository: " + strings.Join(e.Paths, ", ")
+}
 
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
@@ -50,12 +59,17 @@ func nextCmd(out io.Writer) *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:   "next",
+		Use:   "next [path]",
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
-		Args:  cobra.NoArgs,
+		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			return env.Parse(&opts)
+			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			opts.Paths = args
+			return pathsExist(opts.Paths)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			gitc, err := git.NewClient()
@@ -82,6 +96,21 @@ func nextCmd(out io.Writer) *cobra.Command {
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
 	return cmd
+}
+
+func pathsExist(paths []string) error {
+	var notFound []string
+	for _, path := range paths {
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			notFound = append(notFound, path)
+		}
+	}
+
+	if len(notFound) > 0 {
+		return MissingPathsError{Paths: notFound}
+	}
+
+	return nil
 }
 
 func nextVersion(gitc *git.Client, opts nsv.Options) (*nsv.Next, error) {

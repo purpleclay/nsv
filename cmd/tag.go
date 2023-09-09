@@ -53,12 +53,17 @@ func tagCmd(out io.Writer) *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:   "tag",
+		Use:   "tag [path]",
 		Short: "Tag the repository with the next semantic version",
 		Long:  tagLongDesc,
-		Args:  cobra.NoArgs,
+		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			return env.Parse(&opts)
+			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			opts.Paths = args
+			return pathsExist(opts.Paths)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			gitc, err := git.NewClient()

@@ -127,6 +127,20 @@ func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
 	assert.Equal(t, "search/0.1.0", next.Tag)
 }
 
+func TestNextVersionWithPath(t *testing.T) {
+	log := `feat(ui)!: breaking change to search engine
+feat(search): add ability to search across processed data`
+	gittest.InitRepository(t, gittest.WithLog(log), gittest.WithFiles("src/processor/main.go"))
+	gittest.StageFile(t, "src/processor/main.go")
+	gittest.Commit(t, "feat(process): add support for processing bulk data")
+
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{Paths: []string{"src/processor"}})
+	require.NoError(t, err)
+	assert.Equal(t, "processor/0.1.0", next.Tag)
+}
+
 func TestNextVersionPreservesTagPrefix(t *testing.T) {
 	tests := []struct {
 		name     string
