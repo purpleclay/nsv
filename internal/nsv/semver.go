@@ -54,6 +54,7 @@ type Options struct {
 	NoColor       bool      `env:"NO_COLOR"`
 	Out           io.Writer `env:"-"`
 	Paths         []string  `env:"-"`
+	Pretty        string    `env:"NSV_PRETTY"`
 	Show          bool      `env:"NSV_SHOW"`
 	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
 	VersionFormat string    `env:"NSV_FORMAT"`

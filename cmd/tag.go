@@ -27,7 +27,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/caarlos0/env/v7"
+	"github.com/caarlos0/env/v9"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
@@ -38,13 +38,16 @@ your repository.
 
 Environment Variables:
 
-| Name            | Description                                                   |
-|-----------------|---------------------------------------------------------------|
-| NO_COLOR        | switch to using an ASCII color profile within the terminal    |
-| NSV_FORMAT      | provide a go template for changing the default version format |
-| NSV_SHOW        | show how the next semantic version was generated              |
-| NSV_TAG_MESSAGE | a custom message for the tag, overrides the default message   |
-|                 | of: chore: tagged release <version>                           |`
+| Name            | Description                                                    |
+|-----------------|----------------------------------------------------------------|
+| NO_COLOR        | switch to using an ASCII color profile within the terminal     |
+| NSV_FORMAT      | provide a go template for changing the default version format  |
+| NSV_PRETTY      | pretty-print the output of the next semantic version in a      |
+|                 | given format. The format can be one of either full or compact. |
+|                 | full is the default. Must be used in conjunction with NSV_SHOW |
+| NSV_SHOW        | show how the next semantic version was generated               |
+| NSV_TAG_MESSAGE | a custom message for the tag, overrides the default message    |
+|                 | of: chore: tagged release <version>                            |`
 
 func tagCmd(out io.Writer) *cobra.Command {
 	opts := nsv.Options{
@@ -59,6 +62,10 @@ func tagCmd(out io.Writer) *cobra.Command {
 		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
 			}
 
@@ -88,8 +95,11 @@ func tagCmd(out io.Writer) *cobra.Command {
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: tagged release <version>")
+	flags.StringVarP(&opts.Pretty, "pretty", "p", string(nsv.Full), "pretty-print the output of the next semantic version in a given format. "+
+		"The format can be one of either full or compact. full is the default. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
+	cmd.RegisterFlagCompletionFunc("pretty", prettyFlagShellComp)
 	return cmd
 }
 

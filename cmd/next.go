@@ -28,7 +28,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/caarlos0/env/v7"
+	"github.com/caarlos0/env/v9"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
@@ -42,15 +42,27 @@ func (e MissingPathsError) Error() string {
 	return "paths do not exist within the current repository: " + strings.Join(e.Paths, ", ")
 }
 
+type InvalidPrettyFormatError struct {
+	Pretty string
+}
+
+func (e InvalidPrettyFormatError) Error() string {
+	return fmt.Sprintf("pretty format '%s' is not supported, must be one of either: %s",
+		e.Pretty, strings.Join(nsv.PrettyFormats, ", "))
+}
+
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
 Environment Variables:
 
-| Name       | Description                                                   |
-|------------|---------------------------------------------------------------|
-| NO_COLOR   | switch to using an ASCII color profile within the terminal    |
-| NSV_FORMAT | provide a go template for changing the default version format |
-| NSV_SHOW   | show how the next semantic version was generated              |`
+| Name       | Description                                                    |
+|------------|----------------------------------------------------------------|
+| NO_COLOR   | switch to using an ASCII color profile within the terminal     |
+| NSV_FORMAT | provide a go template for changing the default version format  |
+| NSV_PRETTY | pretty-print the output of the next semantic version in a      |
+|            | given format. The format can be one of either full or compact. |
+|            | full is the default. Must be used in conjunction with NSV_SHOW |
+| NSV_SHOW   | show how the next semantic version was generated               |`
 
 func nextCmd(out io.Writer) *cobra.Command {
 	opts := nsv.Options{
@@ -65,6 +77,10 @@ func nextCmd(out io.Writer) *cobra.Command {
 		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if err := env.Parse(&opts); err != nil {
+				return err
+			}
+
+			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
 			}
 
@@ -93,9 +109,25 @@ func nextCmd(out io.Writer) *cobra.Command {
 
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
+	flags.StringVarP(&opts.Pretty, "pretty", "p", string(nsv.Full), "pretty-print the output of the next semantic version in a given format. "+
+		"The format can be one of either full or compact. full is the default. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
+	cmd.RegisterFlagCompletionFunc("pretty", prettyFlagShellComp)
 	return cmd
+}
+
+func prettyFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
+	return nsv.PrettyFormats, cobra.ShellCompDirectiveDefault
+}
+
+func supportedPretty(pretty string) error {
+	for _, p := range nsv.PrettyFormats {
+		if p == pretty {
+			return nil
+		}
+	}
+	return InvalidPrettyFormatError{Pretty: pretty}
 }
 
 func pathsExist(paths []string) error {
