@@ -51,35 +51,6 @@ func (e InvalidPrettyFormatError) Error() string {
 		e.Pretty, strings.Join(nsv.PrettyFormats, ", "))
 }
 
-/*
-git log output
-
-OPTIONS
-       --follow
-           Continue listing the history of a file beyond renames (works only for a single file).
-
-       --no-decorate, --decorate[=short|full|auto|no]
-           Print out the ref names of any commits that are shown. If short is specified, the ref name prefixes refs/heads/, refs/tags/ and refs/remotes/ will not be
-           printed. If full is specified, the full ref name (including prefix) will be printed. If auto is specified, then if the output is going to a terminal, the
-           ref names are shown as if short were given, otherwise no ref names are shown. The option --decorate is short-hand for --decorate=short. Default to
-           configuration value of log.decorate if configured, otherwise, auto
-*/
-
-/*
-clap
-
-Options:
-  -k, --key <BASE64_ARMORED_KEY>
-          A base64 encoded GPG private key in armored format
-
-          [env: GPG_PRIVATE_KEY=]
-
-  -p, --passphrase <PASSPHRASE>
-          The passphrase of the GPG private key if set
-
-          [env: GPG_PASSPHRASE=]
-*/
-
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
 
 Environment Variables:
