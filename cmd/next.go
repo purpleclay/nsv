@@ -146,8 +146,7 @@ func nextCmd(out io.Writer) *cobra.Command {
 	return cmd
 }
 
-//nolint:revive
-func prettyFlagShellComp(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func prettyFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
 	return nsv.PrettyFormats, cobra.ShellCompDirectiveDefault
 }
 
