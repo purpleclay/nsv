@@ -30,7 +30,16 @@ import (
 	"github.com/muesli/reflow/wordwrap"
 )
 
+type Pretty string
+
+const (
+	Full    Pretty = "full"
+	Compact Pretty = "compact"
+)
+
 var (
+	PrettyFormats = []string{string(Full), string(Compact)}
+
 	borderStyle    = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
 	hashStyle      = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
 	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
@@ -40,11 +49,40 @@ var (
 	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
 )
 
+const (
+	logWrapAt = 80
+	markerFmt = ">>%s<<"
+)
+
 func PrintSummary(next Next, opts Options) {
 	if opts.NoColor {
 		tagStyle = tagStyle.UnsetPadding()
 	}
 
+	var log string
+	switch Pretty(opts.Pretty) {
+	case Compact:
+		log = printCompactSummary(next, opts)
+	default:
+		log = printFullSummary(next, opts)
+	}
+
+	logDir := ""
+	if next.LogDir != "" {
+		logDir = feintStyle.Render(fmt.Sprintf(" (dir: %s)", next.LogDir))
+	}
+
+	pane := lipgloss.JoinVertical(lipgloss.Top,
+		"\n",
+		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render("HEAD"), logDir),
+		borderStyle.Render(log),
+		tagStyle.Render(next.PrevTag),
+	)
+
+	fmt.Fprint(opts.Err, pane)
+}
+
+func printFullSummary(next Next, opts Options) string {
 	log := make([]string, 0, len(next.Log))
 	for i, entry := range next.Log {
 		msg := entry.Message
@@ -56,7 +94,7 @@ func PrintSummary(next Next, opts Options) {
 			matched := msg[next.Match.Start:next.Match.End]
 			replace := matched
 			if opts.NoColor {
-				replace = fmt.Sprintf(">>%s<<", replace)
+				replace = fmt.Sprintf(markerFmt, replace)
 			}
 			msg = strings.Replace(msg, matched, highlightStyle.Render(replace), 1)
 		}
@@ -67,23 +105,28 @@ func PrintSummary(next Next, opts Options) {
 			lipgloss.JoinVertical(
 				lipgloss.Top,
 				hashStyle.Render(entry.AbbrevHash),
-				wordwrap.String(msg, 80)),
+				wordwrap.String(msg, logWrapAt)),
 		))
 	}
 
-	logDir := ""
-	if next.LogDir != "" {
-		logDir = feintStyle.Render(fmt.Sprintf(" (dir: %s)", next.LogDir))
+	return strings.Join(log, "\n\n")
+}
+
+func printCompactSummary(next Next, opts Options) string {
+	entry := next.Log[next.Match.Index]
+	msg := entry.Message
+
+	matched := msg[next.Match.Start:next.Match.End]
+	replace := matched
+	if opts.NoColor {
+		replace = fmt.Sprintf(markerFmt, replace)
 	}
+	msg = strings.Replace(msg, matched, highlightStyle.Render(replace), 1)
 
-	pane := lipgloss.JoinVertical(lipgloss.Top,
-		"\n",
-		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render("HEAD"), logDir),
-		borderStyle.Render(strings.Join(log, "\n\n")),
-		tagStyle.Render(next.PrevTag),
-	)
-
-	fmt.Fprint(opts.Err, pane)
+	return lipgloss.JoinVertical(
+		lipgloss.Top,
+		hashStyle.Render(entry.AbbrevHash),
+		wordwrap.String(msg, logWrapAt))
 }
 
 func PrintFormat(tag Tag, opts Options) {

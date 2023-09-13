@@ -26,7 +26,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/caarlos0/env/v7"
+	"github.com/caarlos0/env/v9"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
 )

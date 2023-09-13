@@ -28,7 +28,7 @@ import (
 	"io"
 	"runtime"
 
-	"github.com/caarlos0/env/v7"
+	"github.com/caarlos0/env/v9"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/termenv"
 	"github.com/purpleclay/nsv/internal/nsv"
