@@ -94,6 +94,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		nextCmd(out),
 		tagCmd(out))
 
+	cmd.SetUsageTemplate(customUsageTemplate)
 	return cmd.Execute()
 }
 

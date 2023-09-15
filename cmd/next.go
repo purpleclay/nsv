@@ -110,7 +110,7 @@ func nextCmd(out io.Writer) *cobra.Command {
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringVarP(&opts.Pretty, "pretty", "p", string(nsv.Full), "pretty-print the output of the next semantic version in a given format. "+
-		"The format can be one of either full or compact. full is the default. Must be used in conjunction with --show")
+		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
 	cmd.RegisterFlagCompletionFunc("pretty", prettyFlagShellComp)
