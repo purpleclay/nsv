@@ -136,7 +136,7 @@ feat(search): add ability to search across processed data`
 
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{Paths: []string{"src/processor"}})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Path: "src/processor"})
 	require.NoError(t, err)
 	assert.Equal(t, "processor/0.1.0", next.Tag)
 }

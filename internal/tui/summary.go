@@ -20,14 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package nsv
+package tui
 
 import (
 	"fmt"
+	"io"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
+	"github.com/purpleclay/nsv/internal/nsv"
 )
 
 type Pretty string
@@ -37,24 +39,20 @@ const (
 	Compact Pretty = "compact"
 )
 
-var (
-	PrettyFormats = []string{string(Full), string(Compact)}
-
-	borderStyle    = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
-	hashStyle      = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
-	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
-	tagStyle       = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
-	feintStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
-	chevron        = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
-	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
-)
+var PrettyFormats = []string{string(Full), string(Compact)}
 
 const (
 	logWrapAt = 80
 	markerFmt = ">>%s<<"
 )
 
-func PrintSummary(next Next, opts Options) {
+type SummaryOptions struct {
+	NoColor bool
+	Out     io.Writer
+	Pretty  Pretty
+}
+
+func PrintSummary(next nsv.Next, opts SummaryOptions) {
 	if opts.NoColor {
 		tagStyle = tagStyle.UnsetPadding()
 	}
@@ -79,10 +77,10 @@ func PrintSummary(next Next, opts Options) {
 		tagStyle.Render(next.PrevTag),
 	)
 
-	fmt.Fprint(opts.Err, pane)
+	fmt.Fprint(opts.Out, pane)
 }
 
-func printFullSummary(next Next, opts Options) string {
+func printFullSummary(next nsv.Next, opts SummaryOptions) string {
 	log := make([]string, 0, len(next.Log))
 	for i, entry := range next.Log {
 		msg := entry.Message
@@ -112,7 +110,7 @@ func printFullSummary(next Next, opts Options) string {
 	return strings.Join(log, "\n\n")
 }
 
-func printCompactSummary(next Next, opts Options) string {
+func printCompactSummary(next nsv.Next, opts SummaryOptions) string {
 	entry := next.Log[next.Match.Index]
 	msg := entry.Message
 
@@ -127,17 +125,4 @@ func printCompactSummary(next Next, opts Options) string {
 		lipgloss.Top,
 		hashStyle.Render(entry.AbbrevHash),
 		wordwrap.String(msg, logWrapAt))
-}
-
-func PrintFormat(tag Tag, opts Options) {
-	tagf := tag.Format(opts.VersionFormat)
-	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.raw, chevron, opts.VersionFormat, chevron, tagf, "\n")
-
-	pane := lipgloss.JoinVertical(lipgloss.Top,
-		header,
-		fmt.Sprintf("{{.Prefix}} %s%s", chevron, tag.Prefix),
-		fmt.Sprintf("{{.SemVer}} %s%s", chevron, tag.SemVer),
-		fmt.Sprintf("{{.Version}}%s%s", chevron, tag.Version))
-
-	fmt.Fprint(opts.Err, pane)
 }

@@ -20,26 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package cmd
+package tui
 
-import (
-	"bytes"
-	"testing"
+import "github.com/charmbracelet/lipgloss"
 
-	"github.com/purpleclay/gitz/gittest"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+var (
+	borderStyle    = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
+	hashStyle      = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
+	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
+	tagStyle       = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
+	feintStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
+	chevron        = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
+	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
 )
-
-func TestNext(t *testing.T) {
-	log := `(main, origin/main) docs: document new pagination improvements
-feat: support pagination of search results`
-	gittest.InitRepository(t, gittest.WithLog(log))
-
-	var buf bytes.Buffer
-	cmd := nextCmd(&Options{Out: &buf})
-	err := cmd.Execute()
-
-	require.NoError(t, err)
-	assert.Equal(t, "0.1.0", buf.String())
-}

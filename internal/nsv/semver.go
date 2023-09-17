@@ -25,7 +25,6 @@ package nsv
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -50,14 +49,8 @@ const (
 )
 
 type Options struct {
-	Err           io.Writer `env:"-"`
-	NoColor       bool      `env:"NO_COLOR"`
-	Out           io.Writer `env:"-"`
-	Paths         []string  `env:"-"`
-	Pretty        string    `env:"NSV_PRETTY"`
-	Show          bool      `env:"NSV_SHOW"`
-	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
-	VersionFormat string    `env:"NSV_FORMAT"`
+	Path          string
+	VersionFormat string
 }
 
 type context struct {
@@ -72,8 +65,8 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	}
 
 	var relPath string
-	if len(opts.Paths) > 0 {
-		relPath = opts.Paths[0]
+	if opts.Path != "" {
+		relPath = opts.Path
 	} else {
 		if relPath, err = gitc.ToRelativePath(cwd); err != nil {
 			return nil, err
@@ -99,7 +92,7 @@ type Tag struct {
 	Prefix  string
 	SemVer  string
 	Version string
-	raw     string
+	Raw     string
 }
 
 func ParseTag(raw string) (Tag, error) {
@@ -119,7 +112,7 @@ func ParseTag(raw string) (Tag, error) {
 
 	return Tag{
 		Prefix:  raw[:lastSlash],
-		raw:     raw,
+		Raw:     raw,
 		SemVer:  semv,
 		Version: raw[lastSlash:],
 	}, nil

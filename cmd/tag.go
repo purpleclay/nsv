@@ -24,12 +24,11 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"os"
 
-	"github.com/caarlos0/env/v9"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
+	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -49,22 +48,13 @@ Environment Variables:
 | NSV_TAG_MESSAGE | a custom message for the tag, overrides the default message    |
 |                 | of: chore: tagged release <version>                            |`
 
-func tagCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{
-		Err: os.Stderr,
-		Out: out,
-	}
-
+func tagCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "tag [path]",
 		Short: "Tag the repository with the next semantic version",
 		Long:  tagLongDesc,
 		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := env.Parse(&opts); err != nil {
-				return err
-			}
-
 			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
 			}
@@ -95,7 +85,7 @@ func tagCmd(out io.Writer) *cobra.Command {
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: tagged release <version>")
-	flags.StringVarP(&opts.Pretty, "pretty", "p", string(nsv.Full), "pretty-print the output of the next semantic version in a given format. "+
+	flags.StringVarP(&opts.Pretty, "pretty", "p", string(tui.Full), "pretty-print the output of the next semantic version in a given format. "+
 		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
@@ -103,7 +93,7 @@ func tagCmd(out io.Writer) *cobra.Command {
 	return cmd
 }
 
-func tagAndPush(gitc *git.Client, next *nsv.Next, opts nsv.Options) error {
+func tagAndPush(gitc *git.Client, next *nsv.Next, opts *Options) error {
 	if opts.TagMessage == "" {
 		opts.TagMessage = fmt.Sprintf("chore: tagged release %s", next.Tag)
 	}
@@ -112,6 +102,9 @@ func tagAndPush(gitc *git.Client, next *nsv.Next, opts nsv.Options) error {
 	if err != nil {
 		return err
 	}
+
+	// TODO: what happens when: nsv is run in root with path, where is tag created? should be latest
+	// commit within the log at that location
 	if _, err := gitc.Tag(next.Tag, git.WithTagConfig(cfg...), git.WithAnnotation(opts.TagMessage)); err != nil {
 		return err
 	}
