@@ -42,8 +42,10 @@ const (
 var PrettyFormats = []string{string(Full), string(Compact)}
 
 const (
-	logWrapAt = 80
-	markerFmt = ">>%s<<"
+	minTagCellWidth = 20
+	minLogCellWidth = 50
+	logWrapAt       = 80
+	markerFmt       = ">>%s<<"
 )
 
 type SummaryOptions struct {
@@ -52,40 +54,120 @@ type SummaryOptions struct {
 	Pretty  Pretty
 }
 
-func PrintSummary(next nsv.Next, opts SummaryOptions) {
+type row struct {
+	tagCell string
+	logCell string
+}
+
+func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 	if opts.NoColor {
 		tagStyle = tagStyle.UnsetPadding()
 	}
 
-	var log string
-	switch Pretty(opts.Pretty) {
-	case Compact:
-		log = printCompactSummary(next, opts)
-	default:
-		log = printFullSummary(next, opts)
+	// Build the internals of the table first. This allows the borders of the table
+	// to accurately be drawn around the contents
+	rows := make([]row, 0, len(vers))
+	for _, ver := range vers {
+		tagDiff := cell.Render(
+			lipgloss.JoinVertical(lipgloss.Top,
+				tagStyle.Render(ver.Tag),
+				diffMark.Render(),
+				tagStyle.Render(ver.PrevTag)))
+
+		var log string
+		switch Pretty(opts.Pretty) {
+		case Compact:
+			log = printCompactSummary(ver, opts)
+		default:
+			log = printFullSummary(ver, opts)
+		}
+
+		logDir := ""
+		if ver.LogDir != "" {
+			logDir = feintStyle.Render(fmt.Sprintf("(dir: %s)\n", ver.LogDir))
+		}
+
+		logHistory := lipgloss.JoinVertical(lipgloss.Top,
+			logDir,
+			log,
+		)
+
+		rows = append(rows, row{tagCell: tagDiff, logCell: logHistory})
 	}
 
-	logDir := ""
-	if next.LogDir != "" {
-		logDir = feintStyle.Render(fmt.Sprintf(" (dir: %s)", next.LogDir))
+	// Determine the maximum cell widths based on the current row data
+	longestTag := minTagCellWidth
+	longestLog := minLogCellWidth
+	for _, row := range rows {
+		longestTag = max(longestTag, lipgloss.Width(row.tagCell))
+		longestLog = max(longestLog, lipgloss.Width(row.logCell))
 	}
 
-	pane := lipgloss.JoinVertical(lipgloss.Top,
+	top, middle, bottom := horizontalDividers(longestTag, longestLog)
+
+	tableRows := []string{}
+	for i, row := range rows {
+		if i > 0 {
+			tableRows = append(tableRows, middle)
+		}
+
+		rowHeight := lipgloss.Height(row.logCell)
+
+		row := lipgloss.JoinHorizontal(lipgloss.Left,
+			verticalDivider(rowHeight),
+			cell.Copy().Width(longestTag).Render(row.tagCell),
+			verticalDivider(rowHeight),
+			cell.Copy().Width(longestLog).Render(row.logCell),
+			verticalDivider(rowHeight),
+		)
+		tableRows = append(tableRows, row)
+	}
+
+	fmt.Fprint(opts.Out, lipgloss.JoinVertical(
+		lipgloss.Top,
 		"\n",
-		lipgloss.JoinHorizontal(lipgloss.Left, tagStyle.Render("HEAD"), logDir),
-		borderStyle.Render(log),
-		tagStyle.Render(next.PrevTag),
-	)
-
-	fmt.Fprint(opts.Out, pane)
+		top,
+		strings.Join(tableRows, "\n"),
+		bottom))
 }
 
-func printFullSummary(next nsv.Next, opts SummaryOptions) string {
+func verticalDivider(h int) string {
+	return borderStyle.Render(strings.TrimRight(strings.Repeat("│\n", h), "\n"))
+}
+
+func horizontalDividers(w1, w2 int) (string, string, string) {
+	top := lipgloss.JoinHorizontal(lipgloss.Left,
+		borderStyle.Render("┌"),
+		borderStyle.Render(strings.Repeat("─", w1)),
+		borderStyle.Render("┬"),
+		borderStyle.Render(strings.Repeat("─", w2)),
+		borderStyle.Render("┐"))
+
+	middle := lipgloss.JoinHorizontal(lipgloss.Left,
+		borderStyle.Render("├"),
+		borderStyle.Render(strings.Repeat("─", w1)),
+		borderStyle.Render("┼"),
+		borderStyle.Render(strings.Repeat("─", w2)),
+		borderStyle.Render("┤"),
+	)
+
+	bottom := lipgloss.JoinHorizontal(
+		lipgloss.Left,
+		borderStyle.Render("└"),
+		borderStyle.Render(strings.Repeat("─", w1)),
+		borderStyle.Render("┴"),
+		borderStyle.Render(strings.Repeat("─", w2)),
+		borderStyle.Render("┘"))
+
+	return top, middle, bottom
+}
+
+func printFullSummary(next *nsv.Next, opts SummaryOptions) string {
 	log := make([]string, 0, len(next.Log))
 	for i, entry := range next.Log {
 		msg := entry.Message
 
-		var marker string
+		marker := bullet.Render()
 		if i == next.Match.Index {
 			marker = checkMark.Render()
 
@@ -107,10 +189,10 @@ func printFullSummary(next nsv.Next, opts SummaryOptions) string {
 		))
 	}
 
-	return strings.Join(log, "\n\n")
+	return cell.Render(strings.Join(log, "\n\n"))
 }
 
-func printCompactSummary(next nsv.Next, opts SummaryOptions) string {
+func printCompactSummary(next *nsv.Next, opts SummaryOptions) string {
 	entry := next.Log[next.Match.Index]
 	msg := entry.Message
 
@@ -121,8 +203,9 @@ func printCompactSummary(next nsv.Next, opts SummaryOptions) string {
 	}
 	msg = strings.Replace(msg, matched, highlightStyle.Render(replace), 1)
 
-	return lipgloss.JoinVertical(
-		lipgloss.Top,
-		hashStyle.Render(entry.AbbrevHash),
-		wordwrap.String(msg, logWrapAt))
+	return cell.Render(
+		lipgloss.JoinVertical(
+			lipgloss.Top,
+			hashStyle.Render(entry.AbbrevHash),
+			wordwrap.String(msg, logWrapAt)))
 }

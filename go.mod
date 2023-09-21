@@ -1,6 +1,6 @@
 module github.com/purpleclay/nsv
 
-go 1.20
+go 1.21
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -10,7 +10,7 @@ require (
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/roff v0.1.0
 	github.com/muesli/termenv v0.15.2
-	github.com/purpleclay/gitz v0.7.0
+	github.com/purpleclay/gitz v0.8.0
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
 )

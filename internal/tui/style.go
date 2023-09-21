@@ -24,12 +24,29 @@ package tui
 
 import "github.com/charmbracelet/lipgloss"
 
+const (
+	bottom       = "─"
+	bottomLeft   = "└"
+	bottomRight  = "┘"
+	middle       = "┼"
+	middleBottom = "┴"
+	middleLeft   = "├"
+	middleRight  = "┤"
+	middleTop    = "┬"
+	top          = "─"
+	topLeft      = "┌"
+	topRight     = "┐"
+)
+
 var (
-	borderStyle    = lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, false).BorderForeground(lipgloss.Color("#2b0940"))
+	borderStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#2b0940"))
 	hashStyle      = lipgloss.NewStyle().Background(lipgloss.Color("#1d1d1f")).Foreground(lipgloss.Color("#807d8a"))
 	highlightStyle = lipgloss.NewStyle().Background(lipgloss.Color("#bf31f7"))
 	tagStyle       = lipgloss.NewStyle().Padding(0, 1).Background(lipgloss.Color("#3a1577"))
 	feintStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#807d8a"))
 	chevron        = lipgloss.NewStyle().Padding(0, 1).Foreground(lipgloss.Color("#b769d6")).Render(">>")
 	checkMark      = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString("✓ ")
+	diffMark       = lipgloss.NewStyle().Foreground(lipgloss.Color("#139c20")).SetString(" ↑↑")
+	bullet         = feintStyle.Copy().SetString("> ")
+	cell           = lipgloss.NewStyle()
 )

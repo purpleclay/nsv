@@ -50,10 +50,9 @@ Environment Variables:
 
 func tagCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "tag [path]",
+		Use:   "tag [<path>...]",
 		Short: "Tag the repository with the next semantic version",
 		Long:  tagLongDesc,
-		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
@@ -68,17 +67,17 @@ func tagCmd(opts *Options) *cobra.Command {
 				return err
 			}
 
-			next, err := nextVersion(gitc, opts)
+			vers, err := nextVersions(gitc, opts)
 			if err != nil {
 				return err
 			}
 
-			if next == nil {
+			if len(vers) == 0 {
 				return nil
 			}
 
-			printNext(next, opts)
-			return tagAndPush(gitc, next, opts)
+			printNext(vers, opts)
+			return tagAndPush(gitc, vers, opts)
 		},
 	}
 
@@ -93,45 +92,63 @@ func tagCmd(opts *Options) *cobra.Command {
 	return cmd
 }
 
-func tagAndPush(gitc *git.Client, next *nsv.Next, opts *Options) error {
-	if opts.TagMessage == "" {
-		opts.TagMessage = fmt.Sprintf("chore: tagged release %s", next.Tag)
-	}
-
-	cfg, err := impersonateConfig(gitc, next)
+func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
+	impersonate, err := requiresImpersonation(gitc)
 	if err != nil {
 		return err
 	}
 
-	// TODO: what happens when: nsv is run in root with path, where is tag created? should be latest
-	// commit within the log at that location
-	if _, err := gitc.Tag(next.Tag, git.WithTagConfig(cfg...), git.WithAnnotation(opts.TagMessage)); err != nil {
-		return err
+	var tags []string
+	for _, ver := range vers {
+		if opts.TagMessage == "" {
+			opts.TagMessage = fmt.Sprintf("chore: tagged release %s", ver.Tag)
+		}
+
+		var cfg []string
+		var err error
+		if impersonate {
+			if cfg, err = impersonateConfig(gitc, ver); err != nil {
+				return err
+			}
+		}
+
+		if _, err := gitc.Tag(ver.Tag,
+			git.WithTagConfig(cfg...),
+			git.WithCommitRef(ver.Log[0].Hash),
+			git.WithLocalOnly(),
+			git.WithAnnotation(opts.TagMessage)); err != nil {
+			return err
+		}
+		tags = append(tags, ver.Tag)
 	}
 
-	_, err = gitc.PushRef(next.Tag)
+	_, err = gitc.Push(git.WithRefSpecs(tags...))
 	return err
 }
 
-func impersonateConfig(gitc *git.Client, next *nsv.Next) ([]string, error) {
+func requiresImpersonation(gitc *git.Client) (bool, error) {
 	// If the user.name and user.email config settings are set, then no impersonation is required
 	gcfg, err := gitc.Config()
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 
 	_, nameSet := gcfg["user.name"]
 	_, emailSet := gcfg["user.email"]
 	if nameSet && emailSet {
-		return nil, nil
+		return false, nil
 	}
 
 	// If git specific environment variables are set, no impersonation is required,
 	// see: https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables
 	if os.Getenv("GIT_COMMITTER_NAME") != "" && os.Getenv("GIT_COMMITTER_EMAIL") != "" {
-		return nil, nil
+		return false, nil
 	}
 
+	return true, nil
+}
+
+func impersonateConfig(gitc *git.Client, next *nsv.Next) ([]string, error) {
 	hash := next.Log[next.Match.Index].Hash
 	commits, err := gitc.ShowCommits(hash)
 	if err != nil {

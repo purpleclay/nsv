@@ -65,10 +65,9 @@ Environment Variables:
 
 func nextCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "next [path]",
+		Use:   "next [<path>...]",
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
-		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
@@ -83,16 +82,16 @@ func nextCmd(opts *Options) *cobra.Command {
 				return err
 			}
 
-			next, err := nextVersion(gitc, opts)
+			vers, err := nextVersions(gitc, opts)
 			if err != nil {
 				return err
 			}
 
-			if next == nil {
+			if len(vers) == 0 {
 				return nil
 			}
 
-			printNext(next, opts)
+			printNext(vers, opts)
 			return nil
 		},
 	}
@@ -135,27 +134,43 @@ func pathsExist(paths []string) error {
 	return nil
 }
 
-func nextVersion(gitc *git.Client, opts *Options) (*nsv.Next, error) {
+func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
 		return nil, err
 	}
 
-	var path string
-	if len(opts.Paths) > 0 {
-		path = opts.Paths[0]
+	if len(opts.Paths) == 0 {
+		opts.Paths = append(opts.Paths, git.RelativeAtRoot)
 	}
 
-	return nsv.NextVersion(gitc, nsv.Options{
-		Path:          path,
-		VersionFormat: opts.VersionFormat,
-	})
+	var vers []*nsv.Next
+	for _, path := range opts.Paths {
+		next, err := nsv.NextVersion(gitc, nsv.Options{
+			Path:          path,
+			VersionFormat: opts.VersionFormat,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		if next != nil {
+			vers = append(vers, next)
+		}
+	}
+
+	return vers, nil
 }
 
-func printNext(next *nsv.Next, opts *Options) {
-	fmt.Fprint(opts.Out, next.Tag)
+func printNext(vers []*nsv.Next, opts *Options) {
+	var tags []string
+	for _, ver := range vers {
+		tags = append(tags, ver.Tag)
+	}
+
+	fmt.Fprint(opts.Out, strings.Join(tags, ","))
 
 	if opts.Show {
-		tui.PrintSummary(*next, tui.SummaryOptions{
+		tui.PrintSummary(vers, tui.SummaryOptions{
 			NoColor: opts.NoColor,
 			Out:     opts.Err,
 			Pretty:  tui.Pretty(opts.Pretty),
