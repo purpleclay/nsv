@@ -37,8 +37,8 @@ github.com/muesli/termenv v0.15.2 h1:GohcuySI0QmI3wN8Ok9PtKGkgkFIk7y6Vpb5PvrY+Wo
 github.com/muesli/termenv v0.15.2/go.mod h1:Epx+iuz8sNs7mNKhxzH4fWXGNpZwUaJKRS1noLXviQ8=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/purpleclay/gitz v0.7.0 h1:wtgUTKEPcWv3Xzri3Db55ttg4j4Lb/ekKBvwygs76t0=
-github.com/purpleclay/gitz v0.7.0/go.mod h1:yDVD7c+yc9PeKMhHy0sTH4maHDrTb+iOOplwNoJB0J8=
+github.com/purpleclay/gitz v0.8.0 h1:hScHgk7eOHp7gku9kS168ei706Ydi22SCSdgL/M12F0=
+github.com/purpleclay/gitz v0.8.0/go.mod h1:yDVD7c+yc9PeKMhHy0sTH4maHDrTb+iOOplwNoJB0J8=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
