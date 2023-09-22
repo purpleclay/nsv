@@ -33,7 +33,7 @@ import (
 )
 
 var versions = []*nsv.Next{
-	&nsv.Next{
+	{
 		Tag:     "0.2.0",
 		PrevTag: "0.1.0",
 		LogDir:  "src/ui",
@@ -63,7 +63,7 @@ Signed-off-by: dependabot[bot] <support@github.com>
 			End:   4,
 		},
 	},
-	&nsv.Next{
+	{
 		Tag:     "0.2.1",
 		PrevTag: "0.2.0",
 		LogDir:  "src/search",

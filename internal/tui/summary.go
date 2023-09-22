@@ -101,7 +101,7 @@ func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 
 	top, middle, bottom := horizontalDividers(longestTag, longestLog)
 
-	tableRows := []string{}
+	tableRows := make([]string, 0, len(vers))
 	for i, row := range rows {
 		if i > 0 {
 			tableRows = append(tableRows, middle)
