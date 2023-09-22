@@ -133,27 +133,27 @@ func verticalDivider(h int) string {
 
 func horizontalDividers(w1, w2 int) (string, string, string) {
 	top := lipgloss.JoinHorizontal(lipgloss.Left,
-		borderStyle.Render("┌"),
-		borderStyle.Render(strings.Repeat("─", w1)),
-		borderStyle.Render("┬"),
-		borderStyle.Render(strings.Repeat("─", w2)),
-		borderStyle.Render("┐"))
+		borderStyle.Render(topLeft),
+		borderStyle.Render(strings.Repeat(top, w1)),
+		borderStyle.Render(topDivider),
+		borderStyle.Render(strings.Repeat(top, w2)),
+		borderStyle.Render(topRight))
 
 	middle := lipgloss.JoinHorizontal(lipgloss.Left,
-		borderStyle.Render("├"),
-		borderStyle.Render(strings.Repeat("─", w1)),
-		borderStyle.Render("┼"),
-		borderStyle.Render(strings.Repeat("─", w2)),
-		borderStyle.Render("┤"),
+		borderStyle.Render(middleLeft),
+		borderStyle.Render(strings.Repeat(middle, w1)),
+		borderStyle.Render(middleDivider),
+		borderStyle.Render(strings.Repeat(middle, w2)),
+		borderStyle.Render(middleRight),
 	)
 
 	bottom := lipgloss.JoinHorizontal(
 		lipgloss.Left,
-		borderStyle.Render("└"),
-		borderStyle.Render(strings.Repeat("─", w1)),
-		borderStyle.Render("┴"),
-		borderStyle.Render(strings.Repeat("─", w2)),
-		borderStyle.Render("┘"))
+		borderStyle.Render(bottomLeft),
+		borderStyle.Render(strings.Repeat(bottom, w1)),
+		borderStyle.Render(bottomDivider),
+		borderStyle.Render(strings.Repeat(bottom, w2)),
+		borderStyle.Render(bottomRight))
 
 	return top, middle, bottom
 }

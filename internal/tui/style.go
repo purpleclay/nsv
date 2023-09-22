@@ -25,17 +25,19 @@ package tui
 import "github.com/charmbracelet/lipgloss"
 
 const (
-	bottom       = "─"
-	bottomLeft   = "└"
-	bottomRight  = "┘"
-	middle       = "┼"
-	middleBottom = "┴"
-	middleLeft   = "├"
-	middleRight  = "┤"
-	middleTop    = "┬"
-	top          = "─"
-	topLeft      = "┌"
-	topRight     = "┐"
+	bottom        = "─"
+	bottomDivider = "┴"
+	bottomLeft    = "└"
+	bottomRight   = "┘"
+	middle        = "─"
+	middleDivider = "┼"
+	middleLeft    = "├"
+	middleRight   = "┤"
+	middleTop     = "┬"
+	top           = "─"
+	topDivider    = "┬"
+	topLeft       = "┌"
+	topRight      = "┐"
 )
 
 var (
