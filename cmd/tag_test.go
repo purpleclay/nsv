@@ -36,7 +36,7 @@ func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
 	gittest.ConfigSet(t, "user.name", "poison-ivy", "user.email", "poison-ivy@dc.com")
 	gittest.CommitEmptyWithAuthor(t, "scarecrow", "scarecrow@dc.com", "feat: capture metrics for populating dashboards")
 
-	cmd := tagCmd(io.Discard)
+	cmd := tagCmd(&Options{Out: io.Discard})
 	err := cmd.Execute()
 	require.NoError(t, err)
 
@@ -53,7 +53,7 @@ func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
 	t.Setenv("GIT_COMMITTER_NAME", "joker")
 	t.Setenv("GIT_COMMITTER_EMAIL", "joker@dc.com")
 
-	cmd := tagCmd(io.Discard)
+	cmd := tagCmd(&Options{Out: io.Discard})
 	err := cmd.Execute()
 	require.NoError(t, err)
 

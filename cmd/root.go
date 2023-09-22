@@ -26,14 +26,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"runtime"
 
 	"github.com/caarlos0/env/v9"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/termenv"
-	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/spf13/cobra"
 )
+
+type Options struct {
+	Err           io.Writer `env:"-"`
+	NoColor       bool      `env:"NO_COLOR"`
+	Out           io.Writer `env:"-"`
+	Paths         []string  `env:"-"`
+	Pretty        string    `env:"NSV_PRETTY"`
+	Show          bool      `env:"NSV_SHOW"`
+	TagMessage    string    `env:"NSV_TAG_MESSAGE"`
+	VersionFormat string    `env:"NSV_FORMAT"`
+}
 
 var rootLongDesc = `NSV (Next Semantic Version) is a convention-based semantic versioning tool that
 leans on the power of conventional commits to make versioning your software a breeze!.
@@ -65,7 +76,10 @@ type BuildDetails struct {
 }
 
 func Execute(out io.Writer, buildInfo BuildDetails) error {
-	opts := nsv.Options{}
+	opts := &Options{
+		Err: os.Stderr,
+		Out: out,
+	}
 
 	cmd := &cobra.Command{
 		Use:           "nsv",
@@ -74,7 +88,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := env.Parse(&opts); err != nil {
+			if err := env.Parse(opts); err != nil {
 				return err
 			}
 
@@ -90,9 +104,9 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 
 	cmd.AddCommand(versionCmd(out, buildInfo),
 		manCmd(out),
-		playgroundCmd(out),
-		nextCmd(out),
-		tagCmd(out))
+		playgroundCmd(opts),
+		nextCmd(opts),
+		tagCmd(opts))
 
 	cmd.SetUsageTemplate(customUsageTemplate)
 	return cmd.Execute()

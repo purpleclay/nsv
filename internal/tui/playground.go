@@ -20,26 +20,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package cmd
+package tui
 
 import (
-	"bytes"
-	"testing"
+	"fmt"
+	"io"
 
-	"github.com/purpleclay/gitz/gittest"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/purpleclay/nsv/internal/nsv"
 )
 
-func TestNext(t *testing.T) {
-	log := `(main, origin/main) docs: document new pagination improvements
-feat: support pagination of search results`
-	gittest.InitRepository(t, gittest.WithLog(log))
+type PlaygroundOptions struct {
+	Out           io.Writer
+	VersionFormat string
+}
 
-	var buf bytes.Buffer
-	cmd := nextCmd(&Options{Out: &buf})
-	err := cmd.Execute()
+func PrintFormat(tag nsv.Tag, opts PlaygroundOptions) {
+	tagf := tag.Format(opts.VersionFormat)
+	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.Raw, chevron, opts.VersionFormat, chevron, tagf, "\n")
 
-	require.NoError(t, err)
-	assert.Equal(t, "0.1.0", buf.String())
+	pane := lipgloss.JoinVertical(lipgloss.Top,
+		header,
+		fmt.Sprintf("{{.Prefix}} %s%s", chevron, tag.Prefix),
+		fmt.Sprintf("{{.SemVer}} %s%s", chevron, tag.SemVer),
+		fmt.Sprintf("{{.Version}}%s%s", chevron, tag.Version))
+
+	fmt.Fprint(opts.Out, pane)
 }

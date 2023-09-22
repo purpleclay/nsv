@@ -23,11 +23,9 @@ SOFTWARE.
 package cmd
 
 import (
-	"io"
-	"os"
-
 	"github.com/caarlos0/env/v9"
 	"github.com/purpleclay/nsv/internal/nsv"
+	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -42,12 +40,7 @@ Environment Variables:
 |------------|---------------------------------------------------|
 | NSV_FORMAT | set a go template for formatting the provided tag |`
 
-func playgroundCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{
-		Err: os.Stderr,
-		Out: out,
-	}
-
+func playgroundCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "playground <tag>",
 		Short: "A playground for discovering go template support",
@@ -66,7 +59,10 @@ func playgroundCmd(out io.Writer) *cobra.Command {
 				return err
 			}
 
-			nsv.PrintFormat(tag, opts)
+			tui.PrintFormat(tag, tui.PlaygroundOptions{
+				Out:           opts.Err,
+				VersionFormat: opts.VersionFormat,
+			})
 			return nil
 		},
 	}

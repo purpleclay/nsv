@@ -24,13 +24,12 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"strings"
 
-	"github.com/caarlos0/env/v9"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
+	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -48,7 +47,7 @@ type InvalidPrettyFormatError struct {
 
 func (e InvalidPrettyFormatError) Error() string {
 	return fmt.Sprintf("pretty format '%s' is not supported, must be one of either: %s",
-		e.Pretty, strings.Join(nsv.PrettyFormats, ", "))
+		e.Pretty, strings.Join(tui.PrettyFormats, ", "))
 }
 
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
@@ -64,22 +63,12 @@ Environment Variables:
 |            | full is the default. Must be used in conjunction with NSV_SHOW |
 | NSV_SHOW   | show how the next semantic version was generated               |`
 
-func nextCmd(out io.Writer) *cobra.Command {
-	opts := nsv.Options{
-		Err: os.Stderr,
-		Out: out,
-	}
-
+func nextCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "next [path]",
+		Use:   "next [<path>...]",
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
-		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := env.Parse(&opts); err != nil {
-				return err
-			}
-
 			if err := supportedPretty(opts.Pretty); err != nil {
 				return err
 			}
@@ -93,23 +82,23 @@ func nextCmd(out io.Writer) *cobra.Command {
 				return err
 			}
 
-			next, err := nextVersion(gitc, opts)
+			vers, err := nextVersions(gitc, opts)
 			if err != nil {
 				return err
 			}
 
-			if next == nil {
+			if len(vers) == 0 {
 				return nil
 			}
 
-			printNext(next, opts)
+			printNext(vers, opts)
 			return nil
 		},
 	}
 
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
-	flags.StringVarP(&opts.Pretty, "pretty", "p", string(nsv.Full), "pretty-print the output of the next semantic version in a given format. "+
+	flags.StringVarP(&opts.Pretty, "pretty", "p", string(tui.Full), "pretty-print the output of the next semantic version in a given format. "+
 		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
 
@@ -118,11 +107,11 @@ func nextCmd(out io.Writer) *cobra.Command {
 }
 
 func prettyFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
-	return nsv.PrettyFormats, cobra.ShellCompDirectiveDefault
+	return tui.PrettyFormats, cobra.ShellCompDirectiveDefault
 }
 
 func supportedPretty(pretty string) error {
-	for _, p := range nsv.PrettyFormats {
+	for _, p := range tui.PrettyFormats {
 		if p == pretty {
 			return nil
 		}
@@ -145,18 +134,46 @@ func pathsExist(paths []string) error {
 	return nil
 }
 
-func nextVersion(gitc *git.Client, opts nsv.Options) (*nsv.Next, error) {
+func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
 		return nil, err
 	}
 
-	return nsv.NextVersion(gitc, opts)
+	if len(opts.Paths) == 0 {
+		opts.Paths = append(opts.Paths, git.RelativeAtRoot)
+	}
+
+	var vers []*nsv.Next
+	for _, path := range opts.Paths {
+		next, err := nsv.NextVersion(gitc, nsv.Options{
+			Path:          path,
+			VersionFormat: opts.VersionFormat,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		if next != nil {
+			vers = append(vers, next)
+		}
+	}
+
+	return vers, nil
 }
 
-func printNext(next *nsv.Next, opts nsv.Options) {
-	fmt.Fprint(opts.Out, next.Tag)
+func printNext(vers []*nsv.Next, opts *Options) {
+	var tags []string
+	for _, ver := range vers {
+		tags = append(tags, ver.Tag)
+	}
+
+	fmt.Fprint(opts.Out, strings.Join(tags, ","))
 
 	if opts.Show {
-		nsv.PrintSummary(*next, opts)
+		tui.PrintSummary(vers, tui.SummaryOptions{
+			NoColor: opts.NoColor,
+			Out:     opts.Err,
+			Pretty:  tui.Pretty(opts.Pretty),
+		})
 	}
 }
