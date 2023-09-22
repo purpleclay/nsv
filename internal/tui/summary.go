@@ -60,10 +60,6 @@ type row struct {
 }
 
 func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
-	if opts.NoColor {
-		tagStyle = tagStyle.UnsetPadding()
-	}
-
 	// Build the internals of the table first. This allows the borders of the table
 	// to accurately be drawn around the contents
 	rows := make([]row, 0, len(vers))
@@ -203,9 +199,12 @@ func printCompactSummary(next *nsv.Next, opts SummaryOptions) string {
 	}
 	msg = strings.Replace(msg, matched, highlightStyle.Render(replace), 1)
 
-	return cell.Render(
+	return cell.Render(lipgloss.JoinHorizontal(
+		lipgloss.Left,
+		checkMark.Render(),
 		lipgloss.JoinVertical(
 			lipgloss.Top,
 			hashStyle.Render(entry.AbbrevHash),
-			wordwrap.String(msg, logWrapAt)))
+			wordwrap.String(msg, logWrapAt)),
+	))
 }
