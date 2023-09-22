@@ -208,7 +208,7 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		PrevTag: ltag,
 		Tag:     nextVer,
 		Log:     log.Commits,
-		LogDir:  ctx.TagPrefix,
+		LogDir:  ctx.LogPath,
 		Match:   match,
 	}, nil
 }

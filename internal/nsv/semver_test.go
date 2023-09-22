@@ -139,6 +139,7 @@ feat(search): add ability to search across processed data`
 	next, err := nsv.NextVersion(gitc, nsv.Options{Path: "src/processor"})
 	require.NoError(t, err)
 	assert.Equal(t, "processor/0.1.0", next.Tag)
+	assert.Equal(t, "src/processor", next.LogDir)
 }
 
 func TestNextVersionPreservesTagPrefix(t *testing.T) {
