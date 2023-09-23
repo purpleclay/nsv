@@ -44,7 +44,7 @@ func (e TemplateSyntaxError) Error() string {
 	parts := strings.Split(e.Err, ":")
 
 	var out strings.Builder
-	out.WriteString(fmt.Sprintf(`template "%s" `, e.Template))
+	out.WriteString(fmt.Sprintf(`template %q `, e.Template))
 	out.WriteString("contains a syntax error at line " + parts[2])
 	if len(parts) == 5 {
 		out.WriteString(" column " + parts[3])
@@ -54,7 +54,7 @@ func (e TemplateSyntaxError) Error() string {
 	if strings.Contains(e.Err, "can't evaluate field") {
 		si := strings.Index(e.Err, "<")
 		ei := strings.Index(e.Err, ">")
-		out.WriteString(fmt.Sprintf(`unrecognised field "%s" in template`, e.Err[si+1:ei]))
+		out.WriteString(fmt.Sprintf(`unrecognised field %q in template`, e.Err[si+1:ei]))
 	} else {
 		out.WriteString(strings.TrimSpace(parts[len(parts)-1]))
 	}
