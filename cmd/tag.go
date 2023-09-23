@@ -23,14 +23,48 @@ SOFTWARE.
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"os"
+	"strings"
+	"text/template"
 
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
+
+type TemplateSyntaxError struct {
+	Template string
+	Err      string
+}
+
+func (e TemplateSyntaxError) Error() string {
+	parts := strings.Split(e.Err, ":")
+
+	var out strings.Builder
+	out.WriteString(fmt.Sprintf(`template %q `, e.Template))
+	out.WriteString("contains a syntax error at line " + parts[2])
+	if len(parts) == 5 {
+		out.WriteString(" column " + parts[3])
+	}
+	out.WriteString(": ")
+
+	if strings.Contains(e.Err, "can't evaluate field") {
+		si := strings.Index(e.Err, "<")
+		ei := strings.Index(e.Err, ">")
+		out.WriteString(fmt.Sprintf(`unrecognised field %q in template`, e.Err[si+1:ei]))
+	} else {
+		out.WriteString(strings.TrimSpace(parts[len(parts)-1]))
+	}
+	return out.String()
+}
+
+type release struct {
+	Tag     string
+	PrevTag string
+}
 
 var tagLongDesc = `Tag the repository with the next semantic version based on the conventional commit history of
 your repository.
@@ -45,8 +79,8 @@ Environment Variables:
 |                 | given format. The format can be one of either full or compact. |
 |                 | full is the default. Must be used in conjunction with NSV_SHOW |
 | NSV_SHOW        | show how the next semantic version was generated               |
-| NSV_TAG_MESSAGE | a custom message for the tag, overrides the default message    |
-|                 | of: chore: tagged release <version>                            |`
+| NSV_TAG_MESSAGE | a custom message for the tag, supports go text templates. The  |
+|                 | default is: "chore: tagged release {{.Tag}}"                   |`
 
 func tagCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
@@ -55,6 +89,10 @@ func tagCmd(opts *Options) *cobra.Command {
 		Long:  tagLongDesc,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if err := supportedPretty(opts.Pretty); err != nil {
+				return err
+			}
+
+			if err := verifyTagTemplate(opts.TagMessage); err != nil {
 				return err
 			}
 
@@ -83,7 +121,7 @@ func tagCmd(opts *Options) *cobra.Command {
 
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
-	flags.StringVarP(&opts.TagMessage, "message", "m", "", "a custom message for the tag, overrides the default message of: chore: tagged release <version>")
+	flags.StringVarP(&opts.TagMessage, "message", "m", "chore: tagged release {{.Tag}}", "a custom message for the tag, supports go text templates")
 	flags.StringVarP(&opts.Pretty, "pretty", "p", string(tui.Full), "pretty-print the output of the next semantic version in a given format. "+
 		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
@@ -92,18 +130,30 @@ func tagCmd(opts *Options) *cobra.Command {
 	return cmd
 }
 
+func verifyTagTemplate(tmpl string) error {
+	t, err := template.New("tag-template").Parse(tmpl)
+	if err != nil {
+		return TemplateSyntaxError{Template: tmpl, Err: err.Error()}
+	}
+
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, release{Tag: "0.2.0", PrevTag: "0.1.0"}); err != nil {
+		return TemplateSyntaxError{Template: tmpl, Err: err.Error()}
+	}
+
+	return nil
+}
+
 func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 	impersonate, err := requiresImpersonation(gitc)
 	if err != nil {
 		return err
 	}
 
+	tmpl, _ := template.New("tag-template").Parse(opts.TagMessage)
+
 	var tags []string
 	for _, ver := range vers {
-		if opts.TagMessage == "" {
-			opts.TagMessage = fmt.Sprintf("chore: tagged release %s", ver.Tag)
-		}
-
 		var cfg []string
 		var err error
 		if impersonate {
@@ -112,11 +162,14 @@ func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 			}
 		}
 
+		var buf bytes.Buffer
+		tmpl.Execute(&buf, release{Tag: ver.Tag, PrevTag: ver.PrevTag})
+
 		if _, err := gitc.Tag(ver.Tag,
 			git.WithTagConfig(cfg...),
 			git.WithCommitRef(ver.Log[0].Hash),
 			git.WithLocalOnly(),
-			git.WithAnnotation(opts.TagMessage)); err != nil {
+			git.WithAnnotation(buf.String())); err != nil {
 			return err
 		}
 		tags = append(tags, ver.Tag)

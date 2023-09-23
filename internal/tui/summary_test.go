@@ -91,6 +91,8 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 }
 
 func TestPrintSummary(t *testing.T) {
+	t.Parallel()
+
 	var buf bytes.Buffer
 	tui.PrintSummary(versions, tui.SummaryOptions{Out: &buf})
 
@@ -98,6 +100,8 @@ func TestPrintSummary(t *testing.T) {
 }
 
 func TestPrintSummaryNoColor(t *testing.T) {
+	t.Parallel()
+
 	var buf bytes.Buffer
 	opts := tui.SummaryOptions{
 		Out:     &buf,
@@ -110,6 +114,8 @@ func TestPrintSummaryNoColor(t *testing.T) {
 }
 
 func TestPrintSummaryCompact(t *testing.T) {
+	t.Parallel()
+
 	var buf bytes.Buffer
 	opts := tui.SummaryOptions{
 		Out:    &buf,
