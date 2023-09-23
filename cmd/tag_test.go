@@ -62,3 +62,19 @@ func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
 	out := gittest.Show(t, tags[0])
 	assert.Contains(t, out, "Tagger: joker <joker@dc.com>")
 }
+
+func TestTagWithTemplatedMessage(t *testing.T) {
+	log := `feat(ui): include timeline support for display historical events
+(tag: 0.1.1) fix(ui): events are not being sorted as per user filters`
+	gittest.InitRepository(t, gittest.WithLog(log))
+
+	cmd := tagCmd(&Options{Out: io.Discard})
+	cmd.SetArgs([]string{"--message", "chore: tagged {{.Tag}} from {{.PrevTag}}"})
+	err := cmd.Execute()
+	require.NoError(t, err)
+
+	tags := gittest.Tags(t)
+	require.Len(t, tags, 2)
+	out := gittest.Show(t, tags[1])
+	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
+}
