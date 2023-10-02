@@ -47,7 +47,7 @@ func playgroundCmd(opts *Options) *cobra.Command {
 		Long:  playgroundLongDesc,
 		Args:  cobra.ExactArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			return env.Parse(&opts)
+			return env.Parse(opts)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
