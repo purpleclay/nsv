@@ -1,32 +1,31 @@
-                                                                                                      
-                                                                                                      
-┌────────────────────┬───────────────────────────────────────────────────────────────────────────────┐
-│ 0.2.0              │(dir: src/ui)                                                                  │
-│ ↑↑                 │                                                                               │
-│ 0.1.0              │> ba1ec83                                                                      │
-│                    │  fix: search options were not being correctly converted into elastic search   │
-│                    │  filters (#63)                                                                │
-│                    │                                                                               │
-│                    │> 4e7a277                                                                      │
-│                    │  chore(deps): bump docker/setup-qemu-action from 2 to 3 (#62)                 │
-│                    │                                                                               │
-│                    │  Signed-off-by: dependabot[bot] <support@github.com>                          │
-│                    │   Co-authored-by: dependabot[bot]                                             │
-│                    │  <49699333+dependabot[bot]@users.noreply.github.com>                          │
-│                    │                                                                               │
-│                    │✓ 2c9b178                                                                      │
-│                    │  >>feat<<: add option toggles to the dashboard that allows dynamic queryies to│
-│                    │  elastic (#58)                                                                │
-├────────────────────┼───────────────────────────────────────────────────────────────────────────────┤
-│ 0.2.1              │(dir: src/search)                                                              │
-│ ↑↑                 │                                                                               │
-│ 0.2.0              │✓ 6e6fcac                                                                      │
-│                    │  >>feat<<: add redis caching support (#55)                                    │
-│                    │                                                                               │
-│                    │> 869fd31                                                                      │
-│                    │  feat(deps): bump github.com/charmbracelet/lipgloss from 0.7.1 to 0.8.0 (#56) │
-│                    │                                                                               │
-│                    │  Signed-off-by: dependabot[bot] <support@github.com>                          │
-│                    │  Co-authored-by: dependabot[bot]                                              │
-│                    │  <49699333+dependabot[bot]@users.noreply.github.com>                          │
-└────────────────────┴───────────────────────────────────────────────────────────────────────────────┘
+                                                                                                   
+┌───────────────┬─────────────────────────────────────────────────────────────────────────────────┐
+│  0.2.0        │ (dir: src/ui)                                                                   │
+│  ↑↑           │                                                                                 │
+│  0.1.0        │ >  ba1ec83                                                                      │
+│               │   fix: search options were not being correctly converted into elastic search    │
+│               │   filters (#63)                                                                 │
+│               │                                                                                 │
+│               │ >  4e7a277                                                                      │
+│               │   chore(deps): bump docker/setup-qemu-action from 2 to 3 (#62)                  │
+│               │                                                                                 │
+│               │   Signed-off-by: dependabot[bot] <support@github.com>                           │
+│               │    Co-authored-by: dependabot[bot]                                              │
+│               │   <49699333+dependabot[bot]@users.noreply.github.com>                           │
+│               │                                                                                 │
+│               │ ✓  2c9b178                                                                      │
+│               │   >>feat<<: add option toggles to the dashboard that allows dynamic queryies to │
+│               │   elastic (#58)                                                                 │
+├───────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│  0.2.1        │ (dir: src/search)                                                               │
+│  ↑↑           │                                                                                 │
+│  0.2.0        │ ✓  6e6fcac                                                                      │
+│               │   >>feat<<: add redis caching support (#55)                                     │
+│               │                                                                                 │
+│               │ >  869fd31                                                                      │
+│               │   feat(deps): bump github.com/charmbracelet/lipgloss from 0.7.1 to 0.8.0 (#56)  │
+│               │                                                                                 │
+│               │   Signed-off-by: dependabot[bot] <support@github.com>                           │
+│               │   Co-authored-by: dependabot[bot]                                               │
+│               │   <49699333+dependabot[bot]@users.noreply.github.com>                           │
+└───────────────┴─────────────────────────────────────────────────────────────────────────────────┘
