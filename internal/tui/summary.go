@@ -75,7 +75,7 @@ type SummaryOptions struct {
 }
 
 func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
-	rows := [][]string{}
+	var rows [][]string
 	for _, ver := range vers {
 		tagDiff := lipgloss.JoinVertical(lipgloss.Top,
 			theme.H1.Render(ver.Tag),
