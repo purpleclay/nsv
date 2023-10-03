@@ -27,8 +27,17 @@ import (
 	"io"
 
 	"github.com/charmbracelet/lipgloss"
+	theme "github.com/purpleclay/lipgloss-theme"
 	"github.com/purpleclay/nsv/internal/nsv"
 )
+
+var chevron = lipgloss.NewStyle().
+	Padding(0, 1).
+	Foreground(lipgloss.AdaptiveColor{
+		Light: string(theme.S500),
+		Dark:  string(theme.S200),
+	}).
+	Render(">>")
 
 type PlaygroundOptions struct {
 	Out           io.Writer
