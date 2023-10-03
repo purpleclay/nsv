@@ -44,6 +44,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/purpleclay/gitz v0.8.0 h1:hScHgk7eOHp7gku9kS168ei706Ydi22SCSdgL/M12F0=
 github.com/purpleclay/gitz v0.8.0/go.mod h1:yDVD7c+yc9PeKMhHy0sTH4maHDrTb+iOOplwNoJB0J8=
+github.com/purpleclay/lipgloss-theme v0.1.0 h1:Y8PHOfwGxOJQfODEPrUT25/8jck7pWTojXpI4jb8BWI=
+github.com/purpleclay/lipgloss-theme v0.1.0/go.mod h1:ndYEFXaLiFWq3xuzg7vCKlwNkEZTrxM9YuS2PgJ3WeI=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
