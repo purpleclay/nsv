@@ -1,10 +1,9 @@
 ---
 icon: material/application-cog-outline
+status: new
 ---
 
 # Version Customization with Templates
-
-<span class="rounded-pill">:material-test-tube: experimental</span>
 
 Full support for Go [templates](https://pkg.go.dev/text/template) ensures `nsv` is incredibly flexible when generating the next semantic version.
 
