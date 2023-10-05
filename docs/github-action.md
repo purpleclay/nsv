@@ -30,7 +30,7 @@ jobs:
       - name: NSV
         uses: purpleclay/nsv-action@v1
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
 ```
 
 ## Triggering another workflow
@@ -51,13 +51,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.TOKEN }}
+          token: "${{ secrets.TOKEN }}"
 
       - name: NSV
         uses: purpleclay/nsv-action@v1
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
+          GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
 ```
 
 ## Capturing the next tag

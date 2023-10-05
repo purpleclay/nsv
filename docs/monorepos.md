@@ -5,33 +5,26 @@ status: new
 
 # Monorepos as first-class citizens
 
-`nsv` has been designed so that monorepo support is <u>not an afterthought</u>. By being context-aware, `nsv` can detect if it runs outside the repository root and calculates the next semantic version based on its location.
-
-```{ .text .no-select .no-copy }
-awesome-app
-  ui           << ui/v0.2.1
-    ...
-  backend      << backend/v0.3.0
-    ...
-  store        << store/v0.2.3
-    ...
-```
-
-1. context aware - understands its location outside of the repository root
-1. user specified paths can be provided
+`nsv` has been designed so that monorepo support is <u>not an afterthought</u>. Monorepo detection is built-in, removing the need for additional configuration.
 
 ## Understands its running context
 
-example of running nsv within a different directory
+By being context-aware, `nsv` can detect if it runs within a repository subdirectory, changing how it inspects the commit history. The next semantic version will include the component prefix, a standard monorepo practice.
 
-```sh
-nsv next
+```{ .sh .no-select .no-copy }
+cd src/ui
 ```
 
-## A
+```{ .sh .no-select .no-copy }
+$ nsv next
 
-example of running nsv with a path
+ui/0.2.0
+```
 
-```sh
-nsv tag
+Context paths as command line arguments remove the need to change directories. `nsv` can version multiple monorepo components in a single pass.
+
+```{ .sh .no-select .no-copy }
+$ nsv next src/ui src/search src/database
+
+ui/0.3.0,search/0.2.1,database/0.3.0
 ```

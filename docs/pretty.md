@@ -5,7 +5,7 @@ status: new
 
 # Pretty-Printing Output
 
-Support for pretty-printing allows the output of `nsv` to be customized. A set of in-built options are supported, with more to follow. The default option is `full` but can be changed by:
+Support for pretty-printing allows the output of `nsv` to be customized. A set of in-built options are supported, with more to follow. The default option is `full` but can be changed:
 
 === "ENV"
 
