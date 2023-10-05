@@ -1,5 +1,7 @@
 ---
 icon: material/train-car-container
+social:
+  cards: false
 ---
 
 # Running with Docker

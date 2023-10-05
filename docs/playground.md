@@ -1,5 +1,7 @@
 ---
 icon: material/basketball
+social:
+  cards: false
 ---
 
 # Explore using the Playground

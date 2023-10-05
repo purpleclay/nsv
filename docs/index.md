@@ -1,5 +1,6 @@
 ---
-title: Convention-based semantic versioning without a config file
+title: Next Semantic Version
+description: Convention-based semantic versioning without a config file
 ---
 
 # NSV

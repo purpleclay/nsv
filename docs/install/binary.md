@@ -1,5 +1,7 @@
 ---
 icon: material/package-variant-closed
+social:
+  cards: false
 ---
 
 # Installing the Binary

@@ -1,6 +1,7 @@
 ---
 icon: material/tag-check-outline
 status: new
+description: Automatically tag your repository with the next semantic version
 ---
 
 # Tag the Next Semantic Version

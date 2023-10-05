@@ -1,6 +1,7 @@
 ---
 icon: material/tag-arrow-up-outline
 status: new
+description: Determine the next semantic version of your repository based on its history
 ---
 
 # Next Semantic Version

@@ -1,5 +1,7 @@
 ---
 icon: material/gitlab
+social:
+  cards: false
 ---
 
 # Using the GitLab template
