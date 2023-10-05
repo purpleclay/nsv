@@ -66,6 +66,8 @@ nav:
       - Semantic Commands: commands.md
       - Playground: playground.md
       - Tag Version: tag-version.md
+      - Monorepos: monorepos.md
+      - Pretty Print: pretty.md
       - Github Action: github-action.md
       - GitLab Template: gitlab-template.md
       - Installation:

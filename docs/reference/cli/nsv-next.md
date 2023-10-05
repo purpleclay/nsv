@@ -1,5 +1,6 @@
 ---
 icon: material/console
+status: new
 ---
 
 # nsv next
@@ -10,16 +11,20 @@ of your repository.
 
 Environment Variables:
 
-| Name       | Description                                                   |
-|------------|---------------------------------------------------------------|
-| NSV_FORMAT | provide a go template for changing the default version format |
-| NSV_SHOW   | show how the next semantic version was generated              |
+| Name       | Description                                                    |
+|------------|----------------------------------------------------------------|
+| NO_COLOR   | switch to using an ASCII color profile within the terminal     |
+| NSV_FORMAT | provide a go template for changing the default version format  |
+| NSV_PRETTY | pretty-print the output of the next semantic version in a      |
+|            | given format. The format can be one of either full or compact. |
+|            | full is the default. Must be used in conjunction with NSV_SHOW |
+| NSV_SHOW   | show how the next semantic version was generated               |
 ```
 
 ## Usage
 
 ```{ .text .no-select .no-copy }
-nsv next [flags]
+nsv next [<path>...] [flags]
 ```
 
 ## Flags
@@ -28,6 +33,10 @@ nsv next [flags]
 -f, --format string   provide a go template for changing the default version
                       format
 -h, --help            help for next
+-p, --pretty string   pretty-print the output of the next semantic version in
+                      a given format. The format can be one of either full or
+                      compact. Must be used in conjunction with --show
+                      (default "full")
 -s, --show            show how the next semantic version was generated
 ```
 

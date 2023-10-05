@@ -47,20 +47,20 @@ initialize repository
 0.0.0
 ```
 
-If you need to customize its behavior further, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.
+If you need to customize its behavior, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.
 
-## Monorepos as first-class citizens
+## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
 
-Monorepo support is not an afterthought. By being context-aware, `nsv` can detect if it runs outside the repository root and calculates the next semantic version based on its location.
+Monorepo support is important to the [design](./monorepos.md) of `nsv`. By adding support for context paths, multiple semantic versions can be resolved throughout a repository in a single operation.
+
+```{ .sh .no-select }
+nsv next src/ui src/search
+```
+
+Any version change will be printed to stdout as a comma separated list in context path order:
 
 ```{ .text .no-select .no-copy }
-awesome-app
-  ui           << ui/v0.2.1
-    ...
-  backend      << backend/v0.3.0
-    ...
-  store        << store/v0.2.3
-    ...
+ui/0.2.1,search/0.3.0
 ```
 
 ## Version template customization
@@ -86,7 +86,3 @@ Runtime customization of this template is available. For example, you can enforc
     ```
 
 Head over to the [playground](./playground.md) to discover more.
-
-## Prerelease support
-
-<span class="rounded-pill">:material-bullhorn-variant-outline: coming soon</span>

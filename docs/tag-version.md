@@ -47,21 +47,41 @@ initialize repository
 0.0.0
 ```
 
-## Using a custom tag message
+## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
 
-If you are not happy with the commit message, then feel free to change it:
+Monorepo support is important to the [design](./monorepos.md) of `nsv`. By adding support for context paths, multiple semantic versions can be resolved and tagged as a single operation within a repository.
+
+```{ .sh .no-select }
+nsv tag src/datastore src/notifications
+```
+
+Any version change will be printed to stdout as a comma separated list in context path order:
+
+```{ .text .no-select .no-copy }
+datastore/0.1.1,notifications/0.3.3
+```
+
+## Using a custom tag message :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
+
+If you are not happy with the tag message, you can change it. Support for Go templating provides extra [customization](./reference/templating.md#tag-annotation-message).
 
 === "ENV"
 
     ```{ .sh .no-select }
-    NSV_TAG_MESSAGE="chore: this is a custom message" nsv tag
+    NSV_TAG_MESSAGE="chore: tagged release {{.Tag}} from {{.PrevTag}}" nsv tag
     ```
 
 === "CLI"
 
     ```{ .sh .no-select }
-    nsv tag --message "chore: this is a custom message"
+    nsv tag --message "chore: tagged release {{.Tag}} from {{.PrevTag}}"
     ```
+
+Resulting in a tag message:
+
+```text
+chore: tagged release 0.2.0 from 0.1.0
+```
 
 ## Signing your tag
 
@@ -71,7 +91,7 @@ If you require your tag to be signed, please ensure your git config is correct b
 
 Internally `nsv` utilizes a go template when constructing the next semantic version. Runtime customization of this template is available [here](./next-version.md#version-template-customization).
 
-## Committer impersonation :material-new-box:{.new-feature title="Feature added on the 8th of September 2023"}
+## Committer impersonation
 
 When tagging your repository, `nsv` will identify the person associated with the commit that triggered the release and dynamically passes these to `git` through the `user.name` and `user.email` config settings.
 
