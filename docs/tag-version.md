@@ -27,8 +27,6 @@ If you want to see what is happening under the hood:
     nsv tag --show
     ```
 
-TODO: this example is now out of date
-
 ```{ .text .no-select .no-copy }
 0.1.0
 
@@ -65,10 +63,7 @@ datastore/0.1.1,notifications/0.3.3
 
 ## Using a custom tag message :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
 
-If you are not happy with the tag message, you can change it. Support for Go templating provides extra customization. `nsv` supports the following annotations:
-
-- `{{.Tag}}` the next semantic version
-- `{{.PrevTag}}` the previous semantic version
+If you are not happy with the tag message, you can change it. Support for Go templating provides extra [customization](./reference/templating.md#tag-annotation-message).
 
 === "ENV"
 

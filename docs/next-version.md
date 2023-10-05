@@ -27,8 +27,6 @@ If you want to see what is happening under the hood:
     nsv next --show
     ```
 
-TODO: this example is now out of date
-
 ```{ .text .no-select .no-copy }
 0.1.0
 
@@ -88,7 +86,3 @@ Runtime customization of this template is available. For example, you can enforc
     ```
 
 Head over to the [playground](./playground.md) to discover more.
-
-## Prerelease support
-
-<span class="rounded-pill">:material-bullhorn-variant-outline: coming soon</span>

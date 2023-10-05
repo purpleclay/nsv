@@ -9,7 +9,7 @@ status: new
 
 ## Understands its running context
 
-By being context-aware, `nsv` can detect if it runs within a repository subdirectory, changing how it inspects the commit history. The next semantic version will include the component prefix, a standard monorepo practice.
+By being context-aware, `nsv` can detect if it runs within a repository subdirectory, changing how it inspects the commit history. The next semantic version will include the component prefix, a standard monorepo practice[^1].
 
 ```{ .sh .no-select .no-copy }
 cd src/ui
@@ -28,3 +28,5 @@ $ nsv next src/ui src/search src/database
 
 ui/0.3.0,search/0.2.1,database/0.3.0
 ```
+
+[^1]: Full [customization](./next-version.md#version-template-customization) is supported through Go templating if you want to change this behavior.
