@@ -1,5 +1,7 @@
 ---
 icon: material/github
+social:
+  cards: false
 ---
 
 # Using the GitHub action

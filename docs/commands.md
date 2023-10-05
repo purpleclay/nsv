@@ -1,5 +1,6 @@
 ---
 icon: material/apple-keyboard-command
+description: Advanced control of semantic versioning through dedicated commands
 ---
 
 # Control your workflow with Commands

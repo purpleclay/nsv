@@ -1,6 +1,8 @@
 ---
 icon: material/console
 status: new
+social:
+  cards: false
 ---
 
 # nsv tag

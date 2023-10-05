@@ -1,5 +1,7 @@
 ---
 icon: material/file-code-outline
+social:
+  cards: false
 ---
 
 # Compiling from Source

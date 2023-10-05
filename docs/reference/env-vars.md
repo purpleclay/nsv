@@ -1,6 +1,8 @@
 ---
 icon: material/earth
 status: new
+title: Dynamic Configuration
+description: Customize behavior with environment variables
 ---
 
 # Dynamic Configuration with Environment Variables

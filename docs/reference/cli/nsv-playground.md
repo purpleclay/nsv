@@ -1,5 +1,7 @@
 ---
 icon: material/console
+social:
+  cards: false
 ---
 
 # nsv playground
