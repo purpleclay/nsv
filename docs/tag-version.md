@@ -29,23 +29,17 @@ If you want to see what is happening under the hood:
     ```
 
 ```{ .text .no-select .no-copy }
-0.1.0
-
-HEAD
-────────────────────────────────────────────────────
-c6bfdda
-fix: fix to the store
-
-✓ a0a1e2b
-   >>feat<<: new exciting search feature
-
-83def28
-ci: configure workflows
-
-6c05c93
-initialize repository
-────────────────────────────────────────────────────
-0.0.0
+0.2.0
+┌───────────────┬──────────────────────────────────────────────────┐
+│  0.2.0        │ > e0ba951                                        │
+│  ↑↑           │   docs: document new exciting feature            │
+│  0.1.0        │                                                  │
+│               │ ✓ 2020953                                        │
+│               │   >>feat<<: a new exciting feature               │
+│               │                                                  │
+│               │ > 709a467                                        │
+│               │   ci: add github workflows                       │
+└───────────────┴──────────────────────────────────────────────────┘
 ```
 
 ## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
