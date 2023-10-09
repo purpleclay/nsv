@@ -2,6 +2,10 @@
 
 NSV (Next Semantic Version) is a convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!
 
+## See it in action
+
+https://github.com/purpleclay/nsv/assets/106762954/4d3362ac-6b1c-42b1-a13a-0edffb2ab6bd
+
 ## Why another versioning tool
 
 There are many semantic versioning tools already out there! But they typically require some configuration or custom scripting in your CI system to make them work. No one likes managing config; it is error-prone, and the slightest tweak ultimately triggers a cascade of change across your projects.
