@@ -26,6 +26,3 @@ manpages/
 
 # Material for MkDocs
 .cache
-
-# Assets
-*.mp4

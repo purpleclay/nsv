@@ -7,6 +7,15 @@ description: Convention-based semantic versioning without a config file
 
 `nsv` (Next Semantic Version) is a convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!
 
+## See it in action
+
+<div>
+    <video controls>
+        <source src="./static/nsv.webm" type="video/webm">
+        <source src="./static/nsv.mp4" type="video/mp4">
+    </video>
+</div>
+
 ## Why another versioning tool
 
 There are many semantic versioning tools already out there! But they typically require some configuration or custom scripting in your CI system to make them work. No one likes managing config; it is error-prone, and the slightest tweak ultimately triggers a cascade of change across your projects.
