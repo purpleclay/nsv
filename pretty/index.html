@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Advanced control of semantic versioning through dedicated commands">
+        <meta name="description" content="Pretty-printing formats for customizing output">
       
       
       
-        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/commands/">
+        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/pretty/">
       
       
-        <link rel="prev" href="../next-version/">
+        <link rel="prev" href="../monorepos/">
       
       
-        <link rel="next" href="../playground/">
+        <link rel="next" href="../github-action/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Semantic Commands - NSV</title>
+        <title>Pretty Print - NSV</title>
       
     
     
@@ -68,17 +68,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Semantic Commands - NSV" />
-<meta property="og:description" content="Advanced control of semantic versioning through dedicated commands" />
-<meta property="og:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/commands.png" />
+<meta property="og:title" content="Pretty Print - NSV" />
+<meta property="og:description" content="Pretty-printing formats for customizing output" />
+<meta property="og:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/pretty.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://docs.purpleclay.dev/nsv/commands/" />
+<meta property="og:url" content="https://docs.purpleclay.dev/nsv/pretty/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter.title" content="Semantic Commands - NSV" />
-<meta property="twitter:description" content="Advanced control of semantic versioning through dedicated commands" />
-<meta property="twitter:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/commands.png" />
+<meta property="twitter.title" content="Pretty Print - NSV" />
+<meta property="twitter:description" content="Pretty-printing formats for customizing output" />
+<meta property="twitter:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/pretty.png" />
 </head>
   
   
@@ -96,7 +96,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#control-your-workflow-with-commands" class="md-skip">
+        <a href="#pretty-printing-output" class="md-skip">
           Skip to content
         </a>
       
@@ -159,7 +159,7 @@ and
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Semantic Commands
+              Pretty Print
             
           </span>
         </div>
@@ -485,37 +485,9 @@ and
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2a4 4 0 0 1 4 4v2h4V6a4 4 0 0 1 4-4 4 4 0 0 1 4 4 4 4 0 0 1-4 4h-2v4h2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4v-2h-4v2a4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4h2v-4H6a4 4 0 0 1-4-4 4 4 0 0 1 4-4m10 16a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2h-2v2m-2-8h-4v4h4v-4m-8 6a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2v-2H6M8 6a2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2h2V6m10 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2v2h2Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantic Commands
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../commands/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2a4 4 0 0 1 4 4v2h4V6a4 4 0 0 1 4-4 4 4 0 0 1 4 4 4 4 0 0 1-4 4h-2v4h2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4v-2h-4v2a4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4h2v-4H6a4 4 0 0 1-4-4 4 4 0 0 1 4-4m10 16a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2h-2v2m-2-8h-4v4h4v-4m-8 6a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2v-2H6M8 6a2 2 0 0 0-2-2 2 2 0 0 0-2 2 2 2 0 0 0 2 2h2V6m10 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2 2 2 0 0 0-2 2v2h2Z"/></svg>
@@ -532,71 +504,6 @@ and
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Commands
-        </span>
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Commands">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#forcing-a-semantic-increment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Forcing a semantic increment
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prerelease-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Prerelease support
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -706,9 +613,45 @@ and
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../pretty/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.7 4.1c-2 .7-4.8 1.4-8.7 1.4-3.9 0-6.9-.8-8.7-1.4-.6-.3-1.3.2-1.3.9v14c0 .7.7 1.2 1.3 1 2.1-.7 4.8-1.5 8.7-1.5 3.9 0 6.7.8 8.7 1.5.7.2 1.3-.3 1.3-1V5c0-.7-.7-1.2-1.3-.9M12 15c-2.3 0-4.5.1-6.5.4L9.2 11l2 2.4L14 10l4.5 5.4c-2-.3-4.2-.4-6.5-.4Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Pretty Print
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new" title="New Features Added">
+    </span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.7 4.1c-2 .7-4.8 1.4-8.7 1.4-3.9 0-6.9-.8-8.7-1.4-.6-.3-1.3.2-1.3.9v14c0 .7.7 1.2 1.3 1 2.1-.7 4.8-1.5 8.7-1.5 3.9 0 6.7.8 8.7 1.5.7.2 1.3-.3 1.3-1V5c0-.7-.7-1.2-1.3-.9M12 15c-2.3 0-4.5.1-6.5.4L9.2 11l2 2.4L14 10l4.5 5.4c-2-.3-4.2-.4-6.5-.4Z"/></svg>
@@ -733,6 +676,52 @@ and
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Full
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Compact
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1456,47 +1445,28 @@ and
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
+  <a href="#full" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Commands
-        </span>
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Commands">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#forcing-a-semantic-increment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Forcing a semantic increment
+          Full
         </span>
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#prerelease-support" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#compact" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Prerelease support
+          Compact
         </span>
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1519,36 +1489,34 @@ and
   
 
 
-<h1 id="control-your-workflow-with-commands">Control your workflow with Commands<a class="headerlink" href="#control-your-workflow-with-commands" title="Permanent link">&para;</a></h1>
-<p><span class="rounded-pill"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2v2h1v14a4 4 0 0 0 4 4 4 4 0 0 0 4-4V4h1V2H7m4 14c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m2-4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m1-5h-4V4h4v3Z"/></svg></span> experimental</span></p>
-<p>Conventional Commits is an excellent standard, but sometimes it doesn't fit our semantic versioning needs. Let's consider <u>major version zero</u> application development from the Semantic Versioning (<code>SemVer</code>) <a href="https://semver.org/">2.0</a> specification:</p>
-<div class="language-text no-select no-copy highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Major version zero (0.y.z) is for initial development. Anything MAY change at
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>any time. The public API SHOULD NOT be considered stable.
+<h1 id="pretty-printing-output">Pretty-Printing Output<a class="headerlink" href="#pretty-printing-output" title="Permanent link">&para;</a></h1>
+<p>Support for pretty-printing allows the output of <code>nsv</code> to be customized. A set of in-built options are supported, with more to follow. The default option is <code>full</code> but can be changed:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">ENV</label><label for="__tabbed_1_2">CLI</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">NSV_PRETTY</span><span class="o">=</span>compact<span class="w"> </span>nsv<span class="w"> </span>next
 </span></code></pre></div>
-<p>All changes within this workflow are not considered stable and could be breaking. Relying purely on the conventional commit standard would cause a major increment for every commit containing a breaking change prefix or footer. As <code>nsv</code> is SemVer compliant, a major increment will not happen within this workflow unless explicitly instructed to do so with a command:</p>
-<div class="language-text no-select no-copy highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>feat!: expose new sorting functionality over API
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>To enable support for server-side sorting, the existing structure of the request
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>body has been modified to compartmentalize sorting criteria
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="hll">nsv: force~major
-</span></span></code></pre></div>
-<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
-<p>Commands are defined in the footer of a commit message using the case-insensitive <code>nsv:</code> prefix. Like conventional commits, it is a simple way of describing semantic versioning intent and fits seamlessly into any developer's workflow.</p>
-<h3 id="forcing-a-semantic-increment">Forcing a semantic increment<a class="headerlink" href="#forcing-a-semantic-increment" title="Permanent link">&para;</a></h3>
-<p>The force command allows a developer to take control of the semantic release workflow. Like conventional commits, if multiple commands exist as part of the next release, <code>nsv</code> will choose the one that introduces the largest increment.</p>
-<p>For simplicity, there is a one-to-one mapping to all semantic increments:</p>
-<ul>
-<li><code>force~major</code></li>
-<li><code>force~minor</code></li>
-<li><code>force~patch</code></li>
-</ul>
-<p>If you need to ignore any previous force commands during a release, a break-glass case exists:</p>
-<ul>
-<li><code>force~ignore</code></li>
-</ul>
-<h3 id="prerelease-support">Prerelease support<a class="headerlink" href="#prerelease-support" title="Permanent link">&para;</a></h3>
-<p><span class="rounded-pill"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2v2L4 8V6H2v12h2v-2l2 .5v2C6 20.4 7.6 22 9.5 22s3.5-1.6 3.5-3.5v-.2l7 1.7v2h2V2h-2m-9 16.5c0 .8-.7 1.5-1.5 1.5S8 19.3 8 18.5V17l3 .8v.7m9-.5L4 14v-4l16-4v12Z"/></svg></span> coming soon</span></p>
+</div>
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nsv<span class="w"> </span>next<span class="w"> </span>--pretty<span class="w"> </span>compact
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">A colorless output</p>
+<p>Stripping back to basics is easy, set the following environment variable to switch to an ASCII color profile, <code>NO_COLOR=1</code>.</p>
+</div>
+<h2 id="full">Full<a class="headerlink" href="#full" title="Permanent link">&para;</a></h2>
+<p>A tabular format displaying each semantic version change with its associated history, clearly highlighting the triggering commit.</p>
+<h2 id="compact">Compact<a class="headerlink" href="#compact" title="Permanent link">&para;</a></h2>
+<p>A tabular format with a condensed history, providing a focused overview of any triggering commit.</p>
+<div class="language-text no-select no-copy highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌───────────────┬──────────────────────────────────────────────────┐
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│  0.2.0        │ ✓ 2020953                                        │
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│  ↑↑           │   &gt;&gt;feat&lt;&lt;: a new exciting feature               │
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│  0.1.0        │                                                  │
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>└───────────────┴──────────────────────────────────────────────────┘
+</span></code></pre></div>
 
   
   
