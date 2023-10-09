@@ -19,7 +19,7 @@ The following annotations represent a semantic version broken down into its part
 | `{{.SemVer}}`  | The explicit semantic version. Any leading `v` prefix will be removed   | `0.1.0`  |
 | `{{.Version}}` | The version number based on the repositories existing naming convention | `v0.1.0` |
 
-## Tag annotation message :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
+## Tag annotation message :material-new-box:{.new-feature title="Feature added on the 9th of October 2023"}
 
 The following annotations are available for [customizing](../tag-version.md#using-a-custom-tag-message) the tag annotation message.
 

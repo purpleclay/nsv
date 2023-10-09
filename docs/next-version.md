@@ -44,7 +44,7 @@ If you want to see what is happening under the hood:
 
 If you need to customize its behavior, [environment variables](./reference/env-vars.md), CLI [flags](./reference/cli/nsv-next.md), or [commands](./commands.md) can be used.
 
-## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 3rd of October 2023"}
+## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 9th of October 2023"}
 
 Monorepo support is important to the [design](./monorepos.md) of `nsv`. By adding support for context paths, multiple semantic versions can be resolved throughout a repository in a single operation.
 
