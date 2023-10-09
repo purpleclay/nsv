@@ -26,15 +26,19 @@ Sleep 3s
 Type "# Lets calculate the next semantic version"
 Enter 2
 Sleep 1.5s
-Type "./nsv next"
-Enter 3
+Type "nsv next"
+Enter
+Sleep 100ms
+Enter 2
 Sleep 2s
 
 Type "# That was quick... If you want to see how NSV works, you can"
 Enter 2
 Sleep 1.5s
 Type "nsv next --show"
-Enter 3
+Enter
+Sleep 100ms
+Enter 2
 Sleep 4s
 
 Type "# We can see the commit and conventional commit prefix that triggered"
@@ -47,7 +51,9 @@ Type "# Everything looks great. Lets tag the repository 🚀"
 Enter 2
 Sleep 1.5s
 Type "nsv tag"
-Enter 3
+Enter
+Sleep 100ms
+Enter 2
 Sleep 1.5s
 
 Type "# Thanks for watching... Keep up to date with all the latest news by"
