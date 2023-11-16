@@ -35,8 +35,9 @@ import (
 )
 
 const (
-	vPrefix  = 'v'
-	firstVer = "0.0.0"
+	vPrefix          = 'v'
+	firstVer         = "0.0.0"
+	prefixedFirstVer = "v0.0.0"
 )
 
 type Increment int
@@ -196,7 +197,7 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	}
 
 	if ltag == "" {
-		ltag = firstVersion(ctx.TagPrefix)
+		ltag = firstVersion(ctx)
 	}
 
 	nextVer, err := bump(ltag, opts.VersionFormat, inc, cmd)
@@ -237,11 +238,17 @@ func latestTag(gitc *git.Client, prefix string) (string, error) {
 	return tags[0], nil
 }
 
-func firstVersion(prefix string) string {
-	if prefix == "" {
-		return firstVer
+func firstVersion(ctx *context) string {
+	fv := firstVer
+	if detectLanguageIsPrefixed(ctx.LogPath) {
+		fv = prefixedFirstVer
 	}
-	return fmt.Sprintf("%s/%s", prefix, firstVer)
+
+	if ctx.TagPrefix == "" {
+		return fv
+	}
+
+	return fmt.Sprintf("%s/%s", ctx.TagPrefix, fv)
 }
 
 func bump(ver, format string, inc Increment, cmd Command) (string, error) {
