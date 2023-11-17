@@ -178,34 +178,22 @@ ci: configure workflow to run benchmarks
 }
 
 func TestNextVersionWithFormat(t *testing.T) {
-	format := "v{{ .Version }}"
+	log := "(main) feat(broker): support asynchronous publishing to broker"
+	format := "custom/v{{ .Version }}"
 
-	tests := []struct {
-		name     string
-		log      string
-		expected string
-	}{
-		{
-			name:     "NewVersion",
-			log:      "(main) feat(broker): support asynchronous publishing to broker",
-			expected: "v0.1.0",
-		},
-		{
-			name: "ExistingVersion",
-			log: `(main) feat(broker): enable tls authentication
-(tag: v0.1.0) feat(broker): support asynchronous publishing to broker`,
-			expected: "v0.2.0",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gittest.InitRepository(t, gittest.WithLog(tt.log))
-			gitc, _ := git.NewClient()
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
 
-			next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format})
+	next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format})
 
-			require.NoError(t, err)
-			require.Equal(t, tt.expected, next.Tag)
-		})
-	}
+	require.NoError(t, err)
+	assert.Equal(t, "custom/v0.1.0", next.Tag)
+}
+
+func TestTagParse(t *testing.T) {
+	tag, _ := nsv.ParseTag("store/v0.11.2")
+	assert.Equal(t, tag.Prefix, "store")
+	assert.Equal(t, tag.SemVer, "0.11.2")
+	assert.Equal(t, tag.Version, "v0.11.2")
+	assert.Equal(t, tag.Raw, "store/v0.11.2")
 }

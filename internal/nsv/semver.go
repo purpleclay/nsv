@@ -102,6 +102,11 @@ func ParseTag(raw string) (Tag, error) {
 		lastSlash = idx + 1
 	}
 
+	prefix := ""
+	if lastSlash > 0 {
+		prefix = raw[:lastSlash-1]
+	}
+
 	semv := raw[lastSlash:]
 	if semv[0] == vPrefix {
 		semv = semv[1:]
@@ -112,7 +117,7 @@ func ParseTag(raw string) (Tag, error) {
 	}
 
 	return Tag{
-		Prefix:  raw[:lastSlash],
+		Prefix:  prefix,
 		Raw:     raw,
 		SemVer:  semv,
 		Version: raw[lastSlash:],
@@ -125,11 +130,13 @@ func (t Tag) Bump(semv string) Tag {
 		ver = fmt.Sprintf("%c%s", vPrefix, ver)
 	}
 
-	return Tag{
-		Prefix:  t.Prefix,
-		SemVer:  semv,
-		Version: ver,
+	raw := ver
+	if t.Prefix != "" {
+		raw = fmt.Sprintf("%s/%s", t.Prefix, raw)
 	}
+
+	tag, _ := ParseTag(raw)
+	return tag
 }
 
 func (t Tag) Format(format string) string {
@@ -141,17 +148,21 @@ func (t Tag) Format(format string) string {
 
 	tmpl, _ := template.New("custom-format").Parse(format)
 	_ = tmpl.Execute(&tagf, t)
+	return tagf.String()
 
-	fmted := tagf.String()
-	lastSlash := 0
-	if idx := strings.LastIndex(fmted, "/"); idx > -1 {
-		lastSlash = idx + 1
-	}
+	// fmted := tagf.String()
 
-	if fmted[lastSlash:lastSlash+2] == "vv" {
-		return fmted[:lastSlash] + fmted[lastSlash+1:]
-	}
-	return fmted
+	// // TODO: this check should be removed
+	// //
+	// lastSlash := 0
+	// if idx := strings.LastIndex(fmted, "/"); idx > -1 {
+	// 	lastSlash = idx + 1
+	// }
+
+	// if fmted[lastSlash:lastSlash+2] == "vv" {
+	// 	return fmted[:lastSlash] + fmted[lastSlash+1:]
+	// }
+	// return fmted
 }
 
 type Next struct {

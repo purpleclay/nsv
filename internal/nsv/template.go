@@ -32,7 +32,7 @@ import (
 	"text/template"
 )
 
-const versionFormat = "{{.Prefix}}{{.Version}}"
+const versionFormat = "{{.Raw}}"
 
 var versionTmpl = template.Must(template.New("default-format").Parse(versionFormat))
 
