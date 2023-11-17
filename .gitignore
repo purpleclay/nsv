@@ -26,3 +26,4 @@ manpages/
 
 # Material for MkDocs
 .cache
+.DS_Store

@@ -12,6 +12,7 @@ require (
 	github.com/muesli/termenv v0.15.2
 	github.com/purpleclay/gitz v0.8.0
 	github.com/purpleclay/lipgloss-theme v0.1.0
+	github.com/saracen/walker v0.1.3
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
 	gotest.tools/v3 v3.5.1
