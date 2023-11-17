@@ -46,8 +46,8 @@ func detectLanguageIsPrefixed(dir string) bool {
 	}
 
 	err := walker.Walk(root,
-		func(_ string, fi os.FileInfo) error {
-			if fi.Name() == root {
+		func(pathname string, fi os.FileInfo) error {
+			if pathname == root {
 				return nil
 			}
 
