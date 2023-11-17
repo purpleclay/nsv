@@ -40,10 +40,6 @@ var (
 )
 
 func detectLanguageIsPrefixed(dir string) bool {
-	cb := walker.WithErrorCallback(func(pathname string, err error) error {
-		return err
-	})
-
 	root := dir
 	if root == "" {
 		root = "."
@@ -63,11 +59,6 @@ func detectLanguageIsPrefixed(dir string) bool {
 				return errLanguageDetected
 			}
 			return nil
-		},
-		cb)
-	if errors.Is(err, errLanguageDetected) {
-		return true
-	}
-
-	return false
+		})
+	return errors.Is(err, errLanguageDetected)
 }
