@@ -12,7 +12,7 @@ require (
 	github.com/muesli/termenv v0.15.2
 	github.com/purpleclay/gitz v0.8.0
 	github.com/purpleclay/lipgloss-theme v0.1.0
-	github.com/saracen/walker v0.1.3
+	github.com/saracen/walker v0.1.4
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
 	gotest.tools/v3 v3.5.1
@@ -31,7 +31,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sync v0.2.0 // indirect
+	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/term v0.8.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
