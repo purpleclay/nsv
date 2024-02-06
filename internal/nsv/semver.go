@@ -149,20 +149,6 @@ func (t Tag) Format(format string) string {
 	tmpl, _ := template.New("custom-format").Parse(format)
 	_ = tmpl.Execute(&tagf, t)
 	return tagf.String()
-
-	// fmted := tagf.String()
-
-	// // TODO: this check should be removed
-	// //
-	// lastSlash := 0
-	// if idx := strings.LastIndex(fmted, "/"); idx > -1 {
-	// 	lastSlash = idx + 1
-	// }
-
-	// if fmted[lastSlash:lastSlash+2] == "vv" {
-	// 	return fmted[:lastSlash] + fmted[lastSlash+1:]
-	// }
-	// return fmted
 }
 
 type Next struct {
@@ -290,4 +276,18 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 
 	nextTag := pTag.Bump(bumpedVer.String())
 	return nextTag.Format(format), nil
+}
+
+func LatestTag(gitc *git.Client, opts Options) (string, error) {
+	ctx, err := resolveContext(gitc, opts)
+	if err != nil {
+		return "", err
+	}
+
+	ltag, err := latestTag(gitc, ctx.TagPrefix)
+	if err != nil {
+		return "", err
+	}
+
+	return ltag, nil
 }

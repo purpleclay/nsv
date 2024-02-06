@@ -24,10 +24,14 @@ package cmd
 
 import (
 	"github.com/caarlos0/env/v9"
+	tea "github.com/charmbracelet/bubbletea"
+	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
+
+// TODO: redo description
 
 var playgroundLongDesc = `A playground for discovering go template support.
 
@@ -42,10 +46,10 @@ Environment Variables:
 
 func playgroundCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "playground <tag>",
+		Use:   "playground [<path>]",
 		Short: "A playground for discovering go template support",
 		Long:  playgroundLongDesc,
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MaximumNArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return env.Parse(opts)
 		},
@@ -54,16 +58,34 @@ func playgroundCmd(opts *Options) *cobra.Command {
 				return err
 			}
 
-			tag, err := nsv.ParseTag(args[0])
+			gitc, err := git.NewClient()
 			if err != nil {
 				return err
 			}
 
-			tui.PrintFormat(tag, tui.PlaygroundOptions{
-				Out:           opts.Err,
-				VersionFormat: opts.VersionFormat,
-			})
-			return nil
+			var path string
+			if len(args) == 1 {
+				path = args[0]
+			}
+
+			ltag, err := nsv.LatestTag(gitc, nsv.Options{Path: path})
+			if err != nil {
+				return err
+			}
+
+			p := tea.NewProgram(
+				tui.NewPlayground(tui.PlaygroundOptions{
+					GitC:          gitc,
+					LatestTag:     ltag,
+					Path:          path,
+					VersionFormat: opts.VersionFormat,
+				}),
+				tea.WithMouseCellMotion(),
+				tea.WithOutput(opts.Out),
+				tea.WithAltScreen(),
+			)
+			_, err = p.Run()
+			return err
 		},
 	}
 

@@ -23,36 +23,146 @@ SOFTWARE.
 package tui
 
 import (
-	"fmt"
-	"io"
+	"strings"
 
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/textarea"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	git "github.com/purpleclay/gitz"
 	theme "github.com/purpleclay/lipgloss-theme"
-	"github.com/purpleclay/nsv/internal/nsv"
 )
 
-var chevron = lipgloss.NewStyle().
-	Padding(0, 1).
-	Foreground(lipgloss.AdaptiveColor{
-		Light: string(theme.S500),
-		Dark:  string(theme.S200),
-	}).
-	Render(">>")
+type logEntryItem struct {
+	description string
+	title       string
+}
+
+func (i logEntryItem) Title() string       { return i.title }
+func (i logEntryItem) Description() string { return i.description }
+func (i logEntryItem) FilterValue() string { return i.title }
+
+type gitLogLoadedMsg struct {
+	log []list.Item
+}
 
 type PlaygroundOptions struct {
-	Out           io.Writer
+	GitC          *git.Client
+	LatestTag     string
+	Path          string
 	VersionFormat string
 }
 
-func PrintFormat(tag nsv.Tag, opts PlaygroundOptions) {
-	tagf := tag.Format(opts.VersionFormat)
-	header := lipgloss.JoinHorizontal(lipgloss.Left, tag.Raw, chevron, opts.VersionFormat, chevron, tagf, "\n")
+type Playground struct {
+	commit    textarea.Model
+	commits   list.Model
+	gitc      *git.Client
+	latestTag string
+	logPath   string
+	pause     bool
+}
 
-	pane := lipgloss.JoinVertical(lipgloss.Top,
-		header,
-		fmt.Sprintf("{{.Prefix}} %s%s", chevron, tag.Prefix),
-		fmt.Sprintf("{{.SemVer}} %s%s", chevron, tag.SemVer),
-		fmt.Sprintf("{{.Version}}%s%s", chevron, tag.Version))
+func NewPlayground(opts PlaygroundOptions) *Playground {
+	commits := list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
+	commits.DisableQuitKeybindings()
+	commits.SetShowHelp(false)
+	commits.SetShowStatusBar(false)
+	commits.SetShowTitle(false)
 
-	fmt.Fprint(opts.Out, pane)
+	commit := textarea.New()
+	commit.SetHeight(8)
+
+	return &Playground{
+		commit:    commit,
+		commits:   commits,
+		gitc:      opts.GitC,
+		latestTag: opts.LatestTag,
+		logPath:   opts.Path,
+	}
+}
+
+func (m *Playground) Init() tea.Cmd {
+	return tea.Batch(m.gitLog)
+}
+
+func (m *Playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var (
+		cmd  tea.Cmd
+		cmds []tea.Cmd
+	)
+
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.commits.SetSize(msg.Width, msg.Height-13)
+		m.commit.SetWidth(msg.Width)
+	case gitLogLoadedMsg:
+		cmds = append(cmds, m.commits.SetItems(msg.log))
+	case tea.KeyMsg:
+		switch {
+		case key.Matches(msg, Esc):
+			m.commit.Blur()
+			m.commit.Reset()
+			m.pause = false
+		case key.Matches(msg, Enter):
+			// TODO: load commit message into the text area, and focus on the text area
+			//
+			logEntry := m.commits.SelectedItem().(logEntryItem)
+			m.commit.SetCursor(0)
+			m.commit.InsertString(logEntry.title)
+			m.commit.SetCursor(0)
+			cmds = append(cmds, m.commit.Focus())
+			m.pause = true
+		case key.Matches(msg, Quit):
+			return m, tea.Quit
+		}
+	}
+
+	if !m.pause {
+		m.commits, cmd = m.commits.Update(msg)
+		cmds = append(cmds, cmd)
+	}
+
+	// If not commit, update
+	m.commit, cmd = m.commit.Update(msg)
+	cmds = append(cmds, cmd)
+
+	return m, tea.Batch(cmds...)
+}
+
+func (m *Playground) View() string {
+	// TODO: accurately calcualate the height based from this component
+	title := lipgloss.JoinHorizontal(
+		lipgloss.Left,
+		theme.H2.Render("nsv"),
+		theme.H4.Render("playground"),
+	)
+
+	return lipgloss.JoinVertical(
+		lipgloss.Top,
+		title,
+		"",
+		m.commit.View(),
+		"",
+		m.commits.View(),
+	)
+}
+
+func (m *Playground) gitLog() tea.Msg {
+	var items []list.Item
+
+	log, _ := m.gitc.Log(git.WithPaths(m.logPath), git.WithRefRange(git.HeadRef, m.latestTag))
+	for _, l := range log.Commits {
+		title := l.Message
+		if idx := strings.Index(title, "\n"); idx > -1 {
+			title = strings.TrimSpace(title[:idx])
+		}
+
+		items = append(items, logEntryItem{
+			description: l.AbbrevHash,
+			title:       title,
+		})
+	}
+
+	return gitLogLoadedMsg{log: items}
 }
