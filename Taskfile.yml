@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Purple Clay
+# Copyright (c) 2023 - 2024 Purple Clay
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -74,9 +74,9 @@ tasks:
       - golangci-lint run --timeout 5m0s --out-format {{.REPORT_FORMAT}}
 
   build:
-      desc: Build the binary
-      cmds:
-        - go build -ldflags '-s -w {{.LDFLAGS}}' .
+    desc: Build the binary
+    cmds:
+      - go build -ldflags '-s -w {{.LDFLAGS}}' .
 
   format:
     desc: Format the code using gofumpt

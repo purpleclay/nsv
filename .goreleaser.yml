@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Purple Clay
+# Copyright (c) 2023 - 2024 Purple Clay
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -112,15 +112,15 @@ docker_signs:
     artifacts: manifests
     output: true
     args:
-    - 'sign'
-    - '${artifact}@${digest}'
-    - --yes
+      - "sign"
+      - "${artifact}@${digest}"
+      - --yes
 
 dockers:
   - image_templates:
-      - 'purpleclay/nsv:{{ .Tag }}-amd64'
-      - 'ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64'
-      - 'registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-amd64'
+      - "purpleclay/nsv:{{ .Tag }}-amd64"
+      - "ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64"
+      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-amd64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -135,9 +135,9 @@ dockers:
     extra_files:
       - scripts/entrypoint.sh
   - image_templates:
-      - 'purpleclay/nsv:{{ .Tag }}-arm64'
-      - 'ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64'
-      - 'registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-arm64'
+      - "purpleclay/nsv:{{ .Tag }}-arm64"
+      - "ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64"
+      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-arm64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2023 Purple Clay
+Copyright (c) 2023 - 2024 Purple Clay
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,14 +34,17 @@ const (
 	forceMinor  = "force~minor"
 	forcePatch  = "force~patch"
 	forceIgnore = "force~ignore"
+	prerelease  = "pre"
 )
 
 type Command struct {
-	Force Increment
+	Force      Increment
+	Prerelease bool
 }
 
 func DetectCommand(log []git.LogEntry) (Command, Match) {
 	force := NoIncrement
+	pre := false
 	match := Match{}
 
 	for i, entry := range log {
@@ -75,37 +78,11 @@ func DetectCommand(log []git.LogEntry) (Command, Match) {
 			force = MinorIncrement
 		case forcePatch:
 			force = PatchIncrement
+		case prerelease:
+			pre = true
 		}
-
-		// for _, footer := range footers {
-		// 	if len(footer) < len(command) || strings.ToUpper(footer[:len(command)]) != command {
-		// 		continue
-		// 	}
-		// 	cmd := strings.TrimSpace(footer[len(command):])
-
-		// 	// Capture the match
-		// 	match = Match{Index: i, Start: eol + 1, End: len(command) + len(cmd)}
-
-		// 	if command == forceIgnore {
-		// 		force = NoIncrement
-		// 		goto command
-		// 	}
-
-		// 	if force == MajorIncrement {
-		// 		break
-		// 	}
-
-		// 	switch command {
-		// 	case forceMajor:
-		// 		force = MajorIncrement
-		// 	case forceMinor:
-		// 		force = MinorIncrement
-		// 	case forcePatch:
-		// 		force = PatchIncrement
-		// 	}
-		// }
 	}
 
 command:
-	return Command{Force: force}, match
+	return Command{Force: force, Prerelease: pre}, match
 }

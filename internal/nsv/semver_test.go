@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2023 Purple Clay
+Copyright (c) 2023 - 2024 Purple Clay
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -177,6 +177,42 @@ ci: configure workflow to run benchmarks
 	}
 }
 
+func TestNextVersionFromPrerelease(t *testing.T) {
+	log := `(main, origin/main) feat: api is now stable, flag has been removed
+(tag: 0.2.0-beta.1) feat: experimental feature of api enabled with opt-in flag`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	require.NoError(t, err)
+	assert.Equal(t, "0.2.0", next.Tag)
+}
+
+func TestNextVersionPrerelease(t *testing.T) {
+	log := `> (main, origin/main) feat: initial restructure of documents for improved elastic search
+nsv:pre
+> (tag: 0.2.0) feat: use the elastic scroll api to page results`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	require.NoError(t, err)
+	assert.Equal(t, "0.3.0-beta.1", next.Tag)
+}
+
+func TestNextVersionIncrementsPrerelease(t *testing.T) {
+	log := `> (main, origin/main) feat: add support for coping a file within the cache to a new location
+nsv:pre
+> (tag: 0.2.0-beta.1) feat: experimental file cache with configurable ttl
+nsv:pre`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	require.NoError(t, err)
+	assert.Equal(t, "0.2.0-beta.2", next.Tag)
+}
+
 func TestNextVersionWithFormat(t *testing.T) {
 	log := "(main) feat(broker): support asynchronous publishing to broker"
 	format := "custom/v{{ .Version }}"
@@ -190,10 +226,12 @@ func TestNextVersionWithFormat(t *testing.T) {
 	assert.Equal(t, "custom/v0.1.0", next.Tag)
 }
 
-func TestTagParse(t *testing.T) {
-	tag, _ := nsv.ParseTag("store/v0.11.2")
+func TestParseTag(t *testing.T) {
+	tag, _ := nsv.ParseTag("store/v0.11.2-beta.1+20230207")
 	assert.Equal(t, tag.Prefix, "store")
-	assert.Equal(t, tag.SemVer, "0.11.2")
-	assert.Equal(t, tag.Version, "v0.11.2")
-	assert.Equal(t, tag.Raw, "store/v0.11.2")
+	assert.Equal(t, tag.SemVer, "0.11.2-beta.1+20230207")
+	assert.Equal(t, tag.Version, "v0.11.2-beta.1+20230207")
+	assert.Equal(t, tag.Raw, "store/v0.11.2-beta.1+20230207")
+	assert.Equal(t, tag.Pre, "beta.1")
+	assert.Equal(t, tag.Metadata, "20230207")
 }
