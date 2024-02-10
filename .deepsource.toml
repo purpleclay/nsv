@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Purple Clay
+# Copyright (c) 2023 - 2024 Purple Clay
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -31,5 +31,5 @@ enabled = true
     import_root = "github.com/purpleclay/nsv"
 
 [[analyzers]]
-name = "secret"
+name = "secrets"
 enabled = true

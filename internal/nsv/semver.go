@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2023 Purple Clay
+Copyright (c) 2023 - 2024 Purple Clay
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -90,10 +91,12 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 }
 
 type Tag struct {
-	Prefix  string
-	SemVer  string
-	Version string
-	Raw     string
+	Prefix   string
+	SemVer   string
+	Version  string
+	Raw      string
+	Pre      string
+	Metadata string
 }
 
 func ParseTag(raw string) (Tag, error) {
@@ -112,15 +115,18 @@ func ParseTag(raw string) (Tag, error) {
 		semv = semv[1:]
 	}
 
-	if _, err := semver.StrictNewVersion(semv); err != nil {
+	sv, err := semver.StrictNewVersion(semv)
+	if err != nil {
 		return Tag{}, err
 	}
 
 	return Tag{
-		Prefix:  prefix,
-		Raw:     raw,
-		SemVer:  semv,
-		Version: raw[lastSlash:],
+		Prefix:   prefix,
+		Raw:      raw,
+		SemVer:   semv,
+		Version:  raw[lastSlash:],
+		Pre:      sv.Prerelease(),
+		Metadata: sv.Metadata(),
 	}, nil
 }
 
@@ -149,20 +155,10 @@ func (t Tag) Format(format string) string {
 	tmpl, _ := template.New("custom-format").Parse(format)
 	_ = tmpl.Execute(&tagf, t)
 	return tagf.String()
+}
 
-	// fmted := tagf.String()
-
-	// // TODO: this check should be removed
-	// //
-	// lastSlash := 0
-	// if idx := strings.LastIndex(fmted, "/"); idx > -1 {
-	// 	lastSlash = idx + 1
-	// }
-
-	// if fmted[lastSlash:lastSlash+2] == "vv" {
-	// 	return fmted[:lastSlash] + fmted[lastSlash+1:]
-	// }
-	// return fmted
+func (t Tag) Prerelease() bool {
+	return len(t.Pre) > 0
 }
 
 type Next struct {
@@ -279,6 +275,12 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 		inc = cmd.Force
 	}
 
+	if pTag.Prerelease() {
+		// Prerelease versions have a lower precedence than a normal version, so invoke
+		// a patch to ensure (0.1.0-beta.1) is bumped to (0.1.0), http://semver.org/#spec-item-9
+		inc = PatchIncrement
+	}
+
 	switch inc {
 	case MajorIncrement:
 		bumpedVer = semv.IncMajor()
@@ -286,6 +288,17 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 		bumpedVer = semv.IncMinor()
 	case PatchIncrement:
 		bumpedVer = semv.IncPatch()
+	}
+
+	if cmd.Prerelease {
+		if pTag.Prerelease() {
+			// As this is an existing prerelease, increment it as expected
+			label, inc, _ := strings.Cut(pTag.Pre, ".")
+			i, _ := strconv.Atoi(inc)
+			bumpedVer, _ = bumpedVer.SetPrerelease(fmt.Sprintf("%s.%d", label, i+1))
+		} else {
+			bumpedVer, _ = bumpedVer.SetPrerelease("beta.1")
+		}
 	}
 
 	nextTag := pTag.Bump(bumpedVer.String())

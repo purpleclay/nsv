@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2023 Purple Clay
+Copyright (c) 2023 - 2024 Purple Clay
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +76,7 @@ NSV: force~major`,
 			require.Equal(t, tt.inc, cmd.Force, "failed to match increment")
 			require.Equal(t, tt.match.Start, match.Start, "failed to match starting index")
 			require.Equal(t, tt.match.End, match.End, "failed to match end index")
+			require.False(t, cmd.Prerelease, "prerelease should be false")
 		})
 	}
 }
@@ -118,6 +119,21 @@ nsv: force~ignore`},
 
 	cmd, _ := nsv.DetectCommand(log)
 	assert.Equal(t, nsv.NoIncrement, cmd.Force)
+}
+
+func TestDetectCommandPrerelease(t *testing.T) {
+	t.Parallel()
+
+	cmd, match := nsv.DetectCommand([]git.LogEntry{
+		{
+			Message: `experimental feature has been added to search
+nsv:pre`,
+		},
+	})
+	assert.True(t, cmd.Prerelease)
+	assert.Equal(t, nsv.NoIncrement, cmd.Force)
+	assert.Equal(t, 46, match.Start)
+	assert.Equal(t, 53, match.End)
 }
 
 // globals are used to prevent any compiler optimizations
