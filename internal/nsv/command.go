@@ -25,6 +25,7 @@ package nsv
 import (
 	"strings"
 
+	"github.com/purpleclay/chomp"
 	git "github.com/purpleclay/gitz"
 )
 
@@ -40,6 +41,38 @@ const (
 type Command struct {
 	Force      Increment
 	Prerelease bool
+}
+
+func commands(line string) []string {
+	var cmds []string
+
+	rem := line
+	for {
+		var out string
+		var err error
+
+		// keep chomping until an error is returned
+		rem, out, err = cmd()(rem)
+		if err != nil {
+			break
+		}
+
+		cmds = append(cmds, out)
+	}
+
+	return cmds
+}
+
+func cmd() chomp.Combinator[string] {
+	return func(s string) (string, string, error) {
+		rem, out, err := chomp.Not(", ")(s)
+		if err != nil {
+			return rem, out, err
+		}
+
+		rem, _, _ = chomp.Opt(chomp.Any(", "))(rem)
+		return rem, out, nil
+	}
 }
 
 func DetectCommand(log []git.LogEntry) (Command, Match) {
@@ -59,30 +92,28 @@ func DetectCommand(log []git.LogEntry) (Command, Match) {
 			continue
 		}
 
-		cmd := strings.TrimSpace(footer[len(command):])
+		cmdLine := strings.TrimSpace(footer[len(command):])
 		match = Match{Index: i, Start: idx + 1, End: (idx + len(footer)) + 1}
 
-		if cmd == forceIgnore {
-			force = NoIncrement
-			goto command
+		cmds := commands(cmdLine)
+		for _, cmd := range cmds {
+			switch cmd {
+			case forceMajor:
+				force = MajorIncrement
+			case forceMinor:
+				force = MinorIncrement
+			case forcePatch:
+				force = PatchIncrement
+			case forceIgnore:
+				force = NoIncrement
+			case prerelease:
+				pre = true
+			}
 		}
 
-		if force == MajorIncrement {
-			break
-		}
-
-		switch cmd {
-		case forceMajor:
-			force = MajorIncrement
-		case forceMinor:
-			force = MinorIncrement
-		case forcePatch:
-			force = PatchIncrement
-		case prerelease:
-			pre = true
-		}
+		// Only want the first detected command
+		break
 	}
 
-command:
 	return Command{Force: force, Prerelease: pre}, match
 }
