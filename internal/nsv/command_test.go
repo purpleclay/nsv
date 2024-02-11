@@ -63,6 +63,13 @@ NSV: force~major`,
 			inc:   nsv.MajorIncrement,
 			match: nsv.Match{Start: 28, End: 44},
 		},
+		{
+			name: "NoIncrement",
+			commit: `include smart labels for faster searching within results
+nsv:force~ignore`,
+			inc:   nsv.NoIncrement,
+			match: nsv.Match{Start: 57, End: 73},
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
@@ -81,7 +88,7 @@ NSV: force~major`,
 	}
 }
 
-func TestDetectCommandForceHighestChosen(t *testing.T) {
+func TestDetectCommandFirstChosen(t *testing.T) {
 	t.Parallel()
 
 	log := []git.LogEntry{
@@ -102,23 +109,7 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 	}
 
 	cmd, _ := nsv.DetectCommand(log)
-	assert.Equal(t, nsv.MajorIncrement, cmd.Force)
-}
-
-func TestDetectCommandForceIgnore(t *testing.T) {
-	t.Parallel()
-
-	log := []git.LogEntry{
-		{Message: `support the use of websockets to provide dynamic notifications to dashboard
-Closes #8
-nsv: force~major`},
-		{Message: `add additional checks to ensure no secrets escape the repository
-Closes #7
-nsv: force~ignore`},
-	}
-
-	cmd, _ := nsv.DetectCommand(log)
-	assert.Equal(t, nsv.NoIncrement, cmd.Force)
+	assert.Equal(t, nsv.MinorIncrement, cmd.Force)
 }
 
 func TestDetectCommandPrerelease(t *testing.T) {
@@ -134,6 +125,21 @@ nsv:pre`,
 	assert.Equal(t, nsv.NoIncrement, cmd.Force)
 	assert.Equal(t, 46, match.Start)
 	assert.Equal(t, 53, match.End)
+}
+
+func TestDetectMultipleCommands(t *testing.T) {
+	t.Parallel()
+
+	cmd, match := nsv.DetectCommand([]git.LogEntry{
+		{
+			Message: `experimental use of a file cache
+nsv:pre,force~major`,
+		},
+	})
+	assert.True(t, cmd.Prerelease)
+	assert.Equal(t, nsv.MajorIncrement, cmd.Force)
+	assert.Equal(t, 33, match.Start)
+	assert.Equal(t, 52, match.End)
 }
 
 // globals are used to prevent any compiler optimizations

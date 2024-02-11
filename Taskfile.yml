@@ -82,3 +82,10 @@ tasks:
     desc: Format the code using gofumpt
     cmds:
       - gofumpt -w -l .
+
+  bench:
+    desc: Run the benchmarks
+    vars:
+      TEST_OPTIONS: '{{default "-bench=. -benchtime 5s -benchmem" .TEST_OPTIONS}}'
+    cmds:
+      - go test {{.TEST_OPTIONS}} -run=^# ./...
