@@ -290,7 +290,10 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 		bumpedVer = semv.IncPatch()
 	}
 
-	if cmd.Prerelease {
+	// TODO: grab the prerelease label from the Command
+	// TODO: detect if prerelease is moving from alpha to beta, then reset counter
+
+	if cmd.Prerelease != "" {
 		if pTag.Prerelease() {
 			// As this is an existing prerelease, increment it as expected
 			label, inc, _ := strings.Cut(pTag.Pre, ".")
