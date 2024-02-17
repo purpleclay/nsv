@@ -114,6 +114,8 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 }
 
 func TestDetectCommandPrerelease(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		command string
@@ -141,6 +143,7 @@ func TestDetectCommandPrerelease(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			cmd, _ := nsv.DetectCommand([]git.LogEntry{
