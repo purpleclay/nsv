@@ -23,6 +23,7 @@ SOFTWARE.
 package nsv_test
 
 import (
+	"fmt"
 	"testing"
 
 	git "github.com/purpleclay/gitz"
@@ -83,7 +84,7 @@ nsv:force~ignore`,
 			require.Equal(t, tt.inc, cmd.Force, "failed to match increment")
 			require.Equal(t, tt.match.Start, match.Start, "failed to match starting index")
 			require.Equal(t, tt.match.End, match.End, "failed to match end index")
-			require.False(t, cmd.Prerelease, "prerelease should be false")
+			require.Empty(t, cmd.Prerelease, "prerelease should be empty")
 		})
 	}
 }
@@ -115,16 +116,45 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 func TestDetectCommandPrerelease(t *testing.T) {
 	t.Parallel()
 
-	cmd, match := nsv.DetectCommand([]git.LogEntry{
+	tests := []struct {
+		name    string
+		command string
+		label   string
+	}{
 		{
-			Message: `experimental feature has been added to search
-nsv:pre`,
+			name:    "DefaultToBeta",
+			command: "pre",
+			label:   "beta",
 		},
-	})
-	assert.True(t, cmd.Prerelease)
-	assert.Equal(t, nsv.NoIncrement, cmd.Force)
-	assert.Equal(t, 46, match.Start)
-	assert.Equal(t, 53, match.End)
+		{
+			name:    "Alpha",
+			command: "pre~alpha",
+			label:   "alpha",
+		},
+		{
+			name:    "Beta",
+			command: "pre~beta",
+			label:   "beta",
+		},
+		{
+			name:    "ReleaseCandidate",
+			command: "pre~rc",
+			label:   "rc",
+		},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			cmd, _ := nsv.DetectCommand([]git.LogEntry{
+				{
+					Message: fmt.Sprintf(`experimental feature has been added to search
+nsv:%s`, tt.command),
+				},
+			})
+			require.Equal(t, tt.label, cmd.Prerelease, "failed to match prerelease label")
+		})
+	}
 }
 
 func TestDetectMultipleCommands(t *testing.T) {
@@ -136,7 +166,7 @@ func TestDetectMultipleCommands(t *testing.T) {
 nsv:pre,force~major`,
 		},
 	})
-	assert.True(t, cmd.Prerelease)
+	assert.Equal(t, "beta", cmd.Prerelease)
 	assert.Equal(t, nsv.MajorIncrement, cmd.Force)
 	assert.Equal(t, 33, match.Start)
 	assert.Equal(t, 52, match.End)
@@ -166,7 +196,7 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 		{Message: `combine existing methods to reduce complexity of api
 
 BREAKING-CHANGE: backwards compatibility with v1 is no longer supported
-nsv: force~minor`},
+nsv:force~minor`},
 	}
 	b.ResetTimer()
 

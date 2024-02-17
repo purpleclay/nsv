@@ -190,14 +190,14 @@ func TestNextVersionFromPrerelease(t *testing.T) {
 
 func TestNextVersionPrerelease(t *testing.T) {
 	log := `> (main, origin/main) feat: initial restructure of documents for improved elastic search
-nsv:pre
+nsv:pre~alpha
 > (tag: 0.2.0) feat: use the elastic scroll api to page results`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{})
 	require.NoError(t, err)
-	assert.Equal(t, "0.3.0-beta.1", next.Tag)
+	assert.Equal(t, "0.3.0-alpha.1", next.Tag)
 }
 
 func TestNextVersionIncrementsPrerelease(t *testing.T) {

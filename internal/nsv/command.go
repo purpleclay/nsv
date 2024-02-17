@@ -30,17 +30,57 @@ import (
 )
 
 const (
-	command     = "NSV:"
-	forceMajor  = "force~major"
-	forceMinor  = "force~minor"
-	forcePatch  = "force~patch"
-	forceIgnore = "force~ignore"
-	prerelease  = "pre"
+	prefix      = "NSV:"
+	sep         = "~"
+	forceCmd    = "force"
+	forceMajor  = "major"
+	forceMinor  = "minor"
+	forcePatch  = "patch"
+	forceIgnore = "ignore"
+	preCmd      = "pre"
+	preAlpha    = "alpha"
+	preBeta     = "beta"
+	preRc       = "rc"
 )
 
 type Command struct {
 	Force      Increment
-	Prerelease bool
+	Prerelease string
+}
+
+func DetectCommand(log []git.LogEntry) (Command, Match) {
+	command := Command{}
+	match := Match{}
+
+	for i, entry := range log {
+		msg := strings.TrimSpace(entry.Message)
+		idx := strings.LastIndex(msg, "\n")
+		if idx == -1 {
+			continue
+		}
+
+		footer := msg[idx+1:]
+		if strings.ToUpper(footer[:len(prefix)]) != prefix {
+			continue
+		}
+
+		cmdLine := strings.TrimSpace(footer[len(prefix):])
+		match = Match{Index: i, Start: idx + 1, End: (idx + len(footer)) + 1}
+
+		cmds := commands(cmdLine)
+		for _, cmd := range cmds {
+			if strings.HasPrefix(cmd, forceCmd) {
+				command.Force = chompForce(cmd)
+			} else if strings.HasPrefix(cmd, preCmd) {
+				command.Prerelease = chompPre(cmd)
+			}
+		}
+
+		// Detect only the first command
+		break
+	}
+
+	return command, match
 }
 
 func commands(line string) []string {
@@ -52,7 +92,7 @@ func commands(line string) []string {
 		var err error
 
 		// keep chomping until an error is returned
-		rem, out, err = cmd()(rem)
+		rem, out, err = chompCmd()(rem)
 		if err != nil {
 			break
 		}
@@ -63,7 +103,7 @@ func commands(line string) []string {
 	return cmds
 }
 
-func cmd() chomp.Combinator[string] {
+func chompCmd() chomp.Combinator[string] {
 	return func(s string) (string, string, error) {
 		rem, out, err := chomp.Not(", ")(s)
 		if err != nil {
@@ -75,45 +115,44 @@ func cmd() chomp.Combinator[string] {
 	}
 }
 
-func DetectCommand(log []git.LogEntry) (Command, Match) {
-	force := NoIncrement
-	pre := false
-	match := Match{}
-
-	for i, entry := range log {
-		msg := strings.TrimSpace(entry.Message)
-		idx := strings.LastIndex(msg, "\n")
-		if idx == -1 {
-			continue
-		}
-
-		footer := msg[idx+1:]
-		if strings.ToUpper(footer[:len(command)]) != command {
-			continue
-		}
-
-		cmdLine := strings.TrimSpace(footer[len(command):])
-		match = Match{Index: i, Start: idx + 1, End: (idx + len(footer)) + 1}
-
-		cmds := commands(cmdLine)
-		for _, cmd := range cmds {
-			switch cmd {
-			case forceMajor:
-				force = MajorIncrement
-			case forceMinor:
-				force = MinorIncrement
-			case forcePatch:
-				force = PatchIncrement
-			case forceIgnore:
-				force = NoIncrement
-			case prerelease:
-				pre = true
-			}
-		}
-
-		// Only want the first detected command
-		break
+func chompForce(cmd string) Increment {
+	_, out, err := chomp.SepPair(
+		chomp.Tag(forceCmd),
+		chomp.Tag(sep),
+		chomp.First(
+			chomp.Tag(forceMajor),
+			chomp.Tag(forceMinor),
+			chomp.Tag(forcePatch),
+			chomp.Tag(forceIgnore),
+		))(cmd)
+	if err != nil {
+		return NoIncrement
 	}
 
-	return Command{Force: force, Prerelease: pre}, match
+	switch out[1] {
+	case forceMajor:
+		return MajorIncrement
+	case forceMinor:
+		return MinorIncrement
+	case forcePatch:
+		return PatchIncrement
+	default:
+		return NoIncrement
+	}
+}
+
+func chompPre(cmd string) string {
+	_, out, err := chomp.SepPair(
+		chomp.Tag(preCmd),
+		chomp.Tag(sep),
+		chomp.First(
+			chomp.Tag(preAlpha),
+			chomp.Tag(preBeta),
+			chomp.Tag(preRc),
+		))(cmd)
+	if err != nil {
+		return "beta"
+	}
+
+	return out[1]
 }
