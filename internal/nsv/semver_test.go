@@ -213,6 +213,21 @@ nsv:pre`
 	assert.Equal(t, "0.2.0-beta.2", next.Tag)
 }
 
+func TestNextVersionPreventsPrereleaseConflict(t *testing.T) {
+	log := `> (main, origin/main) feat: switched back to a beta release
+nsv:pre~beta
+> (tag: 0.1.0-alpha.1) feat: accidentally switched to an alpha release
+nsv:pre~alpha
+> (tag: 0.1.0-beta.1) feat: an initial beta release
+nsv:pre~beta`
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	require.NoError(t, err)
+	assert.Equal(t, "0.1.0-beta.2", next.Tag)
+}
+
 func TestNextVersionWithFormat(t *testing.T) {
 	log := "(main) feat(broker): support asynchronous publishing to broker"
 	format := "custom/v{{ .Version }}"

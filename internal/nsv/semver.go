@@ -161,6 +161,10 @@ func (t Tag) Prerelease() bool {
 	return len(t.Pre) > 0
 }
 
+func (t Tag) PrereleaseWithLabel(label string) bool {
+	return strings.HasPrefix(t.Pre, label)
+}
+
 type Next struct {
 	Log     []git.LogEntry
 	LogDir  string
@@ -206,8 +210,17 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	if ltag == "" {
 		ltag = firstVersion(ctx)
 	}
+	ver, _ := ParseTag(ltag)
 
-	nextVer, err := bump(ltag, opts.VersionFormat, inc, cmd)
+	if cmd.Prerelease != "" && !ver.PrereleaseWithLabel(cmd.Prerelease) {
+		// To prevent any conflict with prerelease tags, query git for the latest tag based
+		// on the prerelease label. Patch existing tag as needed
+		if preTag, _ := latestPrereleaseTag(gitc, ctx.TagPrefix, cmd.Prerelease); preTag != "" {
+			ver, _ = ParseTag(preTag)
+		}
+	}
+
+	nextVer, err := bump(ver, opts.VersionFormat, inc, cmd)
 	if err != nil {
 		return nil, err
 	}
@@ -222,6 +235,10 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 }
 
 func latestTag(gitc *git.Client, prefix string) (string, error) {
+	return latestTagByGlob(gitc, prefix, "**/*.*.*")
+}
+
+func latestTagByGlob(gitc *git.Client, prefix, glob string) (string, error) {
 	prefixFilter := func(tag string) bool {
 		if prefix == "" {
 			return true
@@ -230,7 +247,7 @@ func latestTag(gitc *git.Client, prefix string) (string, error) {
 		return strings.HasPrefix(tag, prefix+"/")
 	}
 
-	tags, err := gitc.Tags(git.WithShellGlob("**/*.*.*"),
+	tags, err := gitc.Tags(git.WithShellGlob(glob),
 		git.WithSortBy(git.VersionDesc),
 		git.WithFilters(prefixFilter),
 		git.WithCount(1))
@@ -243,6 +260,10 @@ func latestTag(gitc *git.Client, prefix string) (string, error) {
 	}
 
 	return tags[0], nil
+}
+
+func latestPrereleaseTag(gitc *git.Client, prefix, label string) (string, error) {
+	return latestTagByGlob(gitc, prefix, fmt.Sprintf("**/*.*.*-%s*", label))
 }
 
 func firstVersion(ctx *context) string {
@@ -258,9 +279,8 @@ func firstVersion(ctx *context) string {
 	return fmt.Sprintf("%s/%s", ctx.TagPrefix, fv)
 }
 
-func bump(ver, format string, inc Increment, cmd Command) (string, error) {
-	pTag, _ := ParseTag(ver)
-	semv, err := semver.StrictNewVersion(pTag.SemVer)
+func bump(ver Tag, format string, inc Increment, cmd Command) (string, error) {
+	semv, err := semver.StrictNewVersion(ver.SemVer)
 	if err != nil {
 		return "", err
 	}
@@ -275,7 +295,7 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 		inc = cmd.Force
 	}
 
-	if pTag.Prerelease() {
+	if ver.Prerelease() {
 		// Prerelease versions have a lower precedence than a normal version, so invoke
 		// a patch to ensure (0.1.0-beta.1) is bumped to (0.1.0), http://semver.org/#spec-item-9
 		inc = PatchIncrement
@@ -291,9 +311,9 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 	}
 
 	if cmd.Prerelease != "" {
-		if pTag.Prerelease() {
+		if ver.Prerelease() {
 			// As this is an existing prerelease, increment it as expected
-			label, inc, _ := strings.Cut(pTag.Pre, ".")
+			label, inc, _ := strings.Cut(ver.Pre, ".")
 			i, _ := strconv.Atoi(inc)
 			bumpedVer, _ = bumpedVer.SetPrerelease(fmt.Sprintf("%s.%d", label, i+1))
 		} else {
@@ -301,6 +321,6 @@ func bump(ver, format string, inc Increment, cmd Command) (string, error) {
 		}
 	}
 
-	nextTag := pTag.Bump(bumpedVer.String())
+	nextTag := ver.Bump(bumpedVer.String())
 	return nextTag.Format(format), nil
 }
