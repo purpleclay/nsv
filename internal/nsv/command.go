@@ -84,35 +84,12 @@ func DetectCommand(log []git.LogEntry) (Command, Match) {
 }
 
 func commands(line string) []string {
-	var cmds []string
+	_, ext, _ := chomp.ManyN(
+		chomp.Suffixed(
+			chomp.Opt(chomp.Any(", ")),
+			chomp.Not(", ")), 0)(line)
 
-	rem := line
-	for {
-		var out string
-		var err error
-
-		// keep chomping until an error is returned
-		rem, out, err = chompCmd()(rem)
-		if err != nil {
-			break
-		}
-
-		cmds = append(cmds, out)
-	}
-
-	return cmds
-}
-
-func chompCmd() chomp.Combinator[string] {
-	return func(s string) (string, string, error) {
-		rem, out, err := chomp.Not(", ")(s)
-		if err != nil {
-			return rem, out, err
-		}
-
-		rem, _, _ = chomp.Opt(chomp.Any(", "))(rem)
-		return rem, out, nil
-	}
+	return ext
 }
 
 func chompForce(cmd string) Increment {
