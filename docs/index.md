@@ -29,6 +29,6 @@ The power is at your fingertips.
 - First-class support for <u>semantic versioning</u>. Conventional commits help give it a nudge in the right direction.
 - If you batch your commits per release or prefer a continuous delivery approach, it has you covered.
 - <u>Context-aware</u>, it automatically switches to a monorepo workflow.
-- Extend the power of your commits through <u>commands</u> to dynamically change your semantic release workflow. <span class="rounded-pill">:material-test-tube: experimental</span>
+- Extend the power of your commits through <u>commands</u> to dynamically change your semantic release workflow.
 - Explore how to use it within the purpose-built playground. <span class="rounded-pill">:material-test-tube: experimental</span>
 - Get up and running in seconds within GitHub :material-github: and GitLab :material-gitlab: with the available <u>[action](https://github.com/purpleclay/nsv-action)</u> or <u>[template](https://gitlab.com/purpleclay/nsv)</u>.

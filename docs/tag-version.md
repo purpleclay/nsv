@@ -1,6 +1,5 @@
 ---
 icon: material/tag-check-outline
-status: new
 description: Automatically tag your repository with the next semantic version
 ---
 
@@ -42,7 +41,7 @@ If you want to see what is happening under the hood:
 └───────────────┴──────────────────────────────────────────────────┘
 ```
 
-## Configurable paths for monorepo support :material-new-box:{.new-feature title="Feature added on the 9th of October 2023"}
+## Configurable paths for monorepo support
 
 Monorepo support is important to the [design](./monorepos.md) of `nsv`. By adding support for context paths, multiple semantic versions can be resolved and tagged as a single operation within a repository.
 
@@ -56,7 +55,7 @@ Any version change will be printed to stdout as a comma separated list in contex
 datastore/0.1.1,notifications/0.3.3
 ```
 
-## Using a custom tag message :material-new-box:{.new-feature title="Feature added on the 9th of October 2023"}
+## Using a custom tag message
 
 If you are not happy with the tag message, you can change it. Support for Go templating provides extra [customization](./reference/templating.md#tag-annotation-message).
 
