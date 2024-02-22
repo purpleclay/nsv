@@ -1,6 +1,5 @@
 ---
 icon: material/panorama-variant
-status: new
 description: Pretty-printing formats for customizing output
 ---
 

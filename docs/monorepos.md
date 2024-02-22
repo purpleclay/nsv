@@ -1,6 +1,5 @@
 ---
 icon: material/dots-hexagon
-status: new
 description: First-class support for monorepo workflows
 ---
 
