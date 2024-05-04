@@ -1,29 +1,31 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-/nsv
+# Ignore everything and selectively allow files
+*
 
-# Test binary, built with `go test -c`
-*.test
+# Allow project files
+!.deepsource.toml
+!.github/**/*
+!.gitignore
+!.golangci.yml
+!.goreleaser.yml
+!CODEOWNERS
+!CODE_OF_CONDUCT.md
+!Dockerfile
+!htmltest.yml
+!LICENSE
+!mkdocs.yml
+!README.md
+!Taskfile.yml
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-unittest-cover.txt
+# Allow Nix files
+!.envrc
+!flake.nix
+!flake.lock
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# Allow Go files
+!*.go
+!*.tape
+!go.sum
+!go.mod
 
-# GoReleaser
-completions/
-dist/
-manpages/
-
-# Ignore IDEs
-.vscode
-
-# Material for MkDocs
-.cache
-.DS_Store
+# Recurse through sub-directories applying the same patterns
+!*/
