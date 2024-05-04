@@ -2,7 +2,7 @@
   description = "Semantic versioning without any config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -16,10 +16,11 @@
         devShells.default = mkShell {
           buildInputs = [
             git
-            go
+            go_1_22
             gofumpt
             golangci-lint
             go-task
+            vhs
           ];
         };
       }
