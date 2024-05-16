@@ -10,7 +10,7 @@
 !CODEOWNERS
 !CODE_OF_CONDUCT.md
 !Dockerfile
-!htmltest.yml
+!htmltest.yaml
 !LICENSE
 !mkdocs.yml
 !README.md
