@@ -5,8 +5,8 @@
 !.deepsource.toml
 !.github/**/*
 !.gitignore
-!.golangci.yml
-!.goreleaser.yml
+!.golangci.yaml
+!.goreleaser.yaml
 !CODEOWNERS
 !CODE_OF_CONDUCT.md
 !Dockerfile
@@ -14,7 +14,10 @@
 !LICENSE
 !mkdocs.yml
 !README.md
-!Taskfile.yml
+!Taskfile.yaml
+!docs/**/*
+!*.sh
+!install
 
 # Allow Nix files
 !.envrc
@@ -26,6 +29,7 @@
 !*.tape
 !go.sum
 !go.mod
+!*.golden
 
 # Recurse through sub-directories applying the same patterns
 !*/
