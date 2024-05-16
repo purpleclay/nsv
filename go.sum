@@ -46,6 +46,8 @@ github.com/purpleclay/chomp v0.2.0 h1:6HyXhHFrgSq4LVmjAgCKAOyylJxZvreefZn8zWgS6W
 github.com/purpleclay/chomp v0.2.0/go.mod h1:sLfbgCsf5/Z0hf+Xzg2+Qn8Ei5RpP5tidiLklcFOT70=
 github.com/purpleclay/gitz v0.8.0 h1:hScHgk7eOHp7gku9kS168ei706Ydi22SCSdgL/M12F0=
 github.com/purpleclay/gitz v0.8.0/go.mod h1:yDVD7c+yc9PeKMhHy0sTH4maHDrTb+iOOplwNoJB0J8=
+github.com/purpleclay/gitz v0.8.1 h1:khRYDXKJttnVRtRmHl8CEOO7nA9dlbAQGSaarzn8LMM=
+github.com/purpleclay/gitz v0.8.1/go.mod h1:k8LXGzHyf5gt+PQBpsJNN+jGm9qvJn0IELcI7aTZJHA=
 github.com/purpleclay/lipgloss-theme v0.1.0 h1:Y8PHOfwGxOJQfODEPrUT25/8jck7pWTojXpI4jb8BWI=
 github.com/purpleclay/lipgloss-theme v0.1.0/go.mod h1:ndYEFXaLiFWq3xuzg7vCKlwNkEZTrxM9YuS2PgJ3WeI=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
@@ -66,8 +68,8 @@ github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8
 golang.org/x/sync v0.6.0 h1:5BMeUDZ7vkXGfEr1x9B4bRcTH4lpkTkpdh0T/J+qjbQ=
 golang.org/x/sync v0.6.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.12.0 h1:CM0HF96J0hcLAwsHPJZjfdNzs0gftsLfgKt57wWHJ0o=
-golang.org/x/sys v0.12.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.13.0 h1:Af8nKPmuFypiUBjVoU9V20FiaFXOcuZI21p0ycVYYGE=
+golang.org/x/sys v0.13.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.8.0 h1:n5xxQn2i3PC0yLAbjTpNT85q/Kgzcr2gIoX9OrJUols=
 golang.org/x/term v0.8.0/go.mod h1:xPskH00ivmX89bAKVGSKKtLOWNx2+17Eiy94tnKShWo=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

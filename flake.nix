@@ -16,7 +16,7 @@
         devShells.default = mkShell {
           buildInputs = [
             git
-            go_1_22
+            go
             gofumpt
             golangci-lint
             go-task
