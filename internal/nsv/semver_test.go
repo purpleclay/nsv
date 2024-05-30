@@ -1,15 +1,19 @@
 package nsv_test
 
 import (
+	"io"
 	"os"
 	"testing"
 
+	"github.com/charmbracelet/log"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/gitz/gittest"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+var noopLogger = log.New(io.Discard)
 
 func TestNextVersion(t *testing.T) {
 	log := `(main, origin/main) docs: document new search improvements
@@ -19,7 +23,7 @@ ci: add parallel testing support to workflow`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
 
 	assert.Equal(t, "0.1.1", next.Tag)
@@ -55,7 +59,7 @@ func TestNextVersionFirstVersion(t *testing.T) {
 			gittest.InitRepository(t, gittest.WithLog(tt.log))
 			gitc, _ := git.NewClient()
 
-			next, err := nsv.NextVersion(gitc, nsv.Options{})
+			next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, next.Tag)
@@ -69,7 +73,7 @@ func TestNextVersionMajorZeroSemV(t *testing.T) {
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
 	require.Equal(t, "0.2.0", next.Tag)
@@ -82,7 +86,7 @@ nsv:force~major
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
 	require.Equal(t, "1.0.0", next.Tag)
@@ -99,7 +103,7 @@ func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
 	os.Chdir("src/search")
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
 	assert.Equal(t, "search/0.1.0", next.Tag)
@@ -114,7 +118,7 @@ feat(search): add ability to search across processed data`
 
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{Path: "src/processor"})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Path: "src/processor", Logger: noopLogger})
 	require.NoError(t, err)
 	assert.Equal(t, "processor/0.1.0", next.Tag)
 	assert.Equal(t, "src/processor", next.LogDir)
@@ -147,7 +151,7 @@ ci: configure workflow to run benchmarks
 			gittest.InitRepository(t, gittest.WithLog(tt.log))
 			gitc, _ := git.NewClient()
 
-			next, err := nsv.NextVersion(gitc, nsv.Options{})
+			next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, next.Tag)
@@ -161,7 +165,7 @@ func TestNextVersionFromPrerelease(t *testing.T) {
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
 	assert.Equal(t, "0.2.0", next.Tag)
 }
@@ -173,7 +177,7 @@ nsv:pre~alpha
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
 	assert.Equal(t, "0.3.0-alpha.1", next.Tag)
 }
@@ -186,7 +190,7 @@ nsv:pre`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
 	assert.Equal(t, "0.2.0-beta.2", next.Tag)
 }
@@ -201,7 +205,7 @@ nsv:pre~beta`
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{})
+	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
 	assert.Equal(t, "0.1.0-beta.2", next.Tag)
 }
@@ -213,7 +217,7 @@ func TestNextVersionWithFormat(t *testing.T) {
 	gittest.InitRepository(t, gittest.WithLog(log))
 	gitc, _ := git.NewClient()
 
-	next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format})
+	next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format, Logger: noopLogger})
 
 	require.NoError(t, err)
 	assert.Equal(t, "custom/v0.1.0", next.Tag)
