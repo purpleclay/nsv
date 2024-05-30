@@ -16,8 +16,7 @@
 !README.md
 !Taskfile.yaml
 !docs/**/*
-!*.sh
-!install
+!scripts/*
 
 # Allow Nix files
 !.envrc

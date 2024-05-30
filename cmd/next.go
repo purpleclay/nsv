@@ -20,12 +20,12 @@ func (e MissingPathsError) Error() string {
 }
 
 type InvalidPrettyFormatError struct {
-	Pretty string
+	Format string
 }
 
 func (e InvalidPrettyFormatError) Error() string {
 	return fmt.Sprintf("pretty format '%s' is not supported, must be one of either: %s",
-		e.Pretty, strings.Join(tui.PrettyFormats, ", "))
+		e.Format, strings.Join(tui.PrettyFormats, ", "))
 }
 
 var nextLongDesc = `Generate the next semantic version based on the conventional commit history of your repository.
@@ -34,11 +34,12 @@ Environment Variables:
 
 | Name       | Description                                                    |
 |------------|----------------------------------------------------------------|
+| LOG_LEVEL  | the level of logging when outputting to stderr (default: info) |
 | NO_COLOR   | switch to using an ASCII color profile within the terminal     |
 | NSV_FORMAT | provide a go template for changing the default version format  |
 | NSV_PRETTY | pretty-print the output of the next semantic version in a      |
 |            | given format. The format can be one of either full or compact. |
-|            | full is the default. Must be used in conjunction with NSV_SHOW |
+|            | Must be used in conjunction with NSV_SHOW (default: full)      |
 | NSV_SHOW   | show how the next semantic version was generated               |`
 
 func nextCmd(opts *Options) *cobra.Command {
@@ -47,7 +48,7 @@ func nextCmd(opts *Options) *cobra.Command {
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := supportedPretty(opts.Pretty); err != nil {
+			if err := supportedPrettyFormat(opts.Pretty); err != nil {
 				return err
 			}
 
@@ -88,13 +89,13 @@ func prettyFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobr
 	return tui.PrettyFormats, cobra.ShellCompDirectiveDefault
 }
 
-func supportedPretty(pretty string) error {
+func supportedPrettyFormat(format string) error {
 	for _, p := range tui.PrettyFormats {
-		if p == pretty {
+		if p == format {
 			return nil
 		}
 	}
-	return InvalidPrettyFormatError{Pretty: pretty}
+	return InvalidPrettyFormatError{Format: format}
 }
 
 func pathsExist(paths []string) error {
@@ -124,6 +125,7 @@ func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
+			Logger:        opts.Logger,
 			Path:          path,
 			VersionFormat: opts.VersionFormat,
 		})

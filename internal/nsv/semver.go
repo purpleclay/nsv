@@ -10,6 +10,7 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/charmbracelet/log"
 	git "github.com/purpleclay/gitz"
 )
 
@@ -28,7 +29,21 @@ const (
 	MajorIncrement
 )
 
+func (i Increment) String() string {
+	switch i {
+	case PatchIncrement:
+		return "patch"
+	case MinorIncrement:
+		return "minor"
+	case MajorIncrement:
+		return "major"
+	default:
+		return "none"
+	}
+}
+
 type Options struct {
+	Logger        *log.Logger
 	Path          string
 	VersionFormat string
 }
@@ -62,8 +77,11 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 		logPath = git.RelativeAtRoot
 	}
 
+	tagPrefix := filepath.Base(relPath)
+
+	opts.Logger.Debug("resolved git context", "tag_prefix", tagPrefix, "log_path", logPath)
 	return &context{
-		TagPrefix: filepath.Base(relPath),
+		TagPrefix: tagPrefix,
 		LogPath:   logPath,
 	}, nil
 }
@@ -167,26 +185,40 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	if err != nil {
 		return nil, err
 	}
+	opts.Logger.Info("identified the latest git tag", "tag", ltag)
 
 	log, err := gitc.Log(git.WithPaths(ctx.LogPath), git.WithRefRange(git.HeadRef, ltag))
 	if err != nil {
 		return nil, err
 	}
+	opts.Logger.Info("retrieved git log", "commits", len(log.Commits), "log_path", ctx.LogPath)
 
 	// Detect commands first as they have a higher precedence over conventional commits
 	var inc Increment
 	cmd, match := DetectCommand(log.Commits)
+	opts.Logger.Debug("scanned git log for nsv commands", "force", cmd.Force.String(), "prerelease", cmd.Prerelease)
 
 	inc = cmd.Force
 	if inc == NoIncrement {
 		inc, match = DetectIncrement(log.Commits)
+
+		convInfo := []interface{}{"increment", inc.String()}
+		if match.Index != noMatch {
+			convInfo = append(convInfo,
+				"pref",
+				log.Commits[match.Index].Message[:match.End],
+			)
+		}
+		opts.Logger.Debug("scanned git log for conventional prefixes", convInfo...)
 	}
 	if inc == NoIncrement {
+		opts.Logger.Info("no next semantic version detected", "increment", inc.String())
 		return nil, nil
 	}
 
 	if ltag == "" {
 		ltag = firstVersion(ctx)
+		opts.Logger.Debug("defaulting to first semantic version", "tag", ltag)
 	}
 	ver, _ := ParseTag(ltag)
 
@@ -202,6 +234,16 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	if err != nil {
 		return nil, err
 	}
+	opts.Logger.Info("next semantic version",
+		"next",
+		nextVer,
+		"prev",
+		ltag,
+		"increment",
+		inc.String(),
+		"hash",
+		log.Commits[match.Index].AbbrevHash,
+	)
 
 	return &Next{
 		PrevTag: ltag,

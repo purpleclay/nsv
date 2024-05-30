@@ -43,7 +43,7 @@ var (
 		SetString(" ↑↑")
 
 	faint  = lipgloss.NewStyle().Faint(true)
-	bullet = faint.Copy().SetString("> ")
+	bullet = faint.SetString(">")
 )
 
 type SummaryOptions struct {
@@ -111,6 +111,7 @@ func printFullSummary(next *nsv.Next, opts SummaryOptions) string {
 		log = append(log, lipgloss.JoinHorizontal(
 			lipgloss.Left,
 			marker,
+			" ",
 			lipgloss.JoinVertical(
 				lipgloss.Top,
 				theme.Mark.Render(entry.AbbrevHash),
