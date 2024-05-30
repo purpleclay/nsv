@@ -52,8 +52,8 @@ github.com/purpleclay/chomp v0.2.0 h1:6HyXhHFrgSq4LVmjAgCKAOyylJxZvreefZn8zWgS6W
 github.com/purpleclay/chomp v0.2.0/go.mod h1:sLfbgCsf5/Z0hf+Xzg2+Qn8Ei5RpP5tidiLklcFOT70=
 github.com/purpleclay/gitz v0.8.1 h1:khRYDXKJttnVRtRmHl8CEOO7nA9dlbAQGSaarzn8LMM=
 github.com/purpleclay/gitz v0.8.1/go.mod h1:k8LXGzHyf5gt+PQBpsJNN+jGm9qvJn0IELcI7aTZJHA=
-github.com/purpleclay/lipgloss-theme v0.1.0 h1:Y8PHOfwGxOJQfODEPrUT25/8jck7pWTojXpI4jb8BWI=
-github.com/purpleclay/lipgloss-theme v0.1.0/go.mod h1:ndYEFXaLiFWq3xuzg7vCKlwNkEZTrxM9YuS2PgJ3WeI=
+github.com/purpleclay/lipgloss-theme v0.2.0 h1:46CP4xZgklAlB2LPIbP8OTTWltvcUTJv9EogVpeJtfw=
+github.com/purpleclay/lipgloss-theme v0.2.0/go.mod h1:dKN3lm6yVAaQ4BHlLJEToOeuPfWw/msTuz6QgpLmoCE=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.4.7 h1:WUdvkW8uEhrYfLC4ZzdpI2ztxP1I582+49Oc5Mq64VQ=
