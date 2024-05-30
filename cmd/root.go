@@ -15,8 +15,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TODO: should be set environment defaults that align to CLI flags?
-
 type Options struct {
 	Err           io.Writer   `env:"-"`
 	Logger        *log.Logger `env:"_"`
@@ -72,7 +70,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		Long:          rootLongDesc,
 		SilenceUsage:  true,
 		SilenceErrors: true,
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		PersistentPreRunE: func(_ *cobra.Command, _ []string) error {
 			if err := env.Parse(opts); err != nil {
 				return err
 			}
@@ -81,9 +79,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 				lipgloss.SetColorProfile(termenv.Ascii)
 			}
 
-			// TODO: support io.Discard as a writer option, if logging is to be turned off
 			logLevel, _ := log.ParseLevel(opts.LogLevel)
-
 			opts.Logger = log.NewWithOptions(os.Stderr, log.Options{
 				Level:           logLevel,
 				ReportCaller:    false,
@@ -114,7 +110,7 @@ func versionCmd(out io.Writer, buildInfo BuildDetails) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print build time version information",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			if short {
 				fmt.Fprintf(out, buildInfo.Version)
 				return nil

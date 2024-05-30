@@ -47,7 +47,7 @@ func nextCmd(opts *Options) *cobra.Command {
 		Use:   "next [<path>...]",
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
-		PreRunE: func(cmd *cobra.Command, args []string) error {
+		PreRunE: func(_ *cobra.Command, args []string) error {
 			if err := supportedPrettyFormat(opts.Pretty); err != nil {
 				return err
 			}
@@ -55,7 +55,7 @@ func nextCmd(opts *Options) *cobra.Command {
 			opts.Paths = args
 			return pathsExist(opts.Paths)
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			gitc, err := git.NewClient()
 			if err != nil {
 				return err
