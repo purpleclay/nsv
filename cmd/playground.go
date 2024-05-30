@@ -24,10 +24,10 @@ func playgroundCmd(opts *Options) *cobra.Command {
 		Short: "A playground for discovering go template support",
 		Long:  playgroundLongDesc,
 		Args:  cobra.ExactArgs(1),
-		PreRunE: func(cmd *cobra.Command, args []string) error {
+		PreRunE: func(_ *cobra.Command, _ []string) error {
 			return env.Parse(opts)
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
 				return err
 			}

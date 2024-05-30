@@ -51,11 +51,12 @@ Environment Variables:
 
 | Name            | Description                                                    |
 |-----------------|----------------------------------------------------------------|
+| LOG_LEVEL       | the level of logging when outputting to stderr (default: info) |
 | NO_COLOR        | switch to using an ASCII color profile within the terminal     |
 | NSV_FORMAT      | provide a go template for changing the default version format  |
 | NSV_PRETTY      | pretty-print the output of the next semantic version in a      |
 |                 | given format. The format can be one of either full or compact. |
-|                 | full is the default. Must be used in conjunction with NSV_SHOW |
+|                 | Must be used in conjunction with NSV_SHOW (default: full)      |
 | NSV_SHOW        | show how the next semantic version was generated               |
 | NSV_TAG_MESSAGE | a custom message for the tag, supports go text templates. The  |
 |                 | default is: "chore: tagged release {{.Tag}}"                   |`
@@ -65,8 +66,8 @@ func tagCmd(opts *Options) *cobra.Command {
 		Use:   "tag [<path>...]",
 		Short: "Tag the repository with the next semantic version",
 		Long:  tagLongDesc,
-		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := supportedPretty(opts.Pretty); err != nil {
+		PreRunE: func(_ *cobra.Command, args []string) error {
+			if err := supportedPrettyFormat(opts.Pretty); err != nil {
 				return err
 			}
 
@@ -77,7 +78,7 @@ func tagCmd(opts *Options) *cobra.Command {
 			opts.Paths = args
 			return pathsExist(opts.Paths)
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			gitc, err := git.NewClient()
 			if err != nil {
 				return err
