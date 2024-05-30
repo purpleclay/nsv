@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 # syntax=docker/dockerfile:1
->>>>>>> 57e7c96 (remove copyright from all files)
 FROM alpine:3.18
 
 RUN apk add --no-cache git git-lfs gnupg tini curl
