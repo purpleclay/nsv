@@ -51,8 +51,9 @@ Environment Variables:
 
 | Name            | Description                                                    |
 |-----------------|----------------------------------------------------------------|
-| LOG_LEVEL       | the level of logging when outputting to stderr (default: info) |
+| LOG_LEVEL       | the level of logging when printing to stderr (default: info)   |
 | NO_COLOR        | switch to using an ASCII color profile within the terminal     |
+| NO_LOG          | disable all log output                                         |
 | NSV_FORMAT      | provide a go template for changing the default version format  |
 | NSV_PRETTY      | pretty-print the output of the next semantic version in a      |
 |                 | given format. The format can be one of either full or compact. |

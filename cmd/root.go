@@ -15,11 +15,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var logLevels = []string{"debug", "info", "warn", "error", "fatal"}
+
 type Options struct {
 	Err           io.Writer   `env:"-"`
 	Logger        *log.Logger `env:"_"`
 	LogLevel      string      `env:"LOG_LEVEL"`
 	NoColor       bool        `env:"NO_COLOR"`
+	NoLog         bool        `env:"NO_LOG"`
 	Out           io.Writer   `env:"-"`
 	Paths         []string    `env:"-"`
 	Pretty        string      `env:"NSV_PRETTY"`
@@ -46,10 +49,11 @@ The power is at your fingertips.
 
 Global Environment Variables:
 
-| Name      | Description                                                    |
-|-----------|----------------------------------------------------------------|
-| LOG_LEVEL | the level of logging when outputting to stderr (default: info) |
-| NO_COLOR  | switch to using an ASCII color profile within the terminal     |`
+| Name      | Description                                                  |
+|-----------|--------------------------------------------------------------|
+| LOG_LEVEL | the level of logging when printing to stderr (default: info) |
+| NO_COLOR  | switch to using an ASCII color profile within the terminal   |
+| NO_LOG    | disable all log output                                       |`
 
 type BuildDetails struct {
 	Version   string `json:"version,omitempty"`
@@ -79,8 +83,15 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 				lipgloss.SetColorProfile(termenv.Ascii)
 			}
 
+			var logw io.Writer
+
+			logw = opts.Err
+			if opts.NoLog {
+				logw = io.Discard
+			}
+
 			logLevel, _ := log.ParseLevel(opts.LogLevel)
-			opts.Logger = log.NewWithOptions(os.Stderr, log.Options{
+			opts.Logger = log.NewWithOptions(logw, log.Options{
 				Level:           logLevel,
 				ReportCaller:    false,
 				ReportTimestamp: false,
@@ -91,8 +102,11 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	}
 
 	flags := cmd.PersistentFlags()
-	flags.StringVar(&opts.LogLevel, "log-level", "info", "the level of logging when outputting to stderr")
+	flags.StringVar(&opts.LogLevel, "log-level", "info", "the level of logging when printing to stderr")
 	flags.BoolVar(&opts.NoColor, "no-color", false, "switch to using an ASCII color profile within the terminal")
+	flags.BoolVar(&opts.NoColor, "no-log", false, "disable all log output")
+
+	cmd.RegisterFlagCompletionFunc("log-level", logLevelFlagShellComp)
 
 	cmd.AddCommand(versionCmd(out, buildInfo),
 		manCmd(out),
@@ -103,6 +117,10 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 
 	cmd.SetUsageTemplate(customUsageTemplate)
 	return cmd.Execute()
+}
+
+func logLevelFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
+	return logLevels, cobra.ShellCompDirectiveDefault
 }
 
 func versionCmd(out io.Writer, buildInfo BuildDetails) *cobra.Command {
