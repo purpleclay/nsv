@@ -19,7 +19,7 @@ feat: support pagination of search results`
 	gittest.InitRepository(t, gittest.WithLog(log))
 
 	var buf bytes.Buffer
-	cmd := nextCmd(&Options{Out: &buf, Logger: noopLogger})
+	cmd := nextCmd(&Options{Out: &buf, Err: io.Discard, Logger: noopLogger})
 	err := cmd.Execute()
 
 	require.NoError(t, err)

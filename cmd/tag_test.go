@@ -14,7 +14,7 @@ func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
 	gittest.ConfigSet(t, "user.name", "poison-ivy", "user.email", "poison-ivy@dc.com")
 	gittest.CommitEmptyWithAuthor(t, "scarecrow", "scarecrow@dc.com", "feat: capture metrics for populating dashboards")
 
-	cmd := tagCmd(&Options{Out: io.Discard, Logger: noopLogger})
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
 	err := cmd.Execute()
 	require.NoError(t, err)
 
@@ -31,7 +31,7 @@ func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
 	t.Setenv("GIT_COMMITTER_NAME", "joker")
 	t.Setenv("GIT_COMMITTER_EMAIL", "joker@dc.com")
 
-	cmd := tagCmd(&Options{Out: io.Discard, Logger: noopLogger})
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
 	err := cmd.Execute()
 	require.NoError(t, err)
 
@@ -46,7 +46,7 @@ func TestTagWithTemplatedMessage(t *testing.T) {
 (tag: 0.1.1) fix(ui): events are not being sorted as per user filters`
 	gittest.InitRepository(t, gittest.WithLog(log))
 
-	cmd := tagCmd(&Options{Out: io.Discard, Logger: noopLogger})
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
 	cmd.SetArgs([]string{"--message", "chore: tagged {{.Tag}} from {{.PrevTag}}"})
 	err := cmd.Execute()
 	require.NoError(t, err)
