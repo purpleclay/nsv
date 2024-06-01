@@ -32,16 +32,22 @@ var nextLongDesc = `Generate the next semantic version based on the conventional
 
 Environment Variables:
 
-| Name       | Description                                                    |
-|------------|----------------------------------------------------------------|
-| LOG_LEVEL  | the level of logging when printing to stderr (default: info)   |
-| NO_COLOR   | switch to using an ASCII color profile within the terminal     |
-| NO_LOG     | disable all log output                                         |
-| NSV_FORMAT | provide a go template for changing the default version format  |
-| NSV_PRETTY | pretty-print the output of the next semantic version in a      |
-|            | given format. The format can be one of either full or compact. |
-|            | Must be used in conjunction with NSV_SHOW (default: full)      |
-| NSV_SHOW   | show how the next semantic version was generated               |`
+| Name               | Description                                                    |
+|--------------------|----------------------------------------------------------------|
+| LOG_LEVEL          | the level of logging when printing to stderr (default: info)   |
+| NO_COLOR           | switch to using an ASCII color profile within the terminal     |
+| NO_LOG             | disable all log output                                         |
+| NSV_FORMAT         | provide a go template for changing the default version format  |
+| NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
+|                    | triggering a major semantic version increment                  |
+| NSV_MINOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
+|                    | triggering a minor semantic version increment                  |
+| NSV_PATCH_PREFIXES | a comma separated list of conventional commit prefixes for     |
+|                    | triggering a patch semantic version increment                  |
+| NSV_PRETTY         | pretty-print the output of the next semantic version in a      |
+|                    | given format. The format can be one of either full or compact. |
+|                    | Must be used in conjunction with NSV_SHOW (default: full)      |
+| NSV_SHOW           | show how the next semantic version was generated               |`
 
 func nextCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
@@ -78,6 +84,12 @@ func nextCmd(opts *Options) *cobra.Command {
 
 	flags := cmd.Flags()
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
+	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
+		"triggering a major semantic version increment")
+	flags.StringSliceVar(&opts.MinorPrefixes, "minor-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
+		"triggering a minor semantic version increment")
+	flags.StringSliceVar(&opts.PatchPrefixes, "patch-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
+		"triggering a patch semantic version increment")
 	flags.StringVarP(&opts.Pretty, "pretty", "p", string(tui.Full), "pretty-print the output of the next semantic version in a given format. "+
 		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
@@ -126,7 +138,10 @@ func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
+			MajorPrefixes: opts.MajorPrefixes,
+			MinorPrefixes: opts.MinorPrefixes,
 			Logger:        opts.Logger,
+			PatchPrefixes: opts.PatchPrefixes,
 			Path:          path,
 			VersionFormat: opts.VersionFormat,
 		})

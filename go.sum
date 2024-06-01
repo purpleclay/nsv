@@ -2,8 +2,8 @@ github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0
 github.com/Masterminds/semver/v3 v3.2.1/go.mod h1:qvl/7zhW3nngYb5+80sSMF+FG2BjYrf8m9wsX0PNOMQ=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1/go.mod h1:uYgXzlJ7ZpABp8OJ+exZzJJhRNQ2ASbcXHWsFqH8hp8=
-github.com/caarlos0/env/v9 v9.0.0 h1:SI6JNsOA+y5gj9njpgybykATIylrRMklbs5ch6wO6pc=
-github.com/caarlos0/env/v9 v9.0.0/go.mod h1:ye5mlCVMYh6tZ+vCgrs/B95sj88cg5Tlnc0XIzgZ020=
+github.com/caarlos0/env/v11 v11.0.1 h1:A8dDt9Ub9ybqRSUF3fQc/TA/gTam2bKT4Pit+cwrsPs=
+github.com/caarlos0/env/v11 v11.0.1/go.mod h1:2RC3HQu8BQqtEK3V4iHPxj0jOdWdbPpWJ6pOueeU1xM=
 github.com/charmbracelet/lipgloss v0.11.0 h1:UoAcbQ6Qml8hDwSWs0Y1cB5TEQuZkDPH/ZqwWWYTG4g=
 github.com/charmbracelet/lipgloss v0.11.0/go.mod h1:1UdRTH9gYgpcdNN5oBtjbu/IzNKtzVtb7sqN1t9LNn8=
 github.com/charmbracelet/log v0.4.0 h1:G9bQAcx8rWA2T3pWvx7YtPTPwgqpk7D68BX21IRW8ZM=

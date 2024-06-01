@@ -28,7 +28,7 @@ type Command struct {
 
 func DetectCommand(log []git.LogEntry) (Command, Match) {
 	command := Command{}
-	match := Match{Index: noMatch}
+	match := NoMatch
 
 	for i, entry := range log {
 		msg := strings.TrimSpace(entry.Message)
