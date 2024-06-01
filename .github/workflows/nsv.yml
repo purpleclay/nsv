@@ -19,6 +19,7 @@ jobs:
         with:
           token: ${{ secrets.GH_NSV }}
         env:
+          # skipcq: SCT-A000
           GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
           GPG_TRUST_LEVEL: "${{ secrets.GPG_TRUST_LEVEL }}"

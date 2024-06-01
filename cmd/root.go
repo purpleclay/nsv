@@ -7,7 +7,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/caarlos0/env/v9"
+	"github.com/caarlos0/env/v11"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
 	"github.com/muesli/termenv"
@@ -21,9 +21,12 @@ type Options struct {
 	Err           io.Writer   `env:"-"`
 	Logger        *log.Logger `env:"_"`
 	LogLevel      string      `env:"LOG_LEVEL"`
+	MajorPrefixes []string    `env:"NSV_MAJOR_PREFIXES"`
+	MinorPrefixes []string    `env:"NSV_MINOR_PREFIXES"`
 	NoColor       bool        `env:"NO_COLOR"`
 	NoLog         bool        `env:"NO_LOG"`
 	Out           io.Writer   `env:"-"`
+	PatchPrefixes []string    `env:"NSV_PATCH_PREFIXES"`
 	Paths         []string    `env:"-"`
 	Pretty        string      `env:"NSV_PRETTY"`
 	Show          bool        `env:"NSV_SHOW"`

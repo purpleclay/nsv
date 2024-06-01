@@ -80,7 +80,7 @@ BREAKING-CHANGE: this is a breaking change`,
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			inc, match := nsv.DetectIncrement([]git.LogEntry{
+			inc, match := nsv.Angular().DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
@@ -106,7 +106,7 @@ BREAKING CHANGE: this is a breaking change`,
 		},
 		{Message: "docs: build documentation using material for mkdocs"},
 	}
-	inc, match := nsv.DetectIncrement(log)
+	inc, match := nsv.Angular().DetectIncrement(log)
 
 	assert.Equal(t, nsv.MajorIncrement, inc)
 	assert.Equal(t, 3, match.Index)
@@ -143,7 +143,7 @@ BREAKING-CHANGE:this is a breaking change`,
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			inc, _ := nsv.DetectIncrement([]git.LogEntry{
+			inc, _ := nsv.Angular().DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
@@ -177,7 +177,7 @@ func TestDetectIncrementCaseInsensitiveLabel(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			inc, _ := nsv.DetectIncrement([]git.LogEntry{
+			inc, _ := nsv.Angular().DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
@@ -213,7 +213,56 @@ Breaking-Change: this is a breaking change`,
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			inc, _ := nsv.DetectIncrement([]git.LogEntry{
+			inc, _ := nsv.Angular().DetectIncrement([]git.LogEntry{
+				{
+					Message: tt.commit,
+				},
+			})
+			require.Equal(t, tt.expected, inc, "failed to match increment")
+		})
+	}
+}
+
+func TestDetectIncrementWithCustomPrefixes(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name          string
+		majorPrefixes []string
+		minorPrefixes []string
+		patchPrefixes []string
+		commit        string
+		expected      nsv.Increment
+	}{
+		{
+			name:          "Major",
+			majorPrefixes: []string{"breaking"},
+			commit:        "breaking: change to the way prefixes are detected and handled",
+			expected:      nsv.MajorIncrement,
+		},
+		{
+			name:          "Minor",
+			minorPrefixes: []string{"dev", "deps", "docs"},
+			commit:        "deps(ui): bump github.com/sveltejs/svelte from 4.2.17 to 5.0.0",
+			expected:      nsv.MinorIncrement,
+		},
+		{
+			name:          "Patch",
+			patchPrefixes: []string{"chore(deps)"},
+			commit:        "chore(deps): bump github.com/charmbracelet/lipgloss from 0.10.0 to 0.11.0",
+			expected:      nsv.PatchIncrement,
+		},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			inc, _ := nsv.AngularMerge(
+				tt.majorPrefixes,
+				tt.minorPrefixes,
+				tt.patchPrefixes,
+			).DetectIncrement([]git.LogEntry{
 				{
 					Message: tt.commit,
 				},
@@ -225,8 +274,9 @@ Breaking-Change: this is a breaking change`,
 
 // globals are used to prevent any compiler optimizations
 var (
-	gInc   nsv.Increment
-	gMatch nsv.Match
+	gInc      nsv.Increment
+	gMatch    nsv.Match
+	gStrategy = nsv.Angular()
 )
 
 func BenchmarkDetectIncrement(b *testing.B) {
@@ -255,7 +305,7 @@ BREAKING-CHANGE: backwards compatibility with v1 is no longer supported`},
 	var inc nsv.Increment
 	var m nsv.Match
 	for n := 0; n < b.N; n++ {
-		inc, m = nsv.DetectIncrement(log)
+		inc, m = gStrategy.DetectIncrement(log)
 	}
 	gInc = inc
 	gMatch = m

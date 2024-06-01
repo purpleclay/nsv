@@ -44,6 +44,9 @@ func (i Increment) String() string {
 
 type Options struct {
 	Logger        *log.Logger
+	MajorPrefixes []string
+	MinorPrefixes []string
+	PatchPrefixes []string
 	Path          string
 	VersionFormat string
 }
@@ -200,10 +203,14 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 
 	inc = cmd.Force
 	if inc == NoIncrement {
-		inc, match = DetectIncrement(log.Commits)
+		inc, match = AngularMerge(
+			opts.MajorPrefixes,
+			opts.MinorPrefixes,
+			opts.PatchPrefixes,
+		).DetectIncrement(log.Commits)
 
 		convInfo := []interface{}{"increment", inc.String()}
-		if match.Index != noMatch {
+		if match.Index != noMatchIdx {
 			convInfo = append(convInfo,
 				"pref",
 				log.Commits[match.Index].Message[:match.End],

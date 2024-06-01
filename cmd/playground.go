@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/caarlos0/env/v9"
+	"github.com/caarlos0/env/v11"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
