@@ -14,6 +14,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_NSV }}
 
+      # TODO: replace this with Dagger call
       - name: Tag
         uses: purpleclay/nsv-action@v1
         with:

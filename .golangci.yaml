@@ -2,9 +2,9 @@ linters:
   disable-all: true
   enable:
     - errname
+    - err113
     - forbidigo
     - godox
-    - goerr113
     - gofumpt
     - ireturn
     - misspell

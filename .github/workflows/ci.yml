@@ -36,7 +36,12 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
-    uses: purpleclay/github/.github/workflows/golangci-lint.yml@main
-    with:
-      version: ${{ vars.GOLANGCI_LINT_VERSION }}
-      go-version: ${{ vars.GO_VERSION }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: golangci-lint
+        uses: dagger/dagger-for-github@v5
+        with:
+          verb: call
+          module: github.com/purpleclay/daggerverse/golang
+          args: --src . lint
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
