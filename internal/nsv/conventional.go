@@ -92,7 +92,13 @@ func (s ConventionalStrategy) DetectIncrement(log []git.LogEntry) (Increment, Ma
 		if contains(s.MinorPrefixes, leadingType) {
 			mode = MinorIncrement
 			match = Match{Index: i, End: idx}
-		} else if contains(s.PatchPrefixes, leadingType) {
+		}
+
+		if mode == PatchIncrement && match.Index > noMatchIdx {
+			continue
+		}
+
+		if contains(s.PatchPrefixes, leadingType) {
 			mode = PatchIncrement
 			match = Match{Index: i, End: idx}
 		}
