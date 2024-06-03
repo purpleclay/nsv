@@ -7,8 +7,7 @@ RUN sh -c "$(curl https://raw.githubusercontent.com/purpleclay/gpg-import/main/s
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
 CMD ["--help"]
 
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY --chmod=755 scripts/entrypoint.sh /entrypoint.sh
 
 COPY nsv_*.apk /tmp/
 RUN apk add --no-cache --allow-untrusted /tmp/nsv_*.apk && rm /tmp/nsv_*.apk

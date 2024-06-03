@@ -15,11 +15,13 @@ jobs:
           token: ${{ secrets.GH_NSV }}
 
       - name: Tag
-        uses: purpleclay/nsv-action@v1
-        with:
-          token: ${{ secrets.GH_NSV }}
+        uses: dagger/dagger-for-github@v5
         env:
           # skipcq: SCT-A000
           GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
-          GPG_TRUST_LEVEL: "${{ secrets.GPG_TRUST_LEVEL }}"
+        with:
+          verb: call
+          module: github.com/purpleclay/daggerverse/nsv@v0.3.0
+          args: --src . tag --show --gpg-private-key env:GPG_PRIVATE_KEY --gpg-passphrase env:GPG_PASSPHRASE
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}

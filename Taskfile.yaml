@@ -7,11 +7,12 @@ vars:
     sh: git rev-parse --short HEAD
   GIT_BRANCH:
     sh: git branch --show-current
-  LDFLAGS: >
+  LDFLAGS: >-
     -X main.version=dev-{{.GIT_SHA}}
     -X main.gitCommit={{.GIT_COMMIT}}
     -X main.gitBranch={{.GIT_BRANCH}}
     -X main.buildDate={{now | date "2006-01-02T15:04:05Z07:00"}}
+  GOLANG_DAGGER: "github.com/purpleclay/daggerverse/golang@v0.3.0"
 
 tasks:
   default:
@@ -51,7 +52,7 @@ tasks:
     vars:
       REPORT_FORMAT: '{{default "colored-line-number" .REPORT_FORMAT}}'
     cmds:
-      - golangci-lint run --timeout 5m0s --out-format {{.REPORT_FORMAT}}
+      - dagger call -m {{.GOLANG_DAGGER}} --src . lint --format {{.REPORT_FORMAT}}
 
   build:
     desc: Build the binary
@@ -61,7 +62,7 @@ tasks:
   format:
     desc: Format the code using gofumpt
     cmds:
-      - gofumpt -w -l .
+      - dagger call -m {{.GOLANG_DAGGER}} --src . format export --path .
 
   bench:
     desc: Run the benchmarks
