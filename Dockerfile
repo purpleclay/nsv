@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1
 FROM alpine:3.20
 
+# renovate: datasource=github-tags depName=purpleclay/gpg-import versioning=semver
+ENV GPG_IMPORT_VERSION=0.3.2
+
 RUN apk add --no-cache git git-lfs gnupg tini curl
-RUN sh -c "$(curl https://raw.githubusercontent.com/purpleclay/gpg-import/main/scripts/install)" -- -v 0.3.2
+RUN sh -c "$(curl https://raw.githubusercontent.com/purpleclay/gpg-import/main/scripts/install)" -- -v ${GPG_IMPORT_VERSION}
 
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
 CMD ["--help"]
