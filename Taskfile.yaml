@@ -70,3 +70,10 @@ tasks:
       TEST_OPTIONS: '{{default "-bench=. -benchtime 5s -benchmem" .TEST_OPTIONS}}'
     cmds:
       - go test {{.TEST_OPTIONS}} -run=^# ./...
+
+  docs:
+    desc: Builds and hosts the MkDocs documentation
+    vars:
+      MKDOCS_MATERIAL_VERSION: '{{default "9.5.26-insiders-4.53.11" .MKDOCS_MATERIAL_VERSION}}'
+    cmds:
+      - docker run --rm -it -p 8000:8000 -v $PWD:/docs ghcr.io/purpleclay/mkdocs-material-insiders:{{.MKDOCS_MATERIAL_VERSION}}
