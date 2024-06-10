@@ -11,18 +11,18 @@
 }
 
 .md-typeset .twitter {
-    color: #00acee;
+    color: #fff;
 }
 
-.md-typeset a:hover>span * {
+.md-typeset a:hover > span * {
     filter: brightness(85%);
 }
 
 .new-feature {
-    color: #006C39;
+    color: #006c39;
 }
 
-.rounded-pill{
+.rounded-pill {
     background-color: var(--md-primary-fg-color);
     color: var(--md-primary-bg-color);
     border-radius: 2em;
