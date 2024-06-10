@@ -75,9 +75,9 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/purpleclay
       name: Purple Clay on GitHub
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/purpleclaydev
-      name: Purple Clay on Twitter
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/purpleclaydev
+      name: Purple Clay on X
     - icon: fontawesome/brands/mastodon
       link: https://fosstodon.org/@purpleclaydev
       name: Purple Clay on Fosstodon
