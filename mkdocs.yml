@@ -44,17 +44,21 @@ nav:
   - Getting Started:
       - Next Version: next-version.md
       - Semantic Commands: commands.md
+      - Conventional Prefixes: configurable-prefixes.md
       - Playground: playground.md
       - Tag Version: tag-version.md
       - Monorepos: monorepos.md
       - Pretty Print: pretty.md
-      - Github Action: github-action.md
-      - GitLab Template: gitlab-template.md
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md
       - Docker:
           - Run with Docker: docker/running.md
+          - Run with Dagger: docker/dagger.md
+      - CI:
+          - Github Action: ci/github-action.md
+          - GitLab Template: ci/gitlab-template.md
+          - Dagger: ci/dagger.md
       - Other Bits:
           - License: license.md
   - Reference:
@@ -71,9 +75,9 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/purpleclay
       name: Purple Clay on GitHub
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/purpleclaydev
-      name: Purple Clay on Twitter
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/purpleclaydev
+      name: Purple Clay on X
     - icon: fontawesome/brands/mastodon
       link: https://fosstodon.org/@purpleclaydev
       name: Purple Clay on Fosstodon
@@ -81,7 +85,7 @@ extra:
       link: https://hub.docker.com/u/purpleclay
       name: Purple Clay on Docker Hub
   status:
-    new: New Features Added
+    new: New
     deprecated: No Longer Supported
 
 plugins:

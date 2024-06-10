@@ -26,9 +26,11 @@ The power is at your fingertips.
 
 Global Environment Variables:
 
-| Name     | Description                                                   |
-|----------|---------------------------------------------------------------|
-| NO_COLOR | switch to using an ASCII color profile within the terminal    |
+| Name      | Description                                                  |
+|-----------|--------------------------------------------------------------|
+| LOG_LEVEL | the level of logging when printing to stderr (default: info) |
+| NO_COLOR  | switch to using an ASCII color profile within the terminal   |
+| NO_LOG    | disable all log output                                       |
 ```
 
 ## Usage
@@ -51,6 +53,10 @@ version     Print build time version information
 ## Flags
 
 ```{ .text .no-select .no-copy }
--h, --help       help for nsv
-    --no-color   switch to using an ASCII color profile within the terminal
+-h, --help               help for nsv
+    --log-level string   the level of logging when printing to stderr
+                         (default "info")
+    --no-color           switch to using an ASCII color profile within the
+                         terminal
+    --no-log             disable all log output
 ```

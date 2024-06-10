@@ -35,7 +35,6 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     builds:
       - nsv
-    rlcp: true
     format_overrides:
       - goos: windows
         format: zip
@@ -58,7 +57,7 @@ changelog:
       - "^ci"
   groups:
     - title: "Dependency Updates"
-      regexp: "^.*feat\\(deps\\)*:+.*$"
+      regexp: "^.*fix\\(deps\\)*:+.*$"
       order: 30
     - title: "New Features"
       regexp: "^.*feat[(\\w)]*:+.*$"
@@ -100,7 +99,6 @@ dockers:
   - image_templates:
       - "purpleclay/nsv:{{ .Tag }}-amd64"
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64"
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-amd64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -117,7 +115,6 @@ dockers:
   - image_templates:
       - "purpleclay/nsv:{{ .Tag }}-arm64"
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64"
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-arm64"
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -142,10 +139,6 @@ docker_manifests:
     image_templates:
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64"
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64"
-  - name_template: "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}"
-    image_templates:
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-amd64"
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-arm64"
   - name_template: "purpleclay/nsv:latest"
     image_templates:
       - "purpleclay/nsv:{{ .Tag }}-amd64"
@@ -154,10 +147,6 @@ docker_manifests:
     image_templates:
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-amd64"
       - "ghcr.io/purpleclay/nsv:{{ .Tag }}-arm64"
-  - name_template: "registry.gitlab.com/purpleclay/nsv:latest"
-    image_templates:
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-amd64"
-      - "registry.gitlab.com/purpleclay/nsv:{{ .Tag }}-arm64"
 
 brews:
   - name: nsv

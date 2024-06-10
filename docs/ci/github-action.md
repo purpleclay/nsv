@@ -12,7 +12,7 @@ To get up and running within a GitHub workflow, include the publicly available `
 
 If you wish to tag the repository without triggering another workflow, you must set the permissions of the job to `contents: write`.
 
-```{.yaml linenums="1" hl_lines="10"}
+```{.yaml .no-select linenums="1" hl_lines="10"}
 name: ci
 on:
   push:

@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Git Clone
         uses: actions/checkout@v4
@@ -47,13 +47,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: GitLab Login
-        uses: docker/login-action@v3
-        with:
-          registry: registry.gitlab.com
-          username: ${{ secrets.GL_DOCKER_USERNAME }}
-          password: ${{ secrets.GL_DOCKER_PASSWORD }}
 
       - name: GoReleaser
         uses: goreleaser/goreleaser-action@v5

@@ -17,11 +17,13 @@ The power is at your fingertips.
 ### Features
 
 - First-class support for semantic versioning. Conventional commits help give it a nudge in the right direction.
+- Configure your Conventional Commit prefixes for complete control.
 - If you batch your commits per release or prefer a continuous delivery approach, it has you covered.
 - Context-aware, it automatically switches to a monorepo workflow.
 - Extend the power of your commits through commands to dynamically change your semantic release workflow.
 - Explore how to use it within the purpose-built playground.
 - Get up and running in seconds within GitHub and GitLab with the available [action](https://github.com/purpleclay/nsv-action) or [template](https://gitlab.com/purpleclay/nsv).
+- First class [Dagger](https://dagger.io/) support.
 
 ## Documentation
 

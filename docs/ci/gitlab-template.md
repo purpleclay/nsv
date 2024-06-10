@@ -10,7 +10,7 @@ To get up and running within a GitLab pipeline, include the publicly available `
 
 ## Tagging a repository
 
-```{.yaml linenums="1"}
+```{.yaml .no-select linenums="1"}
 include:
   - https://gitlab.com/purpleclay/nsv/-/raw/main/nsv.gitlab-ci.yml
 ```
