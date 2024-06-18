@@ -15,7 +15,7 @@ require (
 	github.com/purpleclay/gitz v0.8.1
 	github.com/purpleclay/lipgloss-theme v0.2.0
 	github.com/saracen/walker v0.1.4
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	gotest.tools/v3 v3.5.1
 )
