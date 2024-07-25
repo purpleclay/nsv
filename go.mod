@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/caarlos0/env/v11 v11.1.0
-	github.com/charmbracelet/lipgloss v0.11.0
+	github.com/charmbracelet/lipgloss v0.12.1
 	github.com/charmbracelet/log v0.4.0
 	github.com/muesli/mango-cobra v1.2.0
 	github.com/muesli/reflow v0.3.0
@@ -22,7 +22,7 @@ require (
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
-	github.com/charmbracelet/x/ansi v0.1.2 // indirect
+	github.com/charmbracelet/x/ansi v0.1.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
