@@ -4,7 +4,7 @@ go 1.22.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/caarlos0/env/v11 v11.1.0
+	github.com/caarlos0/env/v11 v11.2.2
 	github.com/charmbracelet/lipgloss v0.12.1
 	github.com/charmbracelet/log v0.4.0
 	github.com/muesli/mango-cobra v1.2.0
