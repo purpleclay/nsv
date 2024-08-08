@@ -28,7 +28,7 @@ jobs:
           scandir: "./scripts"
 
       - name: ShellCheck
-        uses: dagger/dagger-for-github@v5
+        uses: dagger/dagger-for-github@v6
         with:
           verb: call
           module: github.com/purpleclay/daggerverse/shellcheck@v0.1.0
