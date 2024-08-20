@@ -18,7 +18,7 @@ import (
 var logLevels = []string{"debug", "info", "warn", "error", "fatal"}
 
 type Options struct {
-	DryRun        bool        `env:NSV_DRY_RUN`
+	DryRun        bool        `env:"NSV_DRY_RUN"`
 	Err           io.Writer   `env:"-"`
 	Hook          string      `env:"NSV_HOOK"`
 	Logger        *log.Logger `env:"_"`

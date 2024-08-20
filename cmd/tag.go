@@ -148,13 +148,11 @@ func verifyTagTemplate(tmpl string) error {
 
 func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 	if opts.DryRun {
-		_, err := gitc.PorcelainStatus()
+		statuses, err := gitc.PorcelainStatus()
 		if err != nil {
 			return err
 		}
-		// TODO: this works!!
-		// return gitc.RestoreUsing(statuses)
-		return nil
+		return gitc.RestoreUsing(statuses)
 	}
 
 	impersonate, err := requiresImpersonation(gitc)

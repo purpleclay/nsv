@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"io"
+	"os"
 	"testing"
 
 	"github.com/purpleclay/gitz/gittest"
@@ -57,6 +58,24 @@ func TestTagWithTemplatedMessage(t *testing.T) {
 	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
 }
 
-func TestTagRevertsHookChangesInDryRunMode(t *testing.T) {
-	// TODO: ensure dry-run is set to true
+func TestTagRevertsChangesInDryRunModeForHook(t *testing.T) {
+	log := `> (main, origin/main) feat: support patching files using a hook
+> (tag: 0.1.0) feat: ensure diffs can be displayed in the summary`
+	gittest.InitRepository(t, gittest.WithLog(log))
+
+	execFile(t, "patch-version.sh", `#!/bin/bash
+echo -n $NSV_NEXT_TAG > VERSION`)
+
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
+	cmd.SetArgs([]string{"--dry-run", "--hook", "./patch-version.sh"})
+	err := cmd.Execute()
+	require.NoError(t, err)
+
+	statuses := gittest.PorcelainStatus(t)
+	assert.Empty(t, statuses)
+}
+
+func execFile(t *testing.T, path, content string) {
+	t.Helper()
+	require.NoError(t, os.WriteFile(path, []byte(content), 0o755))
 }
