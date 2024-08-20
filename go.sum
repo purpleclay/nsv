@@ -48,10 +48,10 @@ github.com/muesli/termenv v0.15.2 h1:GohcuySI0QmI3wN8Ok9PtKGkgkFIk7y6Vpb5PvrY+Wo
 github.com/muesli/termenv v0.15.2/go.mod h1:Epx+iuz8sNs7mNKhxzH4fWXGNpZwUaJKRS1noLXviQ8=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/purpleclay/chomp v0.2.2 h1:5OSu6ZdCApRpel90Ag65yzvOTOK3YeGcleZR7eiuOsY=
-github.com/purpleclay/chomp v0.2.2/go.mod h1:2G5jE5JN68ytZSjGLOE7QkXuFgtkNRk7b58trMmB/nc=
-github.com/purpleclay/gitz v0.8.1 h1:khRYDXKJttnVRtRmHl8CEOO7nA9dlbAQGSaarzn8LMM=
-github.com/purpleclay/gitz v0.8.1/go.mod h1:k8LXGzHyf5gt+PQBpsJNN+jGm9qvJn0IELcI7aTZJHA=
+github.com/purpleclay/chomp v0.3.0 h1:NJ4BA1CavAVssqxaAKgbl7501CusnBC6KXChB3Oexbk=
+github.com/purpleclay/chomp v0.3.0/go.mod h1:2G5jE5JN68ytZSjGLOE7QkXuFgtkNRk7b58trMmB/nc=
+github.com/purpleclay/gitz v0.9.0 h1:uFStR/2R9RdAE46XigxNfPmyvoOIeUQfGb2t1eqIROs=
+github.com/purpleclay/gitz v0.9.0/go.mod h1:6400tr6oH7SWm/XvQk7/VnUJ7KKSOiyYaJXfgQ+vbd4=
 github.com/purpleclay/lipgloss-theme v0.2.0 h1:46CP4xZgklAlB2LPIbP8OTTWltvcUTJv9EogVpeJtfw=
 github.com/purpleclay/lipgloss-theme v0.2.0/go.mod h1:dKN3lm6yVAaQ4BHlLJEToOeuPfWw/msTuz6QgpLmoCE=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
