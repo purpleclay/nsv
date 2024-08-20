@@ -56,3 +56,5 @@ func TestTagWithTemplatedMessage(t *testing.T) {
 	out := gittest.Show(t, tags[1])
 	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
 }
+
+// TODO: hook and changes should be reverted in dry-run mode

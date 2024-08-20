@@ -54,7 +54,10 @@ Environment Variables:
 | LOG_LEVEL          | the level of logging when printing to stderr (default: info)   |
 | NO_COLOR           | switch to using an ASCII color profile within the terminal     |
 | NO_LOG             | disable all log output                                         |
+| NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
+| NSV_HOOK           | a user-defined hook that will be executed before the           |
+|                    | repository is tagged with the next semantic version            |
 | NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
 |                    | triggering a major semantic version increment                  |
 | NSV_MINOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
@@ -91,6 +94,10 @@ func tagCmd(opts *Options) *cobra.Command {
 				return err
 			}
 
+			if opts.DryRun {
+				opts.Logger.Warn("no changes will be made in dry run mode")
+			}
+
 			vers, err := nextVersions(gitc, opts)
 			if err != nil {
 				return err
@@ -106,6 +113,9 @@ func tagCmd(opts *Options) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
+	flags.BoolVar(&opts.DryRun, "dry-run", false, "no changes will be made to the repository")
+	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before the repository is tagged "+
+		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringVarP(&opts.TagMessage, "message", "m", "chore: tagged release {{.Tag}}", "a custom message for the tag, supports go text templates")
 	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
@@ -137,6 +147,16 @@ func verifyTagTemplate(tmpl string) error {
 }
 
 func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
+	if opts.DryRun {
+		_, err := gitc.PorcelainStatus()
+		if err != nil {
+			return err
+		}
+		// TODO: this works!!
+		// return gitc.RestoreUsing(statuses)
+		return nil
+	}
+
 	impersonate, err := requiresImpersonation(gitc)
 	if err != nil {
 		return err

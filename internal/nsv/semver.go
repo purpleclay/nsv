@@ -43,6 +43,7 @@ func (i Increment) String() string {
 }
 
 type Options struct {
+	Hook          string
 	Logger        *log.Logger
 	MajorPrefixes []string
 	MinorPrefixes []string
@@ -51,12 +52,12 @@ type Options struct {
 	VersionFormat string
 }
 
-type context struct {
+type gitContext struct {
 	TagPrefix string
 	LogPath   string
 }
 
-func resolveContext(gitc *git.Client, opts Options) (*context, error) {
+func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -72,7 +73,7 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	}
 
 	if relPath == git.RelativeAtRoot {
-		return &context{TagPrefix: "", LogPath: ""}, nil
+		return &gitContext{TagPrefix: "", LogPath: ""}, nil
 	}
 
 	logPath := relPath
@@ -83,7 +84,7 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	tagPrefix := filepath.Base(relPath)
 
 	opts.Logger.Debug("resolved git context", "tag_prefix", tagPrefix, "log_path", logPath)
-	return &context{
+	return &gitContext{
 		TagPrefix: tagPrefix,
 		LogPath:   logPath,
 	}, nil
@@ -165,6 +166,7 @@ func (t Tag) PrereleaseWithLabel(label string) bool {
 }
 
 type Next struct {
+	Diffs   []git.FileDiff
 	Log     []git.LogEntry
 	LogDir  string
 	Match   Match
@@ -252,12 +254,28 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		log.Commits[match.Index].AbbrevHash,
 	)
 
+	var diffs []git.FileDiff
+	if opts.Hook != "" {
+		opts.Logger.Info("executing custom hook", "cmd", opts.Hook)
+		if err := exec(opts.Hook, []string{"NSV_PREV_TAG=" + ltag, "NSV_NEXT_TAG=" + nextVer}); err != nil {
+			return nil, err
+		}
+
+		diffs, err = gitc.Diff()
+		if err != nil {
+			return nil, err
+		}
+		opts.Logger.Info("identifying diffs after hook", "changes", len(diffs))
+		// TODO: files that have been changed (debug)
+	}
+
 	return &Next{
-		PrevTag: ltag,
-		Tag:     nextVer,
+		Diffs:   diffs,
 		Log:     log.Commits,
 		LogDir:  ctx.LogPath,
 		Match:   match,
+		PrevTag: ltag,
+		Tag:     nextVer,
 	}, nil
 }
 
@@ -293,7 +311,7 @@ func latestPrereleaseTag(gitc *git.Client, prefix, label string) (string, error)
 	return latestTagByGlob(gitc, prefix, fmt.Sprintf("**/*.*.*-%s*", label))
 }
 
-func firstVersion(ctx *context) string {
+func firstVersion(ctx *gitContext) string {
 	fv := firstVer
 	if detectLanguageIsPrefixed(ctx.LogPath) {
 		fv = prefixedFirstVer
