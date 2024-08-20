@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.GH_NSV }}
 
       - name: Tag
-        uses: dagger/dagger-for-github@v5
+        uses: dagger/dagger-for-github@v6
         env:
           # skipcq: SCT-A000
           GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
