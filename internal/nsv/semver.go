@@ -265,8 +265,12 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		if err != nil {
 			return nil, err
 		}
-		opts.Logger.Info("identifying diffs after hook", "changes", len(diffs))
-		// TODO: files that have been changed (debug)
+
+		var changes []string
+		for _, diff := range diffs {
+			changes = append(changes, diff.Path)
+		}
+		opts.Logger.Info("identifying diffs after hook", "files", changes)
 	}
 
 	return &Next{
