@@ -57,4 +57,6 @@ func TestTagWithTemplatedMessage(t *testing.T) {
 	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
 }
 
-// TODO: hook and changes should be reverted in dry-run mode
+func TestTagRevertsHookChangesInDryRunMode(t *testing.T) {
+	// TODO: ensure dry-run is set to true
+}
