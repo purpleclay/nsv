@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/list"
 	"github.com/muesli/reflow/wordwrap"
 	theme "github.com/purpleclay/lipgloss-theme"
 	"github.com/purpleclay/nsv/internal/nsv"
@@ -42,9 +43,16 @@ var (
 		}).
 		SetString(" ↑↑")
 
-	faint    = lipgloss.NewStyle().Faint(true)
-	bullet   = faint.SetString(">")
-	padRight = lipgloss.NewStyle().PaddingRight(1)
+	faint          = lipgloss.NewStyle().Faint(true)
+	bullet         = faint.SetString(">")
+	padRight       = lipgloss.NewStyle().PaddingRight(1)
+	padTop         = lipgloss.NewStyle().PaddingTop(1)
+	listEnumerator = lipgloss.NewStyle().Foreground(
+		lipgloss.AdaptiveColor{
+			Light: string(theme.S400),
+			Dark:  string(theme.S200),
+		}).
+		MarginRight(1)
 )
 
 type SummaryOptions struct {
@@ -56,10 +64,29 @@ type SummaryOptions struct {
 func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 	var rows [][]string
 	for _, ver := range vers {
+		var patches string
+		if len(ver.Diffs) > 0 {
+			paths := make([]string, 0, len(ver.Diffs))
+			for _, diff := range ver.Diffs {
+				paths = append(paths, diff.Path)
+			}
+
+			a := list.New(paths).
+				Enumerator(list.Dash).
+				EnumeratorStyle(listEnumerator).
+				String()
+
+			patches = lipgloss.JoinVertical(lipgloss.Top,
+				padTop.Render(theme.U.Render("Patches")),
+				padTop.Render(a),
+			)
+		}
+
 		tagDiff := lipgloss.JoinVertical(lipgloss.Top,
 			theme.H1.Render(ver.Tag),
 			diffMark.Render(),
 			theme.H4.Render(ver.PrevTag),
+			patches,
 		)
 
 		var log string

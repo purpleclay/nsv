@@ -64,8 +64,8 @@ func DetectCommand(log []git.LogEntry) (Command, Match) {
 func commands(line string) []string {
 	_, ext, _ := chomp.ManyN(
 		chomp.Suffixed(
-			chomp.Opt(chomp.Any(", ")),
-			chomp.Not(", ")), 0)(line)
+			chomp.Not(", "),
+			chomp.Opt(chomp.Any(", "))), 0)(line)
 
 	return ext
 }

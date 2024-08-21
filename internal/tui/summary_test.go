@@ -77,6 +77,37 @@ func TestPrintSummary(t *testing.T) {
 	golden.Assert(t, buf.String(), "TestPrintSummary.golden")
 }
 
+func TestPrintSummaryWithDiffs(t *testing.T) {
+	t.Parallel()
+
+	versionsWithDiffs := copyVersions(t)
+	versionsWithDiffs[0].Diffs = []git.FileDiff{
+		{Path: "src/ui/go.mod"},
+		{Path: "src/ui/dashboard.go"},
+	}
+	versionsWithDiffs[1].Diffs = []git.FileDiff{
+		{Path: "src/search/cache.go"},
+		{Path: "src/search/go.mod"},
+	}
+
+	var buf bytes.Buffer
+	tui.PrintSummary(versionsWithDiffs, tui.SummaryOptions{Out: &buf})
+
+	golden.Assert(t, buf.String(), "TestPrintSummaryWithDiffs.golden")
+}
+
+func copyVersions(t *testing.T) []*nsv.Next {
+	t.Helper()
+
+	versionsWithDiffs := make([]*nsv.Next, len(versions))
+	for i := range versions {
+		ver := *versions[i]
+		versionsWithDiffs[i] = &ver
+	}
+
+	return versionsWithDiffs
+}
+
 func TestPrintSummaryNoColor(t *testing.T) {
 	t.Parallel()
 

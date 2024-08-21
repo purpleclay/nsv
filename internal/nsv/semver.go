@@ -43,6 +43,7 @@ func (i Increment) String() string {
 }
 
 type Options struct {
+	Hook          string
 	Logger        *log.Logger
 	MajorPrefixes []string
 	MinorPrefixes []string
@@ -51,12 +52,12 @@ type Options struct {
 	VersionFormat string
 }
 
-type context struct {
+type gitContext struct {
 	TagPrefix string
 	LogPath   string
 }
 
-func resolveContext(gitc *git.Client, opts Options) (*context, error) {
+func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -72,7 +73,7 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	}
 
 	if relPath == git.RelativeAtRoot {
-		return &context{TagPrefix: "", LogPath: ""}, nil
+		return &gitContext{TagPrefix: "", LogPath: ""}, nil
 	}
 
 	logPath := relPath
@@ -83,7 +84,7 @@ func resolveContext(gitc *git.Client, opts Options) (*context, error) {
 	tagPrefix := filepath.Base(relPath)
 
 	opts.Logger.Debug("resolved git context", "tag_prefix", tagPrefix, "log_path", logPath)
-	return &context{
+	return &gitContext{
 		TagPrefix: tagPrefix,
 		LogPath:   logPath,
 	}, nil
@@ -165,6 +166,7 @@ func (t Tag) PrereleaseWithLabel(label string) bool {
 }
 
 type Next struct {
+	Diffs   []git.FileDiff
 	Log     []git.LogEntry
 	LogDir  string
 	Match   Match
@@ -252,12 +254,25 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		log.Commits[match.Index].AbbrevHash,
 	)
 
+	var diffs []git.FileDiff
+	if opts.Hook != "" {
+		if diffs, err = execHook(
+			gitc,
+			opts.Hook,
+			[]string{"NSV_PREV_TAG=" + ltag, "NSV_NEXT_TAG=" + nextVer},
+			opts.Logger,
+		); err != nil {
+			return nil, err
+		}
+	}
+
 	return &Next{
-		PrevTag: ltag,
-		Tag:     nextVer,
+		Diffs:   diffs,
 		Log:     log.Commits,
 		LogDir:  ctx.LogPath,
 		Match:   match,
+		PrevTag: ltag,
+		Tag:     nextVer,
 	}, nil
 }
 
@@ -293,7 +308,7 @@ func latestPrereleaseTag(gitc *git.Client, prefix, label string) (string, error)
 	return latestTagByGlob(gitc, prefix, fmt.Sprintf("**/*.*.*-%s*", label))
 }
 
-func firstVersion(ctx *context) string {
+func firstVersion(ctx *gitContext) string {
 	fv := firstVer
 	if detectLanguageIsPrefixed(ctx.LogPath) {
 		fv = prefixedFirstVer
@@ -350,4 +365,23 @@ func bump(ver Tag, format string, inc Increment, cmd Command) (string, error) {
 
 	nextTag := ver.Bump(bumpedVer.String())
 	return nextTag.Format(format), nil
+}
+
+func execHook(gitc *git.Client, hook string, env []string, logger *log.Logger) ([]git.FileDiff, error) {
+	logger.Info("executing custom hook", "cmd", hook)
+	if err := exec(hook, env); err != nil {
+		return nil, err
+	}
+
+	diffs, err := gitc.Diff()
+	if err != nil {
+		return nil, err
+	}
+
+	var changes []string
+	for _, diff := range diffs {
+		changes = append(changes, diff.Path)
+	}
+	logger.Info("identifying diffs after hook", "files", changes)
+	return diffs, nil
 }

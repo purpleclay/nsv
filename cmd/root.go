@@ -18,7 +18,9 @@ import (
 var logLevels = []string{"debug", "info", "warn", "error", "fatal"}
 
 type Options struct {
+	DryRun        bool        `env:"NSV_DRY_RUN"`
 	Err           io.Writer   `env:"-"`
+	Hook          string      `env:"NSV_HOOK"`
 	Logger        *log.Logger `env:"_"`
 	LogLevel      string      `env:"LOG_LEVEL"`
 	MajorPrefixes []string    `env:"NSV_MAJOR_PREFIXES"`
@@ -107,7 +109,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	flags := cmd.PersistentFlags()
 	flags.StringVar(&opts.LogLevel, "log-level", "info", "the level of logging when printing to stderr")
 	flags.BoolVar(&opts.NoColor, "no-color", false, "switch to using an ASCII color profile within the terminal")
-	flags.BoolVar(&opts.NoColor, "no-log", false, "disable all log output")
+	flags.BoolVar(&opts.NoLog, "no-log", false, "disable all log output")
 
 	cmd.RegisterFlagCompletionFunc("log-level", logLevelFlagShellComp)
 

@@ -223,6 +223,39 @@ func TestNextVersionWithFormat(t *testing.T) {
 	assert.Equal(t, "custom/v0.1.0", next.Tag)
 }
 
+func TestNextVersionWithHook(t *testing.T) {
+	log := `> (main, origin/main) feat: support patching files using a hook
+> (tag: 0.1.0) feat: ensure diffs can be displayed in the summary`
+
+	gittest.InitRepository(t,
+		gittest.WithLog(log),
+		gittest.WithCommittedFiles("VERSION"),
+		gittest.WithFileContent("VERSION", "0.1.0"))
+	gitc, _ := git.NewClient()
+
+	execFile(t, "patch-version.sh", `#!/bin/bash
+echo -n $NSV_NEXT_TAG > VERSION`)
+
+	_, err := nsv.NextVersion(gitc, nsv.Options{Hook: "./patch-version.sh", Logger: noopLogger})
+
+	require.NoError(t, err)
+	assert.Equal(t, "0.2.0", readFile(t, "VERSION"))
+}
+
+func execFile(t *testing.T, path, content string) {
+	t.Helper()
+	require.NoError(t, os.WriteFile(path, []byte(content), 0o755))
+}
+
+func readFile(t *testing.T, path string) string {
+	t.Helper()
+
+	contents, err := os.ReadFile(path)
+	require.NoError(t, err)
+
+	return string(contents)
+}
+
 func TestParseTag(t *testing.T) {
 	tag, _ := nsv.ParseTag("store/v0.11.2-beta.1+20230207")
 	assert.Equal(t, tag.Prefix, "store")
