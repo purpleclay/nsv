@@ -256,21 +256,14 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 
 	var diffs []git.FileDiff
 	if opts.Hook != "" {
-		opts.Logger.Info("executing custom hook", "cmd", opts.Hook)
-		if err := exec(opts.Hook, []string{"NSV_PREV_TAG=" + ltag, "NSV_NEXT_TAG=" + nextVer}); err != nil {
+		if diffs, err = execHook(
+			gitc,
+			opts.Hook,
+			[]string{"NSV_PREV_TAG=" + ltag, "NSV_NEXT_TAG=" + nextVer},
+			opts.Logger,
+		); err != nil {
 			return nil, err
 		}
-
-		diffs, err = gitc.Diff()
-		if err != nil {
-			return nil, err
-		}
-
-		var changes []string
-		for _, diff := range diffs {
-			changes = append(changes, diff.Path)
-		}
-		opts.Logger.Info("identifying diffs after hook", "files", changes)
 	}
 
 	return &Next{
@@ -372,4 +365,23 @@ func bump(ver Tag, format string, inc Increment, cmd Command) (string, error) {
 
 	nextTag := ver.Bump(bumpedVer.String())
 	return nextTag.Format(format), nil
+}
+
+func execHook(gitc *git.Client, hook string, env []string, logger *log.Logger) ([]git.FileDiff, error) {
+	logger.Info("executing custom hook", "cmd", hook)
+	if err := exec(hook, env); err != nil {
+		return nil, err
+	}
+
+	diffs, err := gitc.Diff()
+	if err != nil {
+		return nil, err
+	}
+
+	var changes []string
+	for _, diff := range diffs {
+		changes = append(changes, diff.Path)
+	}
+	logger.Info("identifying diffs after hook", "files", changes)
+	return diffs, nil
 }
