@@ -18,6 +18,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	gotest.tools/v3 v3.5.1
+	mvdan.cc/sh/v3 v3.8.0
 )
 
 require (
@@ -40,5 +41,4 @@ require (
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/term v0.20.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	mvdan.cc/sh/v3 v3.8.0 // indirect
 )
