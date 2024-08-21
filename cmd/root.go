@@ -109,7 +109,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 	flags := cmd.PersistentFlags()
 	flags.StringVar(&opts.LogLevel, "log-level", "info", "the level of logging when printing to stderr")
 	flags.BoolVar(&opts.NoColor, "no-color", false, "switch to using an ASCII color profile within the terminal")
-	flags.BoolVar(&opts.NoColor, "no-log", false, "disable all log output")
+	flags.BoolVar(&opts.NoLog, "no-log", false, "disable all log output")
 
 	cmd.RegisterFlagCompletionFunc("log-level", logLevelFlagShellComp)
 
