@@ -44,11 +44,7 @@ func exec(cmd string, env []string) error {
 		return err
 	}
 
-	if err := r.Run(context.Background(), p); err != nil {
-		return err
-	}
-
-	return nil
+	return r.Run(context.Background(), p)
 }
 
 func openHandler(ctx context.Context, path string, flag int, perm os.FileMode) (io.ReadWriteCloser, error) {
