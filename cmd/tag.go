@@ -8,6 +8,7 @@ import (
 	"text/template"
 
 	git "github.com/purpleclay/gitz"
+	"github.com/purpleclay/nsv/internal/ci"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
@@ -162,6 +163,9 @@ func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 
 	tmpl, _ := template.New("tag-template").Parse(opts.TagMessage)
 
+	// TODO: ensure this is only called once and return the same captured environment
+	env := ci.Detect()
+
 	var tags []string
 	for _, ver := range vers {
 		var cfg []string
@@ -175,6 +179,8 @@ func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 		var buf bytes.Buffer
 		tmpl.Execute(&buf, release{Tag: ver.Tag, PrevTag: ver.PrevTag})
 
+		// TOOD: ensure the commit does not trigger a CI build
+
 		if _, err := gitc.Tag(ver.Tag,
 			git.WithTagConfig(cfg...),
 			git.WithCommitRef(ver.Log[0].Hash),
@@ -185,6 +191,7 @@ func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 		tags = append(tags, ver.Tag)
 	}
 
+	// TODO: ensure the commit and the tags are pushed
 	_, err = gitc.Push(git.WithRefSpecs(tags...))
 	return err
 }
