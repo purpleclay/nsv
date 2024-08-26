@@ -98,11 +98,7 @@ func preRunChecks(opts *Options) error {
 		return err
 	}
 
-	if err := pathsExist(opts.Paths); err != nil {
-		return err
-	}
-
-	return nil
+	return pathsExist(opts.Paths)
 }
 
 func supportedPrettyFormat(format string) error {
@@ -114,7 +110,7 @@ func supportedPrettyFormat(format string) error {
 	return InvalidPrettyFormatError{Format: format}
 }
 
-func defaultIfEmpty(paths []string, def []string) []string {
+func defaultIfEmpty(paths, def []string) []string {
 	if len(paths) == 0 {
 		return def
 	}
