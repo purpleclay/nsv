@@ -7,6 +7,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/purpleclay/chomp"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/ci"
 	"github.com/purpleclay/nsv/internal/nsv"
@@ -41,11 +42,19 @@ func (e TemplateSyntaxError) Error() string {
 }
 
 type release struct {
-	Tag     string
-	PrevTag string
+	Tag             string
+	PrevTag         string
+	SkipPipelineTag string
 }
 
-var tagLongDesc = `Tag the repository with the next semantic version based on the conventional commit history of
+var (
+	tagMessageTmpl    = "chore: tagged release {{.Tag}}"
+	commitMessageTmpl = "chore: tagged release {{.Tag}} {{.SkipPipelineTag}}"
+
+	tagTmpl    *template.Template
+	commitTmpl = template.Must(template.New("commit-template").Parse(commitMessageTmpl))
+
+	tagLongDesc = `Tag the repository with the next semantic version based on the conventional commit history of
 your repository.
 
 Environment Variables:
@@ -71,6 +80,7 @@ Environment Variables:
 | NSV_SHOW           | show how the next semantic version was generated               |
 | NSV_TAG_MESSAGE    | a custom message for the tag, supports go text templates. The  |
 |                    | default is: "chore: tagged release {{.Tag}}"                   |`
+)
 
 func tagCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
@@ -78,16 +88,15 @@ func tagCmd(opts *Options) *cobra.Command {
 		Short: "Tag the repository with the next semantic version",
 		Long:  tagLongDesc,
 		PreRunE: func(_ *cobra.Command, args []string) error {
-			if err := supportedPrettyFormat(opts.Pretty); err != nil {
-				return err
-			}
+			opts.Paths = defaultIfEmpty(args, []string{git.RelativeAtRoot})
 
 			if err := verifyTagTemplate(opts.TagMessage); err != nil {
 				return err
 			}
 
-			opts.Paths = args
-			return pathsExist(opts.Paths)
+			tagTmpl, _ = template.New("tag-template").Parse(opts.TagMessage)
+
+			return preRunChecks(opts)
 		},
 		RunE: func(_ *cobra.Command, _ []string) error {
 			gitc, err := git.NewClient()
@@ -99,17 +108,7 @@ func tagCmd(opts *Options) *cobra.Command {
 				opts.Logger.Warn("no changes will be made in dry run mode")
 			}
 
-			vers, err := nextVersions(gitc, opts)
-			if err != nil {
-				return err
-			}
-
-			if len(vers) == 0 {
-				return nil
-			}
-
-			printNext(vers, opts)
-			return tagAndPush(gitc, vers, opts)
+			return doTag(gitc, opts)
 		},
 	}
 
@@ -118,7 +117,7 @@ func tagCmd(opts *Options) *cobra.Command {
 	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before the repository is tagged "+
 		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
-	flags.StringVarP(&opts.TagMessage, "message", "m", "chore: tagged release {{.Tag}}", "a custom message for the tag, supports go text templates")
+	flags.StringVarP(&opts.TagMessage, "message", "m", tagMessageTmpl, "a custom message for the tag, supports go text templates")
 	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
 		"triggering a major semantic version increment")
 	flags.StringSliceVar(&opts.MinorPrefixes, "minor-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
@@ -147,7 +146,53 @@ func verifyTagTemplate(tmpl string) error {
 	return nil
 }
 
-func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
+func doTag(gitc *git.Client, opts *Options) error {
+	impersonate, err := requiresImpersonation(gitc)
+	if err != nil {
+		return err
+	}
+
+	var tags []string
+	var vers []*nsv.Next
+	for _, path := range opts.Paths {
+		next, err := nsv.NextVersion(gitc, nsv.Options{
+			Hook:          opts.Hook,
+			MajorPrefixes: opts.MajorPrefixes,
+			MinorPrefixes: opts.MinorPrefixes,
+			Logger:        opts.Logger,
+			PatchPrefixes: opts.PatchPrefixes,
+			Path:          path,
+			VersionFormat: opts.VersionFormat,
+		})
+		if err != nil {
+			return err
+		}
+
+		if next == nil {
+			continue
+		}
+
+		if err := commitAndTag(gitc, next, impersonate, opts); err != nil {
+			return err
+		}
+
+		vers = append(vers, next)
+		tags = append(tags, next.Tag)
+	}
+
+	if len(vers) == 0 {
+		return nil
+	}
+
+	if err := pushAll(gitc, tags, opts); err != nil {
+		return err
+	}
+
+	printNext(vers, opts)
+	return nil
+}
+
+func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Options) error {
 	if opts.DryRun {
 		statuses, err := gitc.PorcelainStatus()
 		if err != nil {
@@ -156,43 +201,83 @@ func tagAndPush(gitc *git.Client, vers []*nsv.Next, opts *Options) error {
 		return gitc.RestoreUsing(statuses)
 	}
 
-	impersonate, err := requiresImpersonation(gitc)
+	var cfg []string
+	var err error
+	if impersonate {
+		if cfg, err = impersonateConfig(gitc, ver); err != nil {
+			return err
+		}
+	}
+
+	rel := release{
+		Tag:             ver.Tag,
+		PrevTag:         ver.PrevTag,
+		SkipPipelineTag: ci.Detect().SkipPipelineTag,
+	}
+
+	hash, err := commitChanges(gitc, cfg, ver.Diffs, rel)
 	if err != nil {
 		return err
 	}
 
-	tmpl, _ := template.New("tag-template").Parse(opts.TagMessage)
-
-	// TODO: ensure this is only called once and return the same captured environment
-	env := ci.Detect()
-
-	var tags []string
-	for _, ver := range vers {
-		var cfg []string
-		var err error
-		if impersonate {
-			if cfg, err = impersonateConfig(gitc, ver); err != nil {
-				return err
-			}
-		}
-
-		var buf bytes.Buffer
-		tmpl.Execute(&buf, release{Tag: ver.Tag, PrevTag: ver.PrevTag})
-
-		// TOOD: ensure the commit does not trigger a CI build
-
-		if _, err := gitc.Tag(ver.Tag,
-			git.WithTagConfig(cfg...),
-			git.WithCommitRef(ver.Log[0].Hash),
-			git.WithLocalOnly(),
-			git.WithAnnotation(buf.String())); err != nil {
-			return err
-		}
-		tags = append(tags, ver.Tag)
+	if hash == "" {
+		hash = ver.Log[0].Hash
 	}
 
-	// TODO: ensure the commit and the tags are pushed
-	_, err = gitc.Push(git.WithRefSpecs(tags...))
+	var buf bytes.Buffer
+	tagTmpl.Execute(&buf, rel)
+
+	if _, err := gitc.Tag(ver.Tag,
+		git.WithTagConfig(cfg...),
+		git.WithCommitRef(hash),
+		git.WithLocalOnly(),
+		git.WithAnnotation(buf.String())); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func commitChanges(gitc *git.Client, cfg []string, changes []git.FileDiff, rel release) (string, error) {
+	if len(changes) == 0 {
+		return "", nil
+	}
+
+	var paths []string
+	for _, change := range changes {
+		paths = append(paths, change.Path)
+	}
+
+	if _, err := gitc.Stage(git.WithPathSpecs(paths...)); err != nil {
+		return "", err
+	}
+
+	var buf bytes.Buffer
+	commitTmpl.Execute(&buf, rel)
+
+	msg, err := gitc.Commit(buf.String(), git.WithCommitConfig(cfg...))
+	if err != nil {
+		return "", err
+	}
+
+	_, marker, err := chomp.BracketSquare()(msg)
+	if err != nil {
+		return "", err
+	}
+
+	_, ext, err := chomp.SepPair(chomp.Until(" "), chomp.Tag(" "), chomp.Eol())(marker)
+	if err != nil {
+		return "", err
+	}
+	return ext[1], nil
+}
+
+func pushAll(gitc *git.Client, tags []string, opts *Options) error {
+	if opts.DryRun {
+		return nil
+	}
+
+	_, err := gitc.Push(git.WithRefSpecs(tags...))
 	return err
 }
 

@@ -10,6 +10,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestTag(t *testing.T) {
+	log := `feat: ensure logs are attached to spans during tracing
+(tag: 0.1.0) feat: support distributed tracing`
+	gittest.InitRepository(t,
+		gittest.WithLog(log),
+		gittest.WithCommittedFiles("VERSION"),
+		gittest.WithFileContent("VERSION", "0.1.0"),
+	)
+
+	execFile(t, "patch-version.sh", `#!/bin/bash
+echo -n $NSV_NEXT_TAG > VERSION`)
+
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
+	cmd.SetArgs([]string{"--hook", "./patch-version.sh"})
+	err := cmd.Execute()
+	require.NoError(t, err)
+
+	tags := gittest.Tags(t)
+	require.ElementsMatch(t, []string{"0.1.0", "0.2.0"}, tags)
+
+	logs := gittest.Log(t)
+	assert.Equal(t, "chore: tagged release 0.2.0 [skip ci]", logs[0].Message)
+
+	out := gittest.Show(t, "0.2.0")
+	assert.Contains(t, out, logs[0].Hash)
+}
+
 func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
 	gittest.InitRepository(t)
 	gittest.ConfigSet(t, "user.name", "poison-ivy", "user.email", "poison-ivy@dc.com")

@@ -1,9 +1,8 @@
-package ci_test
+package ci
 
 import (
 	"testing"
 
-	"github.com/purpleclay/nsv/internal/ci"
 	"github.com/stretchr/testify/require"
 )
 
@@ -35,7 +34,7 @@ func TestDetectSkipPipelineTag(t *testing.T) {
 				t.Setenv(tt.env[i], tt.env[i+1])
 			}
 
-			actual := ci.Detect()
+			actual := detectCIFromEnv()
 			require.Equal(t, tt.expected, actual.SkipPipelineTag)
 		})
 	}

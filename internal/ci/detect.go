@@ -5,7 +5,12 @@ import (
 	"sync"
 )
 
-// Environment captures details of a continous integration (CI) platform
+var (
+	so    sync.Once
+	ciEnv Environment
+)
+
+// Environment captures details of a continuous integration (CI) platform
 type Environment struct {
 	// SkipPipelineTag defines a tag that can be injected into the first
 	// line of a commit message to prevent the CI platform from running
@@ -52,10 +57,18 @@ func jenkinsCI(res chan<- Environment) {
 	}
 }
 
-// Detect will attempt to identify the current continous integration (CI) platform
-// by checking for predefined environment variables. Once detected, details about
+// Detect will attempt to identify the current continuous integration (CI) platform
+// once by checking for predefined environment variables. Once detected, details about
 // the CI platform will be collated
 func Detect() Environment {
+	so.Do(func() {
+		ciEnv = detectCIFromEnv()
+	})
+
+	return ciEnv
+}
+
+func detectCIFromEnv() Environment {
 	chn := make(chan Environment, 1)
 
 	detectors := sync.WaitGroup{}

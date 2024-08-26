@@ -55,12 +55,9 @@ func nextCmd(opts *Options) *cobra.Command {
 		Short: "Generate the next semantic version",
 		Long:  nextLongDesc,
 		PreRunE: func(_ *cobra.Command, args []string) error {
-			if err := supportedPrettyFormat(opts.Pretty); err != nil {
-				return err
-			}
+			opts.Paths = defaultIfEmpty(args, []string{git.RelativeAtRoot})
 
-			opts.Paths = args
-			return pathsExist(opts.Paths)
+			return preRunChecks(opts)
 		},
 		RunE: func(_ *cobra.Command, _ []string) error {
 			gitc, err := git.NewClient()
@@ -68,17 +65,7 @@ func nextCmd(opts *Options) *cobra.Command {
 				return err
 			}
 
-			vers, err := nextVersions(gitc, opts)
-			if err != nil {
-				return err
-			}
-
-			if len(vers) == 0 {
-				return nil
-			}
-
-			printNext(vers, opts)
-			return nil
+			return doNext(gitc, opts)
 		},
 	}
 
@@ -102,6 +89,22 @@ func prettyFlagShellComp(_ *cobra.Command, _ []string, _ string) ([]string, cobr
 	return tui.PrettyFormats, cobra.ShellCompDirectiveDefault
 }
 
+func preRunChecks(opts *Options) error {
+	if err := supportedPrettyFormat(opts.Pretty); err != nil {
+		return err
+	}
+
+	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
+		return err
+	}
+
+	if err := pathsExist(opts.Paths); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func supportedPrettyFormat(format string) error {
 	for _, p := range tui.PrettyFormats {
 		if p == format {
@@ -109,6 +112,14 @@ func supportedPrettyFormat(format string) error {
 		}
 	}
 	return InvalidPrettyFormatError{Format: format}
+}
+
+func defaultIfEmpty(paths []string, def []string) []string {
+	if len(paths) == 0 {
+		return def
+	}
+
+	return paths
 }
 
 func pathsExist(paths []string) error {
@@ -126,19 +137,10 @@ func pathsExist(paths []string) error {
 	return nil
 }
 
-func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
-	if err := nsv.CheckTemplate(opts.VersionFormat); err != nil {
-		return nil, err
-	}
-
-	if len(opts.Paths) == 0 {
-		opts.Paths = append(opts.Paths, git.RelativeAtRoot)
-	}
-
+func doNext(gitc *git.Client, opts *Options) error {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
-			Hook:          opts.Hook,
 			MajorPrefixes: opts.MajorPrefixes,
 			MinorPrefixes: opts.MinorPrefixes,
 			Logger:        opts.Logger,
@@ -147,7 +149,7 @@ func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 			VersionFormat: opts.VersionFormat,
 		})
 		if err != nil {
-			return nil, err
+			return err
 		}
 
 		if next != nil {
@@ -155,7 +157,12 @@ func nextVersions(gitc *git.Client, opts *Options) ([]*nsv.Next, error) {
 		}
 	}
 
-	return vers, nil
+	if len(vers) == 0 {
+		return nil
+	}
+
+	printNext(vers, opts)
+	return nil
 }
 
 func printNext(vers []*nsv.Next, opts *Options) {
