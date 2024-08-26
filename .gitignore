@@ -14,7 +14,7 @@
 !LICENSE
 !mkdocs.yml
 !README.md
-!Taskfile.yaml
+!taskfile.yaml
 !docs/**/*
 !scripts/*
 
