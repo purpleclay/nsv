@@ -18,6 +18,7 @@ import (
 var logLevels = []string{"debug", "info", "warn", "error", "fatal"}
 
 type Options struct {
+	CommitMessage string      `env:"NSV_COMMIT_MESSAGE"`
 	DryRun        bool        `env:"NSV_DRY_RUN"`
 	Err           io.Writer   `env:"-"`
 	Hook          string      `env:"NSV_HOOK"`

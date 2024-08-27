@@ -69,13 +69,13 @@ func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
 	assert.Contains(t, out, "Tagger: joker <joker@dc.com>")
 }
 
-func TestTagWithTemplatedMessage(t *testing.T) {
+func TestTagWithTemplatedTagMessage(t *testing.T) {
 	log := `feat(ui): include timeline support for display historical events
 (tag: 0.1.1) fix(ui): events are not being sorted as per user filters`
 	gittest.InitRepository(t, gittest.WithLog(log))
 
 	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
-	cmd.SetArgs([]string{"--message", "chore: tagged {{.Tag}} from {{.PrevTag}}"})
+	cmd.SetArgs([]string{"--tag-message", "chore: tagged {{.Tag}} from {{.PrevTag}}"})
 	err := cmd.Execute()
 	require.NoError(t, err)
 
@@ -83,6 +83,27 @@ func TestTagWithTemplatedMessage(t *testing.T) {
 	require.Len(t, tags, 2)
 	out := gittest.Show(t, tags[1])
 	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
+}
+
+func TestTagWithTemplatedCommitMessage(t *testing.T) {
+	log := `feat(search): include prebuilt queries for common search scenarios
+(tag: 0.2.1) fix(search): prevent truncation of search criteria entered by users`
+	gittest.InitRepository(t,
+		gittest.WithLog(log),
+		gittest.WithCommittedFiles("VERSION"),
+		gittest.WithFileContent("VERSION", "0.1.0"),
+	)
+
+	execFile(t, "patch-version.sh", `#!/bin/bash
+echo -n $NSV_NEXT_TAG > VERSION`)
+
+	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
+	cmd.SetArgs([]string{"--commit-message", "chore: tagged {{.Tag}} from {{.PrevTag}}", "--hook", "./patch-version.sh"})
+	err := cmd.Execute()
+	require.NoError(t, err)
+
+	logs := gittest.Log(t)
+	assert.Equal(t, "chore: tagged 0.3.0 from 0.2.1", logs[0].Message)
 }
 
 func TestTagRevertsChangesInDryRunModeForHook(t *testing.T) {
