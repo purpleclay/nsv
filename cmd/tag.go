@@ -52,7 +52,7 @@ var (
 	commitMessageTmpl = "chore: tagged release {{.Tag}} {{.SkipPipelineTag}}"
 
 	tagTmpl    *template.Template
-	commitTmpl = template.Must(template.New("commit-template").Parse(commitMessageTmpl))
+	commitTmpl *template.Template
 
 	tagLongDesc = `Tag the repository with the next semantic version based on the conventional commit history of
 your repository.
@@ -64,6 +64,9 @@ Environment Variables:
 | LOG_LEVEL          | the level of logging when printing to stderr (default: info)   |
 | NO_COLOR           | switch to using an ASCII color profile within the terminal     |
 | NO_LOG             | disable all log output                                         |
+| NSV_COMMIT_MESSAGE | a custom message when committing file changes, supports go     |
+|                    | text templates. The default is:                                |
+|                    | "chore: tagged release {{.Tag}} {{.SkipPipelineTag}}"          |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_HOOK           | a user-defined hook that will be executed before the           |
@@ -78,8 +81,8 @@ Environment Variables:
 |                    | given format. The format can be one of either full or compact. |
 |                    | Must be used in conjunction with NSV_SHOW (default: full)      |
 | NSV_SHOW           | show how the next semantic version was generated               |
-| NSV_TAG_MESSAGE    | a custom message for the tag, supports go text templates. The  |
-|                    | default is: "chore: tagged release {{.Tag}}"                   |`
+| NSV_TAG_MESSAGE    | a custom message for the annotated tag, supports go text       |
+|                    | templates. The default is: "chore: tagged release {{.Tag}}"    |`
 )
 
 func tagCmd(opts *Options) *cobra.Command {
@@ -90,11 +93,14 @@ func tagCmd(opts *Options) *cobra.Command {
 		PreRunE: func(_ *cobra.Command, args []string) error {
 			opts.Paths = defaultIfEmpty(args, []string{git.RelativeAtRoot})
 
-			if err := verifyTagTemplate(opts.TagMessage); err != nil {
-				return err
+			for _, templatedText := range []string{opts.TagMessage, opts.CommitMessage} {
+				if err := verifyTextTemplate(templatedText); err != nil {
+					return err
+				}
 			}
 
 			tagTmpl, _ = template.New("tag-template").Parse(opts.TagMessage)
+			commitTmpl, _ = template.New("commit-template").Parse(opts.CommitMessage)
 
 			return preRunChecks(opts)
 		},
@@ -113,11 +119,13 @@ func tagCmd(opts *Options) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
+	flags.StringVarP(&opts.CommitMessage, "commit-message", "M", commitMessageTmpl, "a custom message when committing file "+
+		"changes, supports go text templates")
 	flags.BoolVar(&opts.DryRun, "dry-run", false, "no changes will be made to the repository")
 	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before the repository is tagged "+
 		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
-	flags.StringVarP(&opts.TagMessage, "message", "m", tagMessageTmpl, "a custom message for the tag, supports go text templates")
+	flags.StringVarP(&opts.TagMessage, "tag-message", "A", tagMessageTmpl, "a custom message for the annotated tag, supports go text templates")
 	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
 		"triggering a major semantic version increment")
 	flags.StringSliceVar(&opts.MinorPrefixes, "minor-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
@@ -132,14 +140,16 @@ func tagCmd(opts *Options) *cobra.Command {
 	return cmd
 }
 
-func verifyTagTemplate(tmpl string) error {
-	t, err := template.New("tag-template").Parse(tmpl)
+func verifyTextTemplate(tmpl string) error {
+	t, err := template.New("verify-template").Parse(tmpl)
 	if err != nil {
 		return TemplateSyntaxError{Template: tmpl, Err: err.Error()}
 	}
 
+	rel := release{Tag: "0.2.0", PrevTag: "0.1.0", SkipPipelineTag: "[skip ci]"}
+
 	var buf bytes.Buffer
-	if err := t.Execute(&buf, release{Tag: "0.2.0", PrevTag: "0.1.0"}); err != nil {
+	if err := t.Execute(&buf, rel); err != nil {
 		return TemplateSyntaxError{Template: tmpl, Err: err.Error()}
 	}
 
