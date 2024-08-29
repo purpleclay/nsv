@@ -82,7 +82,17 @@ Environment Variables:
 |                    | Must be used in conjunction with NSV_SHOW (default: full)      |
 | NSV_SHOW           | show how the next semantic version was generated               |
 | NSV_TAG_MESSAGE    | a custom message for the annotated tag, supports go text       |
-|                    | templates. The default is: "chore: tagged release {{.Tag}}"    |`
+|                    | templates. The default is: "chore: tagged release {{.Tag}}"    |
+
+Hook Environment Variables:
+
+| Name                  | Description                                                 |
+|-----------------------|-------------------------------------------------------------|
+| NSV_NEXT_TAG          | the next calculated semantic version                        |
+| NSV_PREV_TAG          | the last semantic version as identified within the tag      |
+|                       | history of the current repository                           |
+| NSV_WORKING_DIRECTORY | the working directory (or path) relative to the root of the |
+|                       | current repository. It will be empty if not a monorepo      |`
 )
 
 func tagCmd(opts *Options) *cobra.Command {
