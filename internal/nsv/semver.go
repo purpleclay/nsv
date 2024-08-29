@@ -259,7 +259,11 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 		if diffs, err = execHook(
 			gitc,
 			opts.Hook,
-			[]string{"NSV_PREV_TAG=" + ltag, "NSV_NEXT_TAG=" + nextVer},
+			[]string{
+				"NSV_PREV_TAG=" + ltag,
+				"NSV_NEXT_TAG=" + nextVer,
+				"NSV_WORKING_DIRECTORY=" + ctx.LogPath,
+			},
 			opts.Logger,
 		); err != nil {
 			return nil, err
