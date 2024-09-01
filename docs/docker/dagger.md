@@ -2,12 +2,9 @@
 icon: material/sword
 social:
   cards: false
-status: new
 ---
 
 # Running with Dagger
-
-<span class="rounded-pill">:material-test-tube: experimental</span>
 
 [Dagger](https://dagger.io/) provides a way to define tasks that can run on your favorite CI/CD platform or locally. Powered by Docker, it is incredibly easy to get up and running.
 

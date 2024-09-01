@@ -36,6 +36,18 @@ Environment Variables:
 | NSV_TAG_MESSAGE    | a custom message for the tag, supports go text         |
 |                    | templates. The default is: "chore: tagged release      |
 |                    | {{.Tag}}"                                              |
+
+Hook Environment Variables:
+
+| Name                  | Description                                         |
+|-----------------------|-----------------------------------------------------|
+| NSV_NEXT_TAG          | the next calculated semantic version                |
+| NSV_PREV_TAG          | the last semantic version as identified within the  |
+|                       | tag                                                 |
+|                       | history of the current repository                   |
+| NSV_WORKING_DIRECTORY | the working directory (or path) relative to the     |
+|                       | root of the current repository. It will be empty if |
+|                       | not a monorepo                                      |
 ```
 
 ## Usage
@@ -47,15 +59,19 @@ nsv tag [<path>...] [flags]
 ## Flags
 
 ```{ .text .no-select .no-copy }
+-M, --commit-message string    a custom message when committing file changes,
+                               supports go text templates (default "chore:
+                               tagged release {{.Tag}} {{.SkipPipelineTag}}")
+    --dry-run                  no changes will be made to the repository
 -f, --format string            provide a go template for changing the default
                                version format
 -h, --help                     help for tag
+    --hook string              a user-defined hook that will be executed before
+                               the repository is tagged with the next semantic
+                               version
     --major-prefixes strings   a comma separated list of conventional commit
                                prefixes for triggering a major semantic version
                                increment
--m, --message string           a custom message for the tag, supports go text
-                               templates (default "chore: tagged release
-                               {{.Tag}}")
     --minor-prefixes strings   a comma separated list of conventional commit
                                prefixes for triggering a minor semantic version
                                increment
@@ -67,6 +83,9 @@ nsv tag [<path>...] [flags]
                                of either full or compact. Must be used in
                                conjunction with --show (default "full")
 -s, --show                     show how the next semantic version was generated
+-A, --tag-message string       a custom message for the annotated tag, supports
+                               go text templates (default "chore: tagged release
+                               {{.Tag}}")
 ```
 
 ## Global Flags

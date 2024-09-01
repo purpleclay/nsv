@@ -1,6 +1,7 @@
 ---
 icon: material/tag-check-outline
 description: Automatically tag your repository with the next semantic version
+status: new
 ---
 
 # Tag the Next Semantic Version
@@ -68,12 +69,12 @@ If you are not happy with the tag message, you can change it. Support for Go tem
 === "CLI"
 
     ```{ .sh .no-select }
-    nsv tag --message "chore: tagged release {{.Tag}} from {{.PrevTag}}"
+    nsv tag --tag-message "chore: tagged release {{.Tag}} from {{.PrevTag}}"
     ```
 
-Resulting in a tag message:
+Resulting in a tag message of:
 
-```text
+```{ .text .no-select .no-copy }
 chore: tagged release 0.2.0 from 0.1.0
 ```
 
@@ -93,3 +94,59 @@ Any of the following conditions will remove the need for impersonation:
 
 1. The repository has the `user.name` and `user.email` settings already defined in git config.
 1. The git environment variables `GIT_COMMITTER_NAME` and `GIT_COMMITTER_EMAIL` exist.
+
+## Executing a custom hook :material-new-box:{.new-feature title="Feature added on the 2nd of September 2024"}
+
+Before tagging your repository, `nsv` can execute a custom [hook](./hooks.md). If changes are detected, it will commit them, and then this new commit is tagged.
+
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_HOOK="./scripts/patch.sh" nsv tag
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv tag --hook "./scripts/patch.sh"
+    ```
+
+It uses the default commit message of `chore: tagged release <version> [skip ci]`.
+
+### Using a custom commit message
+
+You can change the commit message. Support for Go templating provides extra [customization](./reference/templating.md#commit-message).
+
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_COMMIT_MESSAGE="chore: bumped to {{.Tag}} {{.SkipPipelineTag}}" nsv tag
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv tag --commit-message "chore: bumped to {{.Tag}} {{.SkipPipelineTag}}"
+    ```
+
+Resulting in a commit message of:
+
+```{ .text .no-select .no-copy }
+chore: bumped to 0.2.0 [skip ci]
+```
+
+## Skip changes during a dry run :material-new-box:{.new-feature title="Feature added on the 2nd of September 2024"}
+
+Run `nsv` within dry-run mode to skip tagging your repository and revert any changes a hook makes. This is perfect for testing.
+
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_DRY_RUN="true" nsv tag
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv tag --dry-run
+    ```

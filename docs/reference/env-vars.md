@@ -9,7 +9,7 @@ description: Customize behavior with environment variables
 
 If you need to customize the behavior of `nsv` you can use the supported environment variables. Environment variables provide a dynamic approach to configuration perfect for integrating `nsv` into your CI workflow.
 
-## Variables
+## Global Variables
 
 | Variable Name        | Description                                                                                                   |
 | -------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -22,4 +22,12 @@ If you need to customize the behavior of `nsv` you can use the supported environ
 | `NSV_PATCH_PREFIXES` | a comma separated list of conventional commit prefixes for triggering <br/>a patch semantic version increment |
 | `NSV_PRETTY`         | pretty-print the output of the next semantic version in a given format                                        |
 | `NSV_SHOW`           | show how the next semantic version was generated                                                              |
-| `NSV_TAG_MESSAGE`    | a custom message for the tag, overrides the default:<br/>`chore: tagged release <version>`                    |
+
+## Tag Variables
+
+| Variable Name        | Description                                                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NSV_COMMIT_MESSAGE` | a custom message when committing file changes, supports go text templates.<br />The default is: `chore: tagged release {{.Tag}} {{.SkipPipelineTag}}` |
+| `NSV_DRY_RUN`        | no changes will be made to the repository                                                                                                             |
+| `NSV_HOOK`           | a user-defined hook that will be executed before the repository is tagged<br />with the next semantic version                                         |
+| `NSV_TAG_MESSAGE`    | a custom message for the annotated tag, supports go text templates.<br />The default is: `chore: tagged release <version>`                            |

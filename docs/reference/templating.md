@@ -2,6 +2,7 @@
 icon: material/application-cog-outline
 title: Flexibility through Templating
 description: Customize behavior with go templates
+status: new
 ---
 
 # Customization with Templates
@@ -18,7 +19,7 @@ The following annotations represent a semantic version broken down into its part
 | `{{.SemVer}}`  | The explicit semantic version. Any leading `v` prefix will be removed   | `0.1.0`  |
 | `{{.Version}}` | The version number based on the repositories existing naming convention | `v0.1.0` |
 
-## Tag annotation message :material-new-box:{.new-feature title="Feature added on the 9th of October 2023"}
+## Tag annotation message
 
 The following annotations are available for [customizing](../tag-version.md#using-a-custom-tag-message) the tag annotation message.
 
@@ -26,3 +27,13 @@ The following annotations are available for [customizing](../tag-version.md#usin
 | -------------- | ---------------------------------------------------------------- | ------- |
 | `{{.Tag}}`     | The next calculated semantic version based on the commit history | `0.2.1` |
 | `{{.PrevTag}}` | The previous semantic version                                    | `0.2.0` |
+
+## Commit message
+
+The following annotations are available for [customizing](../tag-version.md#using-a-custom-commit-message) the commit message.
+
+| Annotation             | Description                                                      | Example     |
+| ---------------------- | ---------------------------------------------------------------- | ----------- |
+| `{{.Tag}}`             | The next calculated semantic version based on the commit history | `0.2.1`     |
+| `{{.PrevTag}}`         | The previous semantic version                                    | `0.2.0`     |
+| `{{.SkipPipelineTag}}` | A CI provider tag for skipping a pipeline build                  | `[skip ci]` |

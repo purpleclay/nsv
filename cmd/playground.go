@@ -20,10 +20,11 @@ Environment Variables:
 
 func playgroundCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "playground <tag>",
-		Short: "A playground for discovering go template support",
-		Long:  playgroundLongDesc,
-		Args:  cobra.ExactArgs(1),
+		Use:    "playground <tag>",
+		Short:  "A playground for discovering go template support",
+		Long:   playgroundLongDesc,
+		Args:   cobra.ExactArgs(1),
+		Hidden: true,
 		PreRunE: func(_ *cobra.Command, _ []string) error {
 			return env.Parse(opts)
 		},
