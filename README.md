@@ -21,6 +21,7 @@ The power is at your fingertips.
 - If you batch your commits per release or prefer a continuous delivery approach, it has you covered.
 - Context-aware, it automatically switches to a monorepo workflow.
 - Extend the power of your commits through commands to dynamically change your semantic release workflow.
+- Patch files with the next semantic version for that complete release workflow.
 - Get up and running in seconds within GitHub and GitLab with the available [action](https://github.com/purpleclay/nsv-action) or [template](https://gitlab.com/purpleclay/nsv).
 - First class [Dagger](https://dagger.io/) support.
 
