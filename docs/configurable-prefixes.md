@@ -1,7 +1,6 @@
 ---
 icon: material/apple-keyboard-command
 description: Advanced control of semantic versioning through dedicated commands
-status: new
 ---
 
 # Configure your Conventional prefixes

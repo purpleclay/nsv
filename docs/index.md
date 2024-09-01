@@ -31,6 +31,6 @@ The power is at your fingertips.
 - If you batch your commits per release or prefer a continuous delivery approach, it has you covered.
 - <u>Context-aware</u>, it automatically switches to a monorepo workflow.
 - Extend the power of your commits through <u>commands</u> to dynamically change your semantic release workflow.
-- Explore how to use it within the purpose-built playground. <span class="rounded-pill">:material-test-tube: experimental</span>
+- <u>Patch</u> files with the next semantic version for that complete release workflow. <span class="rounded-pill">:material-test-tube: experimental</span>
 - Get up and running in seconds within GitHub :material-github: and GitLab :material-gitlab: with the available <u>[action](https://github.com/purpleclay/nsv-action)</u> or <u>[template](https://gitlab.com/purpleclay/nsv)</u>.
-- First class <u>[Dagger](https://dagger.io/)</u> :material-sword: support. <span class="rounded-pill">:material-test-tube: experimental</span>
+- First class <u>[Dagger](https://dagger.io/)</u> :material-sword: support.

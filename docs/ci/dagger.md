@@ -2,12 +2,9 @@
 icon: material/sword
 social:
   cards: false
-status: new
 ---
 
 # Using Dagger in your CI
-
-<span class="rounded-pill">:material-test-tube: experimental</span>
 
 ## GitHub Action
 
@@ -32,7 +29,7 @@ jobs:
           token: ${{ secrets.GH_NSV }} # (1)!
 
       - name: Tag
-        uses: dagger/dagger-for-github@v5
+        uses: dagger/dagger-for-github@v6
         env:
           GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}"
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
