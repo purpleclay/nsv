@@ -152,10 +152,10 @@ docker_manifests:
 
 brews:
   - name: nsv
-    tap:
+    repository:
       owner: purpleclay
       name: homebrew-tap
-    folder: Formula
+    directory: Formula
     homepage: "https://github.com/purpleclay/nsv"
     description: "A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
     license: MIT

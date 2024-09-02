@@ -26,6 +26,7 @@
             git
             go
             go-task
+            goreleaser
             vhs
           ];
         };
