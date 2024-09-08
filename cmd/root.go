@@ -119,6 +119,7 @@ func Execute(out io.Writer, buildInfo BuildDetails) error {
 		playgroundCmd(opts),
 		nextCmd(opts),
 		tagCmd(opts),
+		patchCmd(opts),
 	)
 
 	cmd.SetUsageTemplate(customUsageTemplate)

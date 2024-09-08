@@ -31,7 +31,7 @@ echo -n $NSV_NEXT_TAG > VERSION`)
 	require.ElementsMatch(t, []string{"0.1.0", "0.2.0"}, tags)
 
 	logs := gittest.Log(t)
-	assert.Equal(t, "chore: tagged release 0.2.0 [skip ci]", logs[0].Message)
+	assert.Equal(t, "chore: patched files for release 0.2.0 [skip ci]", logs[0].Message)
 
 	out := gittest.Show(t, "0.2.0")
 	assert.Contains(t, out, logs[0].Hash)
