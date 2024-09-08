@@ -16,7 +16,7 @@ var (
 	commitMessageTmpl = "chore: patched files for release {{.Tag}}"
 	commitTmpl        *template.Template
 
-	patchLongDesc = `Patch files in your repository with the next semantic version based on the conventional commit
+	patchLongDesc = `Patch files in a repository with the next semantic version based on the conventional commit
 history of your repository.
 
 Environment Variables:
@@ -27,8 +27,8 @@ Environment Variables:
 | NO_COLOR           | switch to using an ASCII color profile within the terminal     |
 | NO_LOG             | disable all log output                                         |
 | NSV_COMMIT_MESSAGE | a custom message when committing file changes, supports go     |
-|                    | text templates. The default is:                                |
-|                    | "chore: patched files for release {{.Tag}}"                    |
+|                    | text templates. The default is: "chore: patched files for      |
+|                    | release {{.Tag}}"                                              |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_HOOK           | a user-defined hook that will be executed before any file      |
@@ -58,7 +58,7 @@ Hook Environment Variables:
 func patchCmd(opts *Options) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "patch [<path>...]",
-		Short: "Patch files within the repository with the next semantic version",
+		Short: "Patch files within a repository with the next semantic version",
 		Long:  patchLongDesc,
 		PreRunE: func(_ *cobra.Command, args []string) error {
 			opts.Paths = defaultIfEmpty(args, []string{git.RelativeAtRoot})

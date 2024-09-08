@@ -62,8 +62,8 @@ Environment Variables:
 | NO_COLOR           | switch to using an ASCII color profile within the terminal     |
 | NO_LOG             | disable all log output                                         |
 | NSV_COMMIT_MESSAGE | a custom message when committing file changes, supports go     |
-|                    | text templates. The default is:                                |
-|                    | "chore: patched files for release {{.Tag}} {{.SkipPipelineTag}}" |
+|                    | text templates. The default is: "chore: patched files for      |
+|                    | release {{.Tag}} {{.SkipPipelineTag}}"                         |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_HOOK           | a user-defined hook that will be executed before the           |
