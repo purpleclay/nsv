@@ -31,8 +31,8 @@ Environment Variables:
 |                    | "chore: patched files for release {{.Tag}}"                    |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
-| NSV_HOOK           | a user-defined hook that will be executed before the           |
-|                    | repository is tagged with the next semantic version            |
+| NSV_HOOK           | a user-defined hook that will be executed before any file      |
+|                    | changes are committed with the next semantic version           |
 | NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
 |                    | triggering a major semantic version increment                  |
 | NSV_MINOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
@@ -88,7 +88,7 @@ func patchCmd(opts *Options) *cobra.Command {
 	flags.StringVarP(&opts.CommitMessage, "commit-message", "M", commitMessageTmpl, "a custom message when committing file "+
 		"changes, supports go text templates")
 	flags.BoolVar(&opts.DryRun, "dry-run", false, "no changes will be made to the repository")
-	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before any file changes are commited "+
+	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before any file changes are committed "+
 		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
@@ -110,7 +110,6 @@ func doPatch(gitc *git.Client, opts *Options) error {
 		return err
 	}
 
-	var tags []string
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
@@ -135,14 +134,14 @@ func doPatch(gitc *git.Client, opts *Options) error {
 		}
 
 		vers = append(vers, next)
-		tags = append(tags, next.Tag)
 	}
 
 	if len(vers) == 0 {
 		return nil
 	}
 
-	if err := pushAll(gitc, tags, opts); err != nil {
+	var noTags []string
+	if err := pushAll(gitc, noTags, opts); err != nil {
 		return err
 	}
 
