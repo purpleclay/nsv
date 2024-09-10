@@ -57,4 +57,4 @@ chore: bumped files to 0.2.0
 
 ## Version template customization
 
-Internally, `nsv` utilizes a go template to construct the next semantic version. Runtime customization of this template is available [here](./next-version.md# version-template-customization).
+Internally, `nsv` utilizes a go template to construct the next semantic version. Runtime customization of this template is available [here](./next-version.md#version-template-customization).
