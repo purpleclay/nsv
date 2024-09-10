@@ -48,6 +48,8 @@ nav:
       # - Playground: playground.md
       - Tag Version: tag-version.md
       - Hooks: hooks.md
+      - Patch Files: patch-files.md
+      - Git Signing: git-signing.md
       - Monorepos: monorepos.md
       - Pretty Print: pretty.md
       - Installation:
@@ -67,6 +69,7 @@ nav:
       - Version Templating: reference/templating.md
       - CLI:
           - nsv: reference/cli/nsv.md
+          - nsv patch: reference/cli/nsv-patch.md
           - nsv next: reference/cli/nsv-next.md
           # - nsv playground: reference/cli/nsv-playground.md
           - nsv tag: reference/cli/nsv-tag.md

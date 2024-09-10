@@ -1,7 +1,6 @@
 ---
 icon: material/hook
-description: Extend your release workflow by patching files with the next semantic version
-status: new
+description: Extend your release workflow by executing a custom hook
 ---
 
 # Executing a custom hook

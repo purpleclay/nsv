@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"errors"
 	"text/template"
 
 	"github.com/purpleclay/chomp"
@@ -13,8 +14,9 @@ import (
 )
 
 var (
-	commitMessageTmpl = "chore: patched files for release {{.Tag}}"
-	commitTmpl        *template.Template
+	commitMessageTmpl   = "chore: patched files for release {{.Tag}}"
+	commitTmpl          *template.Template
+	errRequiredHookFlag = errors.New("a hook must be provided when patching files")
 
 	patchLongDesc = `Patch files in a repository with the next semantic version based on the conventional commit
 history of your repository.
@@ -61,6 +63,11 @@ func patchCmd(opts *Options) *cobra.Command {
 		Short: "Patch files within a repository with the next semantic version",
 		Long:  patchLongDesc,
 		PreRunE: func(_ *cobra.Command, args []string) error {
+			// This will be removed once auto-patching of common files is in place
+			if opts.Hook == "" {
+				return errRequiredHookFlag
+			}
+
 			opts.Paths = defaultIfEmpty(args, []string{git.RelativeAtRoot})
 
 			if err := verifyTextTemplate(opts.CommitMessage); err != nil {

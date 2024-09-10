@@ -2,7 +2,6 @@
 icon: material/application-cog-outline
 title: Flexibility through Templating
 description: Customize behavior with go templates
-status: new
 ---
 
 # Customization with Templates

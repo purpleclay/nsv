@@ -2,6 +2,7 @@
 icon: material/sword
 social:
   cards: false
+status: new
 ---
 
 # Running with Dagger
@@ -77,4 +78,13 @@ Tags a repository with the next semantic version. For full configuration [option
 
 ```{ .sh .no-select }
 dagger call -m github.com/purpleclay/daggerverse/nsv --src . tag
+```
+
+## Patching files with the next version
+
+Patch files within a repository using the next semantic version. For full configuration [options](../patch-files.md).
+
+```{ .sh .no-select }
+dagger call -m github.com/purpleclay/daggerverse/nsv --src . patch \
+  --hook "./scripts/patch.sh"
 ```

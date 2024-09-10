@@ -2,13 +2,14 @@
 icon: material/console
 social:
   cards: false
+status: new
 ---
 
-# nsv tag
+# nsv patch
 
 ```{ .text .no-select .no-copy }
-Tag the repository with the next semantic version based on the conventional
-commit history of your repository.
+Patch files in a repository with the next semantic version based on the
+conventional commit history of your repository.
 
 Environment Variables:
 
@@ -21,13 +22,13 @@ Environment Variables:
 | NO_LOG             | disable all log output                                 |
 | NSV_COMMIT_MESSAGE | a custom message when committing file changes,         |
 |                    | supports go text templates. The default is: "chore:    |
-|                    | patched files for release {{.Tag}}                     |
-|                    | {{.SkipPipelineTag}}"                                  |
+|                    | patched files for release {{.Tag}}"                    |
 | NSV_DRY_RUN        | no changes will be made to the repository              |
 | NSV_FORMAT         | provide a go template for changing the default version |
 |                    | format                                                 |
-| NSV_HOOK           | a user-defined hook that will be executed before the   |
-|                    | repository is tagged with the next semantic version    |
+| NSV_HOOK           | a user-defined hook that will be executed before any   |
+|                    | file changes are committed with the next semantic      |
+|                    | version                                                |
 | NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes |
 |                    | or triggering a major semantic version increment       |
 | NSV_MINOR_PREFIXES | a comma separated list of conventional commit prefixes |
@@ -39,9 +40,6 @@ Environment Variables:
 |                    | full or compact. Must be used in conjunction with      |
 |                    | NSV_SHOW (default: full)                               |
 | NSV_SHOW           | show how the next semantic version was generated       |
-| NSV_TAG_MESSAGE    | a custom message for the tag, supports go text         |
-|                    | templates. The default is: "chore: tagged release      |
-|                    | {{.Tag}}"                                              |
 
 Hook Environment Variables:
 
@@ -59,7 +57,7 @@ Hook Environment Variables:
 ## Usage
 
 ```{ .text .no-select .no-copy }
-nsv tag [<path>...] [flags]
+nsv patch [<path>...] [flags]
 ```
 
 ## Flags
@@ -67,14 +65,14 @@ nsv tag [<path>...] [flags]
 ```{ .text .no-select .no-copy }
 -M, --commit-message string    a custom message when committing file changes,
                                supports go text templates (default "chore:
-                               tagged release {{.Tag}} {{.SkipPipelineTag}}")
+                               patched files for release {{.Tag}}")
     --dry-run                  no changes will be made to the repository
 -f, --format string            provide a go template for changing the default
                                version format
 -h, --help                     help for tag
     --hook string              a user-defined hook that will be executed before
-                               the repository is tagged with the next semantic
-                               version
+                               any file changes are committed with the next
+                               semantic version
     --major-prefixes strings   a comma separated list of conventional commit
                                prefixes for triggering a major semantic version
                                increment
@@ -89,9 +87,6 @@ nsv tag [<path>...] [flags]
                                of either full or compact. Must be used in
                                conjunction with --show (default "full")
 -s, --show                     show how the next semantic version was generated
--A, --tag-message string       a custom message for the annotated tag, supports
-                               go text templates (default "chore: tagged release
-                               {{.Tag}}")
 ```
 
 ## Global Flags
