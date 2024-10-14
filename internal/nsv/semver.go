@@ -49,6 +49,7 @@ type Options struct {
 	MinorPrefixes []string
 	PatchPrefixes []string
 	Path          string
+	PathIgnores   []string
 	VersionFormat string
 }
 
@@ -192,7 +193,9 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	}
 	opts.Logger.Info("identified the latest git tag", "tag", ltag)
 
-	log, err := gitc.Log(git.WithPaths(ctx.LogPath), git.WithRefRange(git.HeadRef, ltag))
+	paths := []string{ctx.LogPath}
+	paths = append(paths, opts.PathIgnores...)
+	log, err := gitc.Log(git.WithPaths(paths...), git.WithRefRange(git.HeadRef, ltag))
 	if err != nil {
 		return nil, err
 	}

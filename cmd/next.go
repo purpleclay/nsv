@@ -5,11 +5,14 @@ import (
 	"os"
 	"strings"
 
+	"github.com/purpleclay/chomp"
 	git "github.com/purpleclay/gitz"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"github.com/spf13/cobra"
 )
+
+const pathspecIdent = ":"
 
 type MissingPathsError struct {
 	Paths []string
@@ -121,6 +124,10 @@ func defaultIfEmpty(paths, def []string) []string {
 func pathsExist(paths []string) error {
 	var notFound []string
 	for _, path := range paths {
+		if idx := strings.Index(path, pathspecIdent); idx != -1 {
+			path = path[:idx]
+		}
+
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			notFound = append(notFound, path)
 		}
@@ -136,12 +143,18 @@ func pathsExist(paths []string) error {
 func doNext(gitc *git.Client, opts *Options) error {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
+		rootPath, pathspecs, err := extractPathSpecs(path)
+		if err != nil {
+			return err
+		}
+
 		next, err := nsv.NextVersion(gitc, nsv.Options{
 			MajorPrefixes: opts.MajorPrefixes,
 			MinorPrefixes: opts.MinorPrefixes,
 			Logger:        opts.Logger,
 			PatchPrefixes: opts.PatchPrefixes,
-			Path:          path,
+			Path:          rootPath,
+			PathIgnores:   pathspecs,
 			VersionFormat: opts.VersionFormat,
 		})
 		if err != nil {
@@ -159,6 +172,57 @@ func doNext(gitc *git.Client, opts *Options) error {
 
 	printNext(vers, opts)
 	return nil
+}
+
+func extractPathSpecs(path string) (string, []string, error) {
+	idx := strings.Index(path, pathspecIdent)
+	if idx == -1 {
+		return path, nil, nil
+	}
+
+	pathspecs, err := pathspecs(path[idx:])
+	if err != nil {
+		return "", nil, err
+	}
+
+	return path[:idx], pathspecs, nil
+}
+
+func pathspecs(pathspecs string) ([]string, error) {
+	_, ext, err := chomp.ManyN(chomp.First(magicPathspec(), bangPathspec()), 1)(pathspecs)
+	if err != nil {
+		return nil, err
+	}
+
+	return ext, nil
+}
+
+func bangPathspec() chomp.Combinator[string] {
+	return func(s string) (string, string, error) {
+		// :!*
+		return chomp.Flatten(
+			chomp.All(
+				chomp.Tag(pathspecIdent),
+				chomp.Tag("!"),
+				chomp.First(chomp.Until(pathspecIdent), chomp.Eol()),
+			),
+		)(s)
+	}
+}
+
+func magicPathspec() chomp.Combinator[string] {
+	return func(s string) (string, string, error) {
+		// :(*)*
+		return chomp.Flatten(
+			chomp.All(
+				chomp.Tag(pathspecIdent),
+				chomp.Tag("("),
+				chomp.Until(")"),
+				chomp.Tag(")"),
+				chomp.First(chomp.Until(pathspecIdent), chomp.Eol()),
+			),
+		)(s)
+	}
 }
 
 func printNext(vers []*nsv.Next, opts *Options) {
