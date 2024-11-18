@@ -22,7 +22,7 @@ type Options struct {
 	DryRun        bool        `env:"NSV_DRY_RUN"`
 	Err           io.Writer   `env:"-"`
 	Hook          string      `env:"NSV_HOOK"`
-	Logger        *log.Logger `env:"_"`
+	Logger        *log.Logger `env:"-"`
 	LogLevel      string      `env:"LOG_LEVEL"`
 	MajorPrefixes []string    `env:"NSV_MAJOR_PREFIXES"`
 	MinorPrefixes []string    `env:"NSV_MINOR_PREFIXES"`
