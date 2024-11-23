@@ -216,6 +216,21 @@ nfpms:
         - statically-linked-binary
         - changelog-file-missing-in-native-package
 
+nix:
+  - name: nsv
+    repository:
+      owner: purpleclay
+      name: nsv-nix
+    url_template: "https://github.com/purpleclay/nsv/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://github.com/purpleclay/nsv"
+    description: "A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
+    license: MIT
+    post_install: |
+      installShellCompletion --cmd nsv \
+        --bash <($out/bin/nsv completion bash) \
+        --fish <($out/bin/nsv completion fish) \
+        --zsh <($out/bin/nsv completion zsh)
+
 publishers:
   - name: fury.io
     ids:
