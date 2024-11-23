@@ -1,31 +1,29 @@
                                                                                                           
 ┌───────────────────────┬────────────────────────────────────────────────────────────────────────────────┐
-│  0.2.0                │ (dir: src/ui)                                                                  │
-│  ↑↑                   │                                                                                │
-│  0.1.0                │ >  ba1ec83                                                                     │
-│                       │   fix: search options were not being correctly converted into elastic search   │
-│ Patches               │   filters (#63)                                                                │
+│  0.2.0                │ >  ba1ec83                                                                     │
+│  ↑↑                   │   fix: search options were not being correctly converted into elastic search   │
+│  0.1.0                │   filters (#63)                                                                │
 │                       │                                                                                │
-│ - src/ui/go.mod       │ >  4e7a277                                                                     │
-│ - src/ui/dashboard.go │   chore(deps): bump docker/setup-qemu-action from 2 to 3 (#62)                 │
+│ Path: src/ui          │ >  4e7a277                                                                     │
+│                       │   chore(deps): bump docker/setup-qemu-action from 2 to 3 (#62)                 │
 │                       │                                                                                │
-│                       │   Signed-off-by: dependabot[bot] <support@github.com>                          │
+│ Patches               │   Signed-off-by: dependabot[bot] <support@github.com>                          │
 │                       │    Co-authored-by: dependabot[bot]                                             │
-│                       │   <49699333+dependabot[bot]@users.noreply.github.com>                          │
-│                       │                                                                                │
+│ - src/ui/go.mod       │   <49699333+dependabot[bot]@users.noreply.github.com>                          │
+│ - src/ui/dashboard.go │                                                                                │
 │                       │ ✓  2c9b178                                                                     │
 │                       │   feat: add option toggles to the dashboard that allows dynamic queryies to    │
 │                       │   elastic (#58)                                                                │
 ├───────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
-│  0.2.1                │ (dir: src/search)                                                              │
-│  ↑↑                   │                                                                                │
-│  0.2.0                │ ✓  6e6fcac                                                                     │
-│                       │   feat: add redis caching support (#55)                                        │
-│ Patches               │                                                                                │
+│  0.2.1                │ ✓  6e6fcac                                                                     │
+│  ↑↑                   │   feat: add redis caching support (#55)                                        │
+│  0.2.0                │                                                                                │
 │                       │ >  869fd31                                                                     │
-│ - src/search/cache.go │   feat(deps): bump github.com/charmbracelet/lipgloss from 0.7.1 to 0.8.0 (#56) │
-│ - src/search/go.mod   │                                                                                │
+│ Path: src/search      │   feat(deps): bump github.com/charmbracelet/lipgloss from 0.7.1 to 0.8.0 (#56) │
+│                       │                                                                                │
 │                       │   Signed-off-by: dependabot[bot] <support@github.com>                          │
-│                       │   Co-authored-by: dependabot[bot]                                              │
+│ Patches               │   Co-authored-by: dependabot[bot]                                              │
 │                       │   <49699333+dependabot[bot]@users.noreply.github.com>                          │
+│ - src/search/cache.go │                                                                                │
+│ - src/search/go.mod   │                                                                                │
 └───────────────────────┴────────────────────────────────────────────────────────────────────────────────┘

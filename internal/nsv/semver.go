@@ -49,7 +49,7 @@ type Options struct {
 	MinorPrefixes []string
 	PatchPrefixes []string
 	Path          string
-	PathIgnores   []string
+	PathFilters   []string
 	VersionFormat string
 }
 
@@ -167,12 +167,13 @@ func (t Tag) PrereleaseWithLabel(label string) bool {
 }
 
 type Next struct {
-	Diffs   []git.FileDiff
-	Log     []git.LogEntry
-	LogDir  string
-	Match   Match
-	PrevTag string
-	Tag     string
+	Diffs      []git.FileDiff
+	Log        []git.LogEntry
+	LogDir     string
+	LogFilters []string
+	Match      Match
+	PrevTag    string
+	Tag        string
 }
 
 type Match struct {
@@ -194,12 +195,13 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	opts.Logger.Info("identified the latest git tag", "tag", ltag)
 
 	paths := []string{ctx.LogPath}
-	paths = append(paths, opts.PathIgnores...)
+	paths = append(paths, opts.PathFilters...)
 	log, err := gitc.Log(git.WithPaths(paths...), git.WithRefRange(git.HeadRef, ltag))
 	if err != nil {
 		return nil, err
 	}
-	opts.Logger.Info("retrieved git log", "commits", len(log.Commits), "log_path", ctx.LogPath)
+	opts.Logger.Info("retrieved git log", "commits", len(log.Commits), "log_path", ctx.LogPath,
+		"filters", opts.PathFilters)
 
 	// Detect commands first as they have a higher precedence over conventional commits
 	var inc Increment
@@ -274,12 +276,13 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 	}
 
 	return &Next{
-		Diffs:   diffs,
-		Log:     log.Commits,
-		LogDir:  ctx.LogPath,
-		Match:   match,
-		PrevTag: ltag,
-		Tag:     nextVer,
+		Diffs:      diffs,
+		Log:        log.Commits,
+		LogDir:     ctx.LogPath,
+		LogFilters: opts.PathFilters,
+		Match:      match,
+		PrevTag:    ltag,
+		Tag:        nextVer,
 	}, nil
 }
 

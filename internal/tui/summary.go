@@ -71,14 +71,34 @@ func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 				paths = append(paths, diff.Path)
 			}
 
-			a := list.New(paths).
+			patchList := list.New(paths).
 				Enumerator(list.Dash).
 				EnumeratorStyle(listEnumerator).
 				String()
 
 			patches = lipgloss.JoinVertical(lipgloss.Top,
 				padTop.Render(theme.U.Render("Patches")),
-				padTop.Render(a),
+				padTop.Render(patchList),
+			)
+		}
+
+		var path string
+		if ver.LogDir != "" {
+			// TODO: turn this into a list
+			path = padTop.Render(faint.Render("Path:", ver.LogDir))
+		}
+
+		var filters string
+		if len(ver.LogFilters) > 0 {
+			filterList := list.New(ver.LogFilters).
+				Enumerator(list.Dash).
+				EnumeratorStyle(listEnumerator).
+				ItemStyle(faint).
+				String()
+
+			filters = lipgloss.JoinVertical(lipgloss.Top,
+				padTop.Render(theme.U.Faint(true).Render("Filters:")),
+				padTop.Render(filterList),
 			)
 		}
 
@@ -86,6 +106,8 @@ func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 			theme.H1.Render(ver.Tag),
 			diffMark.Render(),
 			theme.H4.Render(ver.PrevTag),
+			path,
+			filters,
 			patches,
 		)
 
@@ -97,14 +119,14 @@ func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 			log = printFullSummary(ver, opts)
 		}
 
-		var sum []string
-		if ver.LogDir != "" {
-			sum = append(sum, faint.Render(fmt.Sprintf("(dir: %s)\n", ver.LogDir)))
-		}
-		sum = append(sum, log)
+		// var sum []string
+		// if ver.LogDir != "" {
+		// 	sum = append(sum, faint.Render(fmt.Sprintf("(dir: %s)\n", ver.LogDir)))
+		// }
+		// sum = append(sum, log)
 
-		logHistory := lipgloss.JoinVertical(lipgloss.Top, strings.Join(sum, "\n"))
-		rows = append(rows, []string{tagDiff, logHistory})
+		// logHistory := lipgloss.JoinVertical(lipgloss.Top, strings.Join(sum, "\n"))
+		rows = append(rows, []string{tagDiff, log})
 	}
 
 	out := theme.NewTable(rows).

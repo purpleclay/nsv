@@ -154,7 +154,7 @@ func doNext(gitc *git.Client, opts *Options) error {
 			Logger:        opts.Logger,
 			PatchPrefixes: opts.PatchPrefixes,
 			Path:          rootPath,
-			PathIgnores:   pathspecs,
+			PathFilters:   pathspecs,
 			VersionFormat: opts.VersionFormat,
 		})
 		if err != nil {

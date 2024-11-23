@@ -5,10 +5,24 @@ import (
 	"testing"
 
 	git "github.com/purpleclay/gitz"
+	theme "github.com/purpleclay/lipgloss-theme"
 	"github.com/purpleclay/nsv/internal/nsv"
 	"github.com/purpleclay/nsv/internal/tui"
 	"gotest.tools/v3/golden"
 )
+
+// Thanks ChatGPT!
+// The Madness Rating is an interpretation of each character's level of psychological instability
+// and how unpredictable or mentally unhinged they are portrayed
+var data = [][]string{
+	{"Name", "Sex", "Distinguishing Features", "Madness Rating"},
+	{"The Joker", "Male", "Clown-like appearance, green hair, pale skin, psychopathic smile", "10"},
+	{"Harley Quinn", "Female", "Clown-like appearance, mallet weapon, acrobatic and unpredictable", "9"},
+	{"Two-Face", "Male", "Half-burned face, split personality (Harvey Dent and Two-Face)", "8"},
+	{"Scarecrow", "Male", "Wears a scarecrow mask, uses fear toxins to manipulate victims", "8"},
+	{"Mad Hatter", "Male", "Obsession with Alice in Wonderland, mind-control technology", "8"},
+	{"Riddler", "Male", "Obsession with riddles, green suit with question marks", "7"},
+}
 
 var versions = []*nsv.Next{
 	{
@@ -134,4 +148,40 @@ func TestPrintSummaryCompact(t *testing.T) {
 	tui.PrintSummary(versions, opts)
 
 	golden.Assert(t, buf.String(), "TestPrintSummaryCompact.golden")
+}
+
+func TestTableNoBorder(t *testing.T) {
+	t.Parallel()
+	tbl := theme.NewTable(data)
+
+	golden.Assert(t, tbl.String(), "TestTableNoBorder.golden")
+}
+
+func TestTableThinBorder(t *testing.T) {
+	t.Parallel()
+	tbl := theme.NewTable(data).
+		Border(theme.ThinBorder)
+
+	golden.Assert(t, tbl.String(), "TestTableThinBorder.golden")
+}
+
+func TestTableNoDividers(t *testing.T) {
+	t.Parallel()
+	tbl := theme.NewTable(data).
+		Border(theme.ThinBorder).
+		Dividers(false)
+
+	golden.Assert(t, tbl.String(), "TestTableNoDividers.golden")
+}
+
+func TestTableCollapsed(t *testing.T) {
+	t.Parallel()
+	tbl := theme.NewTable(data).
+		Collapsed(true)
+
+	golden.Assert(t, tbl.String(), "TestTableCollapsed.golden")
+}
+
+func TestTable(t *testing.T) {
+	golden.Assert(t, theme.U.Render("sssss"), "TestTable.golden")
 }
