@@ -22,6 +22,7 @@
 !.envrc
 !flake.nix
 !flake.lock
+!default.nix
 
 # Allow Go files
 !*.go

@@ -30,6 +30,13 @@
             vhs
           ];
         };
+
+        apps.default = {
+          type = "app";
+          program = "${self.packages.${system}.nsv}/bin/nsv";
+        };
+
+        packages.default = pkgs.callPackage ./default.nix {};
       }
     );
 }
