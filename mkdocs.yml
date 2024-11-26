@@ -55,9 +55,10 @@ nav:
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md
-      - Docker:
-          - Run with Docker: docker/running.md
-          - Run with Dagger: docker/dagger.md
+      - Running:
+          - Run with Docker: running/docker.md
+          - Run with Dagger: running/dagger.md
+          - Run with Nix: running/nix.md
       - CI:
           - Github Action: ci/github-action.md
           - GitLab Template: ci/gitlab-template.md

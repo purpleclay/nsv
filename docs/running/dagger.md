@@ -69,7 +69,7 @@ Read the official documentation for complete [instructions](https://docs.dagger.
 Calculates the next semantic version and prints it to stdout. For full configuration [options](../next-version.md).
 
 ```{ .sh .no-select }
-dagger call -m github.com/purpleclay/daggerverse/nsv --src . next
+dagger call -m github.com/purpleclay/daggerverse/nsv@v0.10.1 --src . next
 ```
 
 ## Tagging the next version
@@ -77,7 +77,7 @@ dagger call -m github.com/purpleclay/daggerverse/nsv --src . next
 Tags a repository with the next semantic version. For full configuration [options](../tag-version.md).
 
 ```{ .sh .no-select }
-dagger call -m github.com/purpleclay/daggerverse/nsv --src . tag
+dagger call -m github.com/purpleclay/daggerverse/nsv@v0.10.1 --src . tag
 ```
 
 ## Patching files with the next version
@@ -85,6 +85,6 @@ dagger call -m github.com/purpleclay/daggerverse/nsv --src . tag
 Patch files within a repository using the next semantic version. For full configuration [options](../patch-files.md).
 
 ```{ .sh .no-select }
-dagger call -m github.com/purpleclay/daggerverse/nsv --src . patch \
+dagger call -m github.com/purpleclay/daggerverse/nsv@v0.10.1 --src . patch \
   --hook "./scripts/patch.sh"
 ```

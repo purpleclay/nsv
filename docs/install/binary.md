@@ -2,6 +2,7 @@
 icon: material/package-variant-closed
 social:
   cards: false
+status: new
 ---
 
 # Installing the Binary
@@ -9,14 +10,6 @@ social:
 You can use various package managers to install the `nsv` binary. Take your pick.
 
 ## Package Managers
-
-### Homebrew
-
-To use [Homebrew](https://brew.sh/):
-
-```{ .sh .no-select }
-brew install purpleclay/tap/nsv
-```
 
 ### Apt
 
@@ -35,6 +28,57 @@ You may need to install the `ca-certificates` package if you encounter [trust is
 sudo apt update && sudo apt install -y ca-certificates
 ```
 
+### Aur
+
+To install from the [aur](https://archlinux.org/) using [yay](https://github.com/Jguer/yay):
+
+```{ .sh .no-select }
+yay -S nsv-bin
+```
+
+### Homebrew
+
+To use [Homebrew](https://brew.sh/):
+
+```{ .sh .no-select }
+brew install purpleclay/tap/nsv
+```
+
+### Nix Flake
+
+To use [Nix](https://zero-to-nix.com/concepts/flakes/) Flakes (_highlights illustrate flake changes_):
+
+```{ .nix .no-select hl_lines="6-11 14 23" }
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+
+    nsv = {
+      url = "github:purpleclay/nsv-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+  };
+
+  outputs = { self, nixpkgs, flake-utils, nsv }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      with pkgs;
+      {
+        devShells.default = mkShell {
+          buildInputs = [
+            nsv.packages.${system}.nsv
+          ];
+        };
+      }
+    );
+}
+```
+
 ### Yum
 
 To install using the yum package manager:
@@ -48,15 +92,7 @@ gpgcheck=0' | sudo tee /etc/yum.repos.d/purpleclay.repo
 sudo yum install -y nsv
 ```
 
-### Aur
-
-To install from the [aur](https://archlinux.org/) using [yay](https://github.com/Jguer/yay):
-
-```{ .sh .no-select }
-yay -S nsv-bin
-```
-
-### Linux Packages
+## Linux Packages
 
 Download and manually install one of the `.deb`, `.rpm` or `.apk` packages from the [Releases](https://github.com/purpleclay/nsv/releases) page.
 
@@ -78,13 +114,13 @@ Download and manually install one of the `.deb`, `.rpm` or `.apk` packages from 
     sudo apk add --no-cache --allow-untrusted nsv_*.apk
     ```
 
-### Go Install
+## Go Install
 
 ```{ .sh .no-select }
 go install github.com/purpleclay/nsv@latest
 ```
 
-### Bash Script
+## Bash Script
 
 To install the latest version using a script:
 
@@ -110,17 +146,17 @@ All binaries can be verified using the checksum file and [cosign](https://github
 1. Download the checksum file:
 
    ```sh
-   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt -O
+   curl -sL https://github.com/purpleclay/nsv/releases/download/v0.10.1/checksums.txt -O
    ```
 
 1. Verify the signature of the file:
 
    ```sh
    cosign verify-blob \
-     --certificate-identity 'https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.3.0' \
+     --certificate-identity 'https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.10.1' \
      --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-     --cert 'https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.pem' \
-     --signature 'https://github.com/purpleclay/nsv/releases/download/v0.3.0/checksums.txt.sig' \
+     --cert 'https://github.com/purpleclay/nsv/releases/download/v0.10.1/checksums.txt.pem' \
+     --signature 'https://github.com/purpleclay/nsv/releases/download/v0.10.1/checksums.txt.sig' \
      checksums.txt
    ```
 
