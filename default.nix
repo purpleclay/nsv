@@ -12,7 +12,7 @@ buildGo122Module {
     owner = "purpleclay";
     repo = "nsv";
     rev = "v${version}";
-    hash = "sha256-5B4Vr1D+5EKcDrPcJWssbSLbiX+5CPmzV7qkwkTdph4=";
+    hash = "sha256-Pg435tLRH6OsWu6JVm7bTN4CIxxxsnhudlcqnRSp6gA=";
     leaveDotGit = true;
     postFetch = ''
       cd "$out"

@@ -33,10 +33,10 @@
 
         apps.default = {
           type = "app";
-          program = "${self.packages.${system}.nsv}/bin/nsv";
+          program = "${pkgs.callPackage ./. {}}/bin/nsv";
         };
 
-        packages.default = pkgs.callPackage ./default.nix {};
+        packages.default = pkgs.callPackage ./. {};
       }
     );
 }
