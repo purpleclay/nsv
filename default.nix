@@ -12,20 +12,14 @@ buildGo122Module {
     owner = "purpleclay";
     repo = "nsv";
     rev = "v${version}";
-    hash = "sha256-Pg435tLRH6OsWu6JVm7bTN4CIxxxsnhudlcqnRSp6gA=";
-    leaveDotGit = true;
-    postFetch = ''
-      cd "$out"
-      git rev-parse HEAD > $out/COMMIT
-      date -u "+%Y-%m-%dT%H:%M:%SZ" > $out/BUILD_DATE
-      find "$out" -name .git -print0 | xargs -0 rm -rf
-    '';
+    hash = "sha256-HMd6RG0S6ykezV7SC0jLZjxiFExzARTmy8kA3vWuj2g=";
   };
 
   vendorHash = "sha256-acyVQ14yJ2M9YNaq4FNJitZ7J9Kxi45Qj+tqu5GM01c=";
 
   meta = with lib; {
     homepage = "https://github.com/purpleclay/nsv";
+    changelog = "https://github.com/purpleclay/nsv/releases/tag/v${version}";
     description = "Semantic versioning without any config";
     license = licenses.mit;
     maintainers = with maintainers; [ purpleclay ];
@@ -37,10 +31,6 @@ buildGo122Module {
     "-X main.version=v${version}"
     "-X main.gitBranch=main"
   ];
-
-  preBuild = ''
-    ldflags+=" -X main.gitCommit=$(cat COMMIT) -X main.buildDate=$(cat BUILD_DATE)"
-  '';
 
   doCheck = false;
 }
