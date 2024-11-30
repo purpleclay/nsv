@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Customize behavior with environment variables">
+        <meta name="description" content="Manage your semantic versioning without any config">
       
       
       
-        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/reference/env-vars/">
+        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/running/docker/">
       
       
-        <link rel="prev" href="../../license/">
+        <link rel="prev" href="../../install/source/">
       
       
-        <link rel="next" href="../templating/">
+        <link rel="next" href="../dagger/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Dynamic Configuration - NSV</title>
+        <title>Run with Docker - NSV</title>
       
     
     
@@ -66,20 +66,7 @@
     posthog.init('phc_JQc1rRo60VrkdFvVgJw2HW5C1FrzVuNt89oU2HIu6ki',{api_host:'https://app.posthog.com'})
 </script>
 
-  
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Dynamic Configuration - NSV" />
-<meta property="og:description" content="Customize behavior with environment variables" />
-<meta property="og:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/reference/env-vars.png" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://docs.purpleclay.dev/nsv/reference/env-vars/" />
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="Dynamic Configuration - NSV" />
-<meta property="twitter:description" content="Customize behavior with environment variables" />
-<meta property="twitter:image" content="https://docs.purpleclay.dev/nsv/assets/images/social/reference/env-vars.png" />
-</head>
+  </head>
   
   
     
@@ -96,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dynamic-configuration-with-environment-variables" class="md-skip">
+        <a href="#running-with-docker" class="md-skip">
           Skip to content
         </a>
       
@@ -158,7 +145,7 @@ and
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Dynamic Configuration
+              Run with Docker
             
           </span>
         </div>
@@ -261,10 +248,12 @@ and
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../../next-version/" class="md-tabs__link">
           
   
@@ -281,13 +270,11 @@ and
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../reference/env-vars/" class="md-tabs__link">
           
   
     
@@ -374,8 +361,10 @@ and
       
   
   
+    
   
   
+  
     
     
       
@@ -408,19 +397,22 @@ and
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -437,7 +429,7 @@ and
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -735,17 +727,20 @@ and
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
         
           
-          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -851,8 +846,10 @@ and
                 
   
   
+    
   
   
+  
     
     
       
@@ -866,18 +863,21 @@ and
     
       
       
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
         
           
-          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -894,7 +894,7 @@ and
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -909,10 +909,38 @@ and
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../running/docker/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Docker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
@@ -929,6 +957,39 @@ and
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-with-cosign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Verifying with cosign
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -941,7 +1002,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../../running/dagger/" class="md-nav__link">
+      <a href="../dagger/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.92 5H5l9 9 1-.94m4.96 6.06-.84.84a.996.996 0 0 1-1.41 0l-3.12-3.12-2.68 2.66-1.41-1.41 1.42-1.42L3 7.75V3h4.75l8.92 8.92 1.42-1.42 1.41 1.41-2.67 2.67 3.12 3.12c.4.4.4 1.03.01 1.42Z"/></svg>
@@ -978,7 +1039,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../../running/nix/" class="md-nav__link">
+      <a href="../nix/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.9 8.7 5 17.2l-1.1-1.9L5.2 13H2.6L2 12l.6-1h3.7l1.3-2.3h2.3m.3 6.8h9.7l-1.1 1.9h-2.6l1.3 2.3-.6 1h-1.1L14 17.4h-2.7l-1.1-1.9m5.7-3.7L11 3.3h2.2l1.3 2.3 1.3-2.3h1.1l.6 1-1.9 3.2L17 9.8l-1.1 2m-2.1-3.3H4l1.1-1.9h2.6L6.4 4.3l.6-1h1.1L10 6.5h2.7l1.1 2m.3 6.8L19 6.8l1.1 1.9-1.3 2.3h2.6l.6 1-.6 1h-3.7l-1.3 2.3h-2.3m-6-3.1 4.9 8.4h-2.2l-1.3-2.3-1.1 2.3H7.1l-.6-1 1.9-3.2L7 14.2l1.1-2Z"/></svg>
@@ -1036,17 +1097,20 @@ and
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
         
           
-          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1185,17 +1249,20 @@ and
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
         
           
-          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1271,10 +1338,8 @@ and
       
   
   
-    
   
   
-  
     
     
       
@@ -1287,22 +1352,19 @@ and
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1319,7 +1381,7 @@ and
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1334,38 +1396,10 @@ and
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Environment Variables
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../reference/env-vars/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg>
@@ -1382,52 +1416,6 @@ and
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#global-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Global Variables
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tag-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Tag Variables
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1440,7 +1428,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../templating/" class="md-nav__link">
+      <a href="../../reference/templating/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.7 18.6v-1l1.1-.8c.1-.1.2-.2.1-.3l-1-1.7c0-.1-.2-.1-.3-.1l-1.2.5c-.3-.2-.6-.4-.9-.5l-.2-1.3c0-.1-.1-.2-.2-.2h-2c-.2 0-.3.1-.3.2l-.2 1.3c-.3.2-.5.3-.8.5l-1.2-.5c-.1 0-.2 0-.3.1l-1 1.7c0 .1 0 .2.1.3l1.1.8v1l-1.1.8c-.1.1-.2.2-.1.3l1 1.7c.1.1.2.1.3.1l1.2-.5c.2.2.5.4.8.5l.2 1.3c.1.1.2.2.3.2h2c.1 0 .2-.1.2-.2l.2-1.3c.3-.2.5-.3.8-.5l1.2.4c.1 0 .2 0 .3-.1l1-1.7c.1-.1.1-.2 0-.2l-1.1-.8m-3.7.9c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5M12.3 22H3c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h18c1.1 0 2 .9 2 2v9.1c-.6-.6-1.3-1.1-2-1.4V6H3v14h8.3c.2.7.5 1.4 1 2Z"/></svg>
@@ -1484,20 +1472,17 @@ and
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
         
           
-          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1532,7 +1517,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../cli/nsv/" class="md-nav__link">
+      <a href="../../reference/cli/nsv/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12h16m0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16m-7 14v-2h5v2h-5m-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59l3.99-4Z"/></svg>
@@ -1561,7 +1546,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../cli/nsv-patch/" class="md-nav__link">
+      <a href="../../reference/cli/nsv-patch/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12h16m0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16m-7 14v-2h5v2h-5m-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59l3.99-4Z"/></svg>
@@ -1598,7 +1583,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../cli/nsv-next/" class="md-nav__link">
+      <a href="../../reference/cli/nsv-next/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12h16m0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16m-7 14v-2h5v2h-5m-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59l3.99-4Z"/></svg>
@@ -1627,7 +1612,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../cli/nsv-tag/" class="md-nav__link">
+      <a href="../../reference/cli/nsv-tag/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12h16m0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16m-7 14v-2h5v2h-5m-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59l3.99-4Z"/></svg>
@@ -1691,24 +1676,11 @@ and
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#global-variables" class="md-nav__link">
+  <a href="#verifying-with-cosign" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Global Variables
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tag-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Tag Variables
+          Verifying with cosign
         </span>
       
     </span>
@@ -1736,82 +1708,40 @@ and
   
 
 
-<h1 id="dynamic-configuration-with-environment-variables">Dynamic Configuration with Environment Variables<a class="headerlink" href="#dynamic-configuration-with-environment-variables" title="Permanent link">&para;</a></h1>
-<p>If you need to customize the behavior of <code>nsv</code> you can use the supported environment variables. Environment variables provide a dynamic approach to configuration perfect for integrating <code>nsv</code> into your CI workflow.</p>
-<h2 id="global-variables">Global Variables<a class="headerlink" href="#global-variables" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Variable Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>LOG_LEVEL</code></td>
-<td>the level of logging when printing to stderr <br/>(<code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>fatal</code>)</td>
-</tr>
-<tr>
-<td><code>NO_COLOR</code></td>
-<td>switch to using an ASCII color profile within the terminal</td>
-</tr>
-<tr>
-<td><code>NO_LOG</code></td>
-<td>disable all log output</td>
-</tr>
-<tr>
-<td><code>NSV_FORMAT</code></td>
-<td>set a go template for formatting the provided tag</td>
-</tr>
-<tr>
-<td><code>NSV_MAJOR_PREFIXES</code></td>
-<td>a comma separated list of conventional commit prefixes for triggering <br/>a major semantic version increment</td>
-</tr>
-<tr>
-<td><code>NSV_MINOR_PREFIXES</code></td>
-<td>a comma separated list of conventional commit prefixes for triggering <br/>a minor semantic version increment</td>
-</tr>
-<tr>
-<td><code>NSV_PATCH_PREFIXES</code></td>
-<td>a comma separated list of conventional commit prefixes for triggering <br/>a patch semantic version increment</td>
-</tr>
-<tr>
-<td><code>NSV_PRETTY</code></td>
-<td>pretty-print the output of the next semantic version in a given format</td>
-</tr>
-<tr>
-<td><code>NSV_SHOW</code></td>
-<td>show how the next semantic version was generated</td>
-</tr>
-</tbody>
-</table>
-<h2 id="tag-variables">Tag Variables<a class="headerlink" href="#tag-variables" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Variable Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>NSV_COMMIT_MESSAGE</code></td>
-<td>a custom message when committing file changes, supports go text templates.<br />The default is: <code>chore: tagged release {{.Tag}} {{.SkipPipelineTag}}</code></td>
-</tr>
-<tr>
-<td><code>NSV_DRY_RUN</code></td>
-<td>no changes will be made to the repository</td>
-</tr>
-<tr>
-<td><code>NSV_HOOK</code></td>
-<td>a user-defined hook that will be executed before the repository is tagged<br />with the next semantic version</td>
-</tr>
-<tr>
-<td><code>NSV_TAG_MESSAGE</code></td>
-<td>a custom message for the annotated tag, supports go text templates.<br />The default is: <code>chore: tagged release &lt;version&gt;</code></td>
-</tr>
-</tbody>
-</table>
+<h1 id="running-with-docker">Running with Docker<a class="headerlink" href="#running-with-docker" title="Permanent link">&para;</a></h1>
+<p>You can run <code>nsv</code> directly from a docker image. Just mount your repository as a volume and set it as the working directory.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">DockerHub</label><label for="__tabbed_1_2">GHCR</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>purpleclay/nsv:v0.10.1
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>ghcr.io/purpleclay/nsv:v0.10.1
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="verifying-with-cosign">Verifying with cosign<a class="headerlink" href="#verifying-with-cosign" title="Permanent link">&para;</a></h2>
+<p>Docker images can be verified using <a href="https://github.com/sigstore/cosign">cosign</a>.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">DockerHub</label><label for="__tabbed_2_2">GHCR</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--certificate-identity<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.10.1&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s1">&#39;https://token.actions.githubusercontent.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>purpleclay/nsv:v0.10.1
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--certificate-identity<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.10.1&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s1">&#39;https://token.actions.githubusercontent.com&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>ghcr.io/purpleclay/nsv:v0.10.1
+</span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 

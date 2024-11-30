@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/docker/running/">
+        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/running/nix/">
       
       
-        <link rel="prev" href="../../install/source/">
+        <link rel="prev" href="../dagger/">
       
       
-        <link rel="next" href="../dagger/">
+        <link rel="next" href="../../ci/github-action/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Run with Docker - NSV</title>
+        <title>Run with Nix - NSV</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#running-with-docker" class="md-skip">
+        <a href="#running-with-nix" class="md-skip">
           Skip to content
         </a>
       
@@ -145,7 +145,7 @@ and
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Run with Docker
+              Run with Nix
             
           </span>
         </div>
@@ -790,6 +790,14 @@ and
   </span>
   
   
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
 
       </a>
     </li>
@@ -849,6 +857,8 @@ and
       
         
       
+        
+      
     
     
       
@@ -873,7 +883,7 @@ and
   <span class="md-ellipsis">
     
   
-    Docker
+    Running
   
 
     
@@ -889,7 +899,7 @@ and
             <span class="md-nav__icon md-icon"></span>
             
   
-    Docker
+    Running
   
 
           </label>
@@ -899,38 +909,10 @@ and
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Run with Docker
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
@@ -947,39 +929,6 @@ and
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#verifying-with-cosign" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Verifying with cosign
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1017,6 +966,125 @@ and
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.9 8.7 5 17.2l-1.1-1.9L5.2 13H2.6L2 12l.6-1h3.7l1.3-2.3h2.3m.3 6.8h9.7l-1.1 1.9h-2.6l1.3 2.3-.6 1h-1.1L14 17.4h-2.7l-1.1-1.9m5.7-3.7L11 3.3h2.2l1.3 2.3 1.3-2.3h1.1l.6 1-1.9 3.2L17 9.8l-1.1 2m-2.1-3.3H4l1.1-1.9h2.6L6.4 4.3l.6-1h1.1L10 6.5h2.7l1.1 2m.3 6.8L19 6.8l1.1 1.9-1.3 2.3h2.6l.6 1-.6 1h-3.7l-1.3 2.3h-2.3m-6-3.1 4.9 8.4h-2.2l-1.3-2.3-1.1 2.3H7.1l-.6-1 1.9-3.2L7 14.2l1.1-2Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Nix
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.9 8.7 5 17.2l-1.1-1.9L5.2 13H2.6L2 12l.6-1h3.7l1.3-2.3h2.3m.3 6.8h9.7l-1.1 1.9h-2.6l1.3 2.3-.6 1h-1.1L14 17.4h-2.7l-1.1-1.9m5.7-3.7L11 3.3h2.2l1.3 2.3 1.3-2.3h1.1l.6 1-1.9 3.2L17 9.8l-1.1 2m-2.1-3.3H4l1.1-1.9h2.6L6.4 4.3l.6-1h1.1L10 6.5h2.7l1.1 2m.3 6.8L19 6.8l1.1 1.9-1.3 2.3h2.6l.6 1-.6 1h-3.7l-1.3 2.3h-2.3m-6-3.1 4.9 8.4h-2.2l-1.3-2.3-1.1 2.3H7.1l-.6-1 1.9-3.2L7 14.2l1.1-2Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Nix
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-nix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Installing Nix
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nix-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Nix Run
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1629,11 +1697,24 @@ and
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#verifying-with-cosign" class="md-nav__link">
+  <a href="#installing-nix" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Verifying with cosign
+          Installing Nix
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nix-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Nix Run
         </span>
       
     </span>
@@ -1661,40 +1742,20 @@ and
   
 
 
-<h1 id="running-with-docker">Running with Docker<a class="headerlink" href="#running-with-docker" title="Permanent link">&para;</a></h1>
-<p>You can run <code>nsv</code> directly from a docker image. Just mount your repository as a volume and set it as the working directory.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">DockerHub</label><label for="__tabbed_1_2">GHCR</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>purpleclay/nsv:v0.8.0
+<h1 id="running-with-nix">Running with Nix<a class="headerlink" href="#running-with-nix" title="Permanent link">&para;</a></h1>
+<p>You can run <code>nsv</code> directly using <a href="https://zero-to-nix.com/concepts/flakes/">Nix</a> without directly installing its dependencies.</p>
+<h2 id="installing-nix">Installing Nix<a class="headerlink" href="#installing-nix" title="Permanent link">&para;</a></h2>
+<p>Determinate Systems provides a quick and easy <a href="https://github.com/DeterminateSystems/nix-installer">installer</a>.</p>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>-L<span class="w"> </span>https://install.determinate.systems/nix<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>sh<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>install
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>ghcr.io/purpleclay/nsv:v0.8.0
+<h2 id="nix-run">Nix Run<a class="headerlink" href="#nix-run" title="Permanent link">&para;</a></h2>
+<p>With a single command, Nix will build and run <code>nsv</code> within your environment:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nix<span class="w"> </span>run<span class="w"> </span>github:purpleclay/nsv
 </span></code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="verifying-with-cosign">Verifying with cosign<a class="headerlink" href="#verifying-with-cosign" title="Permanent link">&para;</a></h2>
-<p>Docker images can be verified using <a href="https://github.com/sigstore/cosign">cosign</a>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">DockerHub</label><label for="__tabbed_2_2">GHCR</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--certificate-identity<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.8.0&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s1">&#39;https://token.actions.githubusercontent.com&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>purpleclay/nsv:v0.8.0
+<p>Passing command line arguments is also very easy:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nix<span class="w"> </span>run<span class="w"> </span>github:purpleclay/nsv<span class="w"> </span>--<span class="w"> </span>next
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--certificate-identity<span class="w"> </span><span class="s1">&#39;https://github.com/purpleclay/nsv/.github/workflows/release.yml@refs/tags/v0.8.0&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s1">&#39;https://token.actions.githubusercontent.com&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>ghcr.io/purpleclay/nsv:v0.8.0
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

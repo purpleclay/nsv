@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/docker/dagger/">
+        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/running/dagger/">
       
       
-        <link rel="prev" href="../running/">
+        <link rel="prev" href="../docker/">
       
       
-        <link rel="next" href="../../ci/github-action/">
+        <link rel="next" href="../nix/">
       
       
         
@@ -790,6 +790,14 @@ and
   </span>
   
   
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
 
       </a>
     </li>
@@ -849,6 +857,8 @@ and
       
         
       
+        
+      
     
     
       
@@ -873,7 +883,7 @@ and
   <span class="md-ellipsis">
     
   
-    Docker
+    Running
   
 
     
@@ -889,7 +899,7 @@ and
             <span class="md-nav__icon md-icon"></span>
             
   
-    Docker
+    Running
   
 
           </label>
@@ -902,7 +912,7 @@ and
   
   
     <li class="md-nav__item">
-      <a href="../running/" class="md-nav__link">
+      <a href="../docker/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 6v11h1a2 2 0 1 0 4 0h12a2 2 0 1 0 4 0h1V6H1m20 9h-2V9h-2v6h-2V9h-2v6h-2V9H9v6H7V9H5v6H3V8h18v7Z"/></svg>
@@ -1064,6 +1074,43 @@ and
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nix/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.9 8.7 5 17.2l-1.1-1.9L5.2 13H2.6L2 12l.6-1h3.7l1.3-2.3h2.3m.3 6.8h9.7l-1.1 1.9h-2.6l1.3 2.3-.6 1h-1.1L14 17.4h-2.7l-1.1-1.9m5.7-3.7L11 3.3h2.2l1.3 2.3 1.3-2.3h1.1l.6 1-1.9 3.2L17 9.8l-1.1 2m-2.1-3.3H4l1.1-1.9h2.6L6.4 4.3l.6-1h1.1L10 6.5h2.7l1.1 2m.3 6.8L19 6.8l1.1 1.9-1.3 2.3h2.6l.6 1-.6 1h-3.7l-1.3 2.3h-2.3m-6-3.1 4.9 8.4h-2.2l-1.3-2.3-1.1 2.3H7.1l-.6-1 1.9-3.2L7 14.2l1.1-2Z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Run with Nix
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -1800,15 +1847,15 @@ and
 </div>
 <h2 id="next-semantic-version">Next semantic version<a class="headerlink" href="#next-semantic-version" title="Permanent link">&para;</a></h2>
 <p>Calculates the next semantic version and prints it to stdout. For full configuration <a href="../../next-version/">options</a>.</p>
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>next
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv@v0.10.1<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>next
 </span></code></pre></div>
 <h2 id="tagging-the-next-version">Tagging the next version<a class="headerlink" href="#tagging-the-next-version" title="Permanent link">&para;</a></h2>
 <p>Tags a repository with the next semantic version. For full configuration <a href="../../tag-version/">options</a>.</p>
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>tag
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv@v0.10.1<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>tag
 </span></code></pre></div>
 <h2 id="patching-files-with-the-next-version">Patching files with the next version<a class="headerlink" href="#patching-files-with-the-next-version" title="Permanent link">&para;</a></h2>
 <p>Patch files within a repository using the next semantic version. For full configuration <a href="../../patch-files/">options</a>.</p>
-<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>patch<span class="w"> </span><span class="se">\</span>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>dagger<span class="w"> </span>call<span class="w"> </span>-m<span class="w"> </span>github.com/purpleclay/daggerverse/nsv@v0.10.1<span class="w"> </span>--src<span class="w"> </span>.<span class="w"> </span>patch<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--hook<span class="w"> </span><span class="s2">&quot;./scripts/patch.sh&quot;</span>
 </span></code></pre></div>
 
