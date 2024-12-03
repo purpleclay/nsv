@@ -65,6 +65,7 @@ Environment Variables:
 |                    | text templates. The default is: "chore: patched files for      |
 |                    | release {{.Tag}} {{.SkipPipelineTag}}"                         |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
+| NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected                |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_HOOK           | a user-defined hook that will be executed before the           |
 |                    | repository is tagged with the next semantic version            |
@@ -129,6 +130,7 @@ func tagCmd(opts *Options) *cobra.Command {
 	flags.StringVarP(&opts.CommitMessage, "commit-message", "M", tagCommitMessageTmpl, "a custom message when committing file "+
 		"changes, supports go text templates")
 	flags.BoolVar(&opts.DryRun, "dry-run", false, "no changes will be made to the repository")
+	flags.BoolVar(&opts.FixShallow, "fix-shallow", false, "fix a shallow clone of a repository if detected")
 	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before the repository is tagged "+
 		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")

@@ -37,6 +37,7 @@ Environment Variables:
 | LOG_LEVEL          | the level of logging when printing to stderr (default: info)   |
 | NO_COLOR           | switch to using an ASCII color profile within the terminal     |
 | NO_LOG             | disable all log output                                         |
+| NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected                |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes for     |
 |                    | triggering a major semantic version increment                  |
@@ -70,6 +71,7 @@ func nextCmd(opts *Options) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
+	flags.BoolVar(&opts.FixShallow, "fix-shallow", false, "fix a shallow clone of a repository if detected")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
 	flags.StringSliceVar(&opts.MajorPrefixes, "major-prefixes", []string{}, "a comma separated list of conventional commit prefixes for "+
 		"triggering a major semantic version increment")
@@ -80,7 +82,6 @@ func nextCmd(opts *Options) *cobra.Command {
 	flags.StringVarP(&opts.Pretty, "pretty", "p", string(tui.Full), "pretty-print the output of the next semantic version in a given format. "+
 		"The format can be one of either full or compact. Must be used in conjunction with --show")
 	flags.BoolVarP(&opts.Show, "show", "s", false, "show how the next semantic version was generated")
-
 	cmd.RegisterFlagCompletionFunc("pretty", prettyFlagShellComp)
 	return cmd
 }

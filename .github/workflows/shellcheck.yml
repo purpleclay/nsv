@@ -31,6 +31,6 @@ jobs:
         uses: dagger/dagger-for-github@v7
         with:
           verb: call
-          module: github.com/purpleclay/daggerverse/shellcheck@v0.1.0
+          module: github.com/purpleclay/daggerverse/shellcheck
           args: check --src . --paths scripts/*
           cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
