@@ -8,18 +8,18 @@ func checkAndHealRepository(gitc *git.Client, opts Options) error {
 		return err
 	}
 
-	if repo.DetachedHead {
-		opts.Logger.Warn("repository has a detached head - check your CI documentation")
-	}
-
 	if repo.ShallowClone {
-		opts.Logger.Warn("repository is a shallow clone - check your CI documentation")
+		opts.Logger.Warn("repository is a shallow clone and history may be missing")
 
 		if opts.FixShallow {
 			opts.Logger.Info("fixing shallow clone by restoring history and tags")
 			if _, err := gitc.Fetch(git.WithUnshallow(), git.WithTags()); err != nil {
 				return err
 			}
+
+			opts.Logger.Info("history and tags restored")
+		} else {
+			opts.Logger.Info("please check your ci documentation on how to resolve it")
 		}
 	}
 
