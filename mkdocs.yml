@@ -49,9 +49,10 @@ nav:
       - Tag Version: tag-version.md
       - Hooks: hooks.md
       - Patch Files: patch-files.md
-      - Git Signing: git-signing.md
       - Monorepos: monorepos.md
       - Pretty Print: pretty.md
+      - Git Signing: git-signing.md
+      - Git Repair: git-repair.md
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md

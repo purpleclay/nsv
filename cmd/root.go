@@ -21,6 +21,7 @@ type Options struct {
 	CommitMessage string      `env:"NSV_COMMIT_MESSAGE"`
 	DryRun        bool        `env:"NSV_DRY_RUN"`
 	Err           io.Writer   `env:"-"`
+	FixShallow    bool        `env:"NSV_FIX_SHALLOW"`
 	Hook          string      `env:"NSV_HOOK"`
 	Logger        *log.Logger `env:"-"`
 	LogLevel      string      `env:"LOG_LEVEL"`

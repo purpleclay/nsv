@@ -22,6 +22,6 @@ jobs:
           GPG_PASSPHRASE: "${{ secrets.GPG_PASSPHRASE }}"
         with:
           verb: call
-          module: github.com/purpleclay/daggerverse/nsv@v0.3.0
+          module: github.com/purpleclay/daggerverse/nsv@v0.10.1
           args: --src . tag --show --gpg-private-key env:GPG_PRIVATE_KEY --gpg-passphrase env:GPG_PASSPHRASE
           cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}

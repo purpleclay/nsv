@@ -43,6 +43,7 @@ func (i Increment) String() string {
 }
 
 type Options struct {
+	FixShallow    bool
 	Hook          string
 	Logger        *log.Logger
 	MajorPrefixes []string
@@ -181,6 +182,10 @@ type Match struct {
 }
 
 func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
+	if err := checkAndHealRepository(gitc, opts); err != nil {
+		return nil, err
+	}
+
 	ctx, err := resolveContext(gitc, opts)
 	if err != nil {
 		return nil, err

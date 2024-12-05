@@ -32,6 +32,7 @@ Environment Variables:
 |                    | text templates. The default is: "chore: patched files for      |
 |                    | release {{.Tag}}"                                              |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
+| NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected                |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
 | NSV_HOOK           | a user-defined hook that will be executed before any file      |
 |                    | changes are committed with the next semantic version           |
@@ -95,6 +96,7 @@ func patchCmd(opts *Options) *cobra.Command {
 	flags.StringVarP(&opts.CommitMessage, "commit-message", "M", commitMessageTmpl, "a custom message when committing file "+
 		"changes, supports go text templates")
 	flags.BoolVar(&opts.DryRun, "dry-run", false, "no changes will be made to the repository")
+	flags.BoolVar(&opts.FixShallow, "fix-shallow", false, "fix a shallow clone of a repository if detected")
 	flags.StringVar(&opts.Hook, "hook", "", "a user-defined hook that will be executed before any file changes are committed "+
 		"with the next semantic version")
 	flags.StringVarP(&opts.VersionFormat, "format", "f", "", "provide a go template for changing the default version format")
@@ -120,6 +122,7 @@ func doPatch(gitc *git.Client, opts *Options) error {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
+			FixShallow:    opts.FixShallow,
 			Hook:          opts.Hook,
 			MajorPrefixes: opts.MajorPrefixes,
 			MinorPrefixes: opts.MinorPrefixes,
