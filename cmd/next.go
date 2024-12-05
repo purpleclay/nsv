@@ -138,6 +138,7 @@ func doNext(gitc *git.Client, opts *Options) error {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
+			FixShallow:    opts.FixShallow,
 			MajorPrefixes: opts.MajorPrefixes,
 			MinorPrefixes: opts.MinorPrefixes,
 			Logger:        opts.Logger,

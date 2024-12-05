@@ -175,6 +175,7 @@ func doTag(gitc *git.Client, opts *Options) error {
 	var vers []*nsv.Next
 	for _, path := range opts.Paths {
 		next, err := nsv.NextVersion(gitc, nsv.Options{
+			FixShallow:    opts.FixShallow,
 			Hook:          opts.Hook,
 			MajorPrefixes: opts.MajorPrefixes,
 			MinorPrefixes: opts.MinorPrefixes,
