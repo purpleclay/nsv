@@ -125,13 +125,13 @@ go install github.com/purpleclay/nsv@latest
 To install the latest version using a script:
 
 ```{ .sh .no-select }
-sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)"
+sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install.sh)"
 ```
 
 Download a specific version using the `-v` flag. The script uses `sudo` by default but can be disabled through the `--no-sudo` flag. You can also provide a different installation directory from the default `/usr/local/bin` by using the `-d` flag:
 
 ```{ .sh .no-select }
-sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install)" \
+sh -c "$(curl https://raw.githubusercontent.com/purpleclay/nsv/main/scripts/install.sh)" \
   -- -v v0.3.0 --no-sudo -d ./bin
 ```
 

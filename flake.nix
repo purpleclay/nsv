@@ -5,8 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
+    # Lock to version: 0.14.0
     dagger = {
-      url = "github:dagger/nix";
+      url = "github:dagger/nix?rev=9852fdddcdcb52841275ffb6a39fa1524d538d5a";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
