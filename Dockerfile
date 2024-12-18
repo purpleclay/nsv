@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM alpine:3.20
+FROM alpine:3.21
 
 # renovate: datasource=github-tags depName=purpleclay/gpg-import versioning=semver
 ENV GPG_IMPORT_VERSION=0.4.0
