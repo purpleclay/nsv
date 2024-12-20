@@ -138,7 +138,7 @@ func versionCmd(out io.Writer, buildInfo BuildDetails) *cobra.Command {
 		Short: "Print build time version information",
 		RunE: func(_ *cobra.Command, _ []string) error {
 			if short {
-				fmt.Fprintf(out, buildInfo.Version)
+				fmt.Fprint(out, buildInfo.Version)
 				return nil
 			}
 
