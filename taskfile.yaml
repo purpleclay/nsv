@@ -12,7 +12,7 @@ vars:
     -X main.gitCommit={{.GIT_COMMIT}}
     -X main.gitBranch={{.GIT_BRANCH}}
     -X main.buildDate={{now | date "2006-01-02T15:04:05Z07:00"}}
-  GOLANG_DAGGER: "github.com/purpleclay/daggerverse/golang@v0.3.0"
+  GOLANG_DAGGER: "github.com/purpleclay/daggerverse/golang"
 
 tasks:
   default:

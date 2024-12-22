@@ -74,7 +74,7 @@ func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 	}
 
 	if relPath == git.RelativeAtRoot {
-		return &gitContext{TagPrefix: "", LogPath: ""}, nil
+		return &gitContext{TagPrefix: "", LogPath: relPath}, nil
 	}
 
 	logPath := relPath

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"io"
+	"os"
 	"testing"
 
 	"github.com/purpleclay/gitz/gittest"
@@ -14,18 +15,27 @@ func TestPatch(t *testing.T) {
 (tag: 0.1.0) feat: distributed caching`
 	gittest.InitRepository(t,
 		gittest.WithLog(log),
-		gittest.WithCommittedFiles("VERSION"),
-		gittest.WithFileContent("VERSION", "0.1.0"),
+		gittest.WithCommittedFiles("Chart.yaml"),
+		gittest.WithFileContent("Chart.yaml", "version: 0.1.0"),
 	)
 
-	execFile(t, "patch-version.sh", `#!/bin/bash
-echo -n $NSV_NEXT_TAG > VERSION`)
+	execFile(t, "patch.sh", `#!/bin/bash
+sed -i "s/^version\: $NSV_PREV_TAG/version\: $NSV_NEXT_TAG/" "${NSV_WORKING_DIRECTORY}/Chart.yaml"`)
 
 	cmd := patchCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
-	cmd.SetArgs([]string{"--hook", "./patch-version.sh"})
+	cmd.SetArgs([]string{"--hook", "./patch.sh"})
 	err := cmd.Execute()
 	require.NoError(t, err)
 
 	logs := gittest.Log(t)
 	assert.Equal(t, "chore: patched files for release 0.2.0", logs[0].Message)
+	assert.Equal(t, "version: 0.2.0", readFile(t, "Chart.yaml"))
+}
+
+func readFile(t *testing.T, path string) string {
+	t.Helper()
+
+	contents, err := os.ReadFile(path)
+	require.NoError(t, err)
+	return string(contents)
 }

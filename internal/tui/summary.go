@@ -98,7 +98,7 @@ func PrintSummary(vers []*nsv.Next, opts SummaryOptions) {
 		}
 
 		var sum []string
-		if ver.LogDir != "" {
+		if ver.LogDir != "." {
 			sum = append(sum, faint.Render(fmt.Sprintf("(dir: %s)\n", ver.LogDir)))
 		}
 		sum = append(sum, log)

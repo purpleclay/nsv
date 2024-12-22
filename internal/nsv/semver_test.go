@@ -1,7 +1,6 @@
 package nsv_test
 
 import (
-	"io"
 	"os"
 	"testing"
 
@@ -13,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var noopLogger = log.New(io.Discard)
+var noopLogger = log.New(os.Stdout)
 
 func TestNextVersion(t *testing.T) {
 	log := `(main, origin/main) docs: document new search improvements
@@ -25,11 +24,12 @@ ci: add parallel testing support to workflow`
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
 
 	assert.Equal(t, "0.1.1", next.Tag)
 	assert.Equal(t, 1, next.Match.Index)
 	assert.Equal(t, "fix(search): search is not being aggregated correctly", next.Log[next.Match.Index].Message)
-	assert.Empty(t, next.LogDir)
+	assert.Equal(t, ".", next.LogDir)
 }
 
 func TestNextVersionFirstVersion(t *testing.T) {
@@ -62,6 +62,7 @@ func TestNextVersionFirstVersion(t *testing.T) {
 			next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 			require.NoError(t, err)
+			require.NotNil(t, next)
 			require.Equal(t, tt.expected, next.Tag)
 		})
 	}
@@ -76,7 +77,8 @@ func TestNextVersionMajorZeroSemV(t *testing.T) {
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
-	require.Equal(t, "0.2.0", next.Tag)
+	require.NotNil(t, next)
+	assert.Equal(t, "0.2.0", next.Tag)
 }
 
 func TestNextVersionMajorZeroSemVForceMajor(t *testing.T) {
@@ -89,7 +91,8 @@ nsv:force~major
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
-	require.Equal(t, "1.0.0", next.Tag)
+	require.NotNil(t, next)
+	assert.Equal(t, "1.0.0", next.Tag)
 }
 
 func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
@@ -106,6 +109,7 @@ func TestNextVersionIncludesSubDirectoryAsPrefix(t *testing.T) {
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "search/0.1.0", next.Tag)
 }
 
@@ -120,6 +124,8 @@ feat(search): add ability to search across processed data`
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Path: "src/processor", Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
+
 	assert.Equal(t, "processor/0.1.0", next.Tag)
 	assert.Equal(t, "src/processor", next.LogDir)
 }
@@ -154,6 +160,7 @@ ci: configure workflow to run benchmarks
 			next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 
 			require.NoError(t, err)
+			require.NotNil(t, next)
 			require.Equal(t, tt.expected, next.Tag)
 		})
 	}
@@ -167,6 +174,7 @@ func TestNextVersionFromPrerelease(t *testing.T) {
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "0.2.0", next.Tag)
 }
 
@@ -179,6 +187,7 @@ nsv:pre~alpha
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "0.3.0-alpha.1", next.Tag)
 }
 
@@ -192,6 +201,7 @@ nsv:pre`
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "0.2.0-beta.2", next.Tag)
 }
 
@@ -207,6 +217,7 @@ nsv:pre~beta`
 
 	next, err := nsv.NextVersion(gitc, nsv.Options{Logger: noopLogger})
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "0.1.0-beta.2", next.Tag)
 }
 
@@ -220,6 +231,7 @@ func TestNextVersionWithFormat(t *testing.T) {
 	next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format, Logger: noopLogger})
 
 	require.NoError(t, err)
+	require.NotNil(t, next)
 	assert.Equal(t, "custom/v0.1.0", next.Tag)
 }
 
