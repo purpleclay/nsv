@@ -38,9 +38,9 @@ echo -n $NSV_NEXT_TAG > VERSION`)
 }
 
 func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
-	gittest.InitRepository(t)
+	gittest.InitRepository(t, gittest.WithStagedFiles("metric.go"))
 	gittest.ConfigSet(t, "user.name", "poison-ivy", "user.email", "poison-ivy@dc.com")
-	gittest.CommitEmptyWithAuthor(t, "scarecrow", "scarecrow@dc.com", "feat: capture metrics for populating dashboards")
+	gittest.CommitWithAuthor(t, "scarecrow", "scarecrow@dc.com", "feat: capture metrics for populating dashboards")
 
 	cmd := tagCmd(&Options{Out: io.Discard, Err: io.Discard, Logger: noopLogger})
 	err := cmd.Execute()
@@ -53,8 +53,8 @@ func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
 }
 
 func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
-	gittest.InitRepository(t)
-	gittest.CommitEmptyWithAuthor(t, "penguin", "penguin@dc.com", "feat(data): support data export from mongodb")
+	gittest.InitRepository(t, gittest.WithStagedFiles("export.go"))
+	gittest.CommitWithAuthor(t, "penguin", "penguin@dc.com", "feat(data): support data export from mongodb")
 
 	t.Setenv("GIT_COMMITTER_NAME", "joker")
 	t.Setenv("GIT_COMMITTER_EMAIL", "joker@dc.com")
