@@ -56,8 +56,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/purpleclay/chomp v0.4.0 h1:pOI23jVu1Y+lEqThxZcoPj2kCWp0YOvenC3o2wVPX8I=
 github.com/purpleclay/chomp v0.4.0/go.mod h1:2G5jE5JN68ytZSjGLOE7QkXuFgtkNRk7b58trMmB/nc=
-github.com/purpleclay/gitz v0.10.0 h1:tQVi339PD2E7IW+ntlaDfczcf+uB8BBEhJP++W83Db8=
-github.com/purpleclay/gitz v0.10.0/go.mod h1:oh6nG1HVcaPw9RrYONUPNBsdt/WKaS0Pwi31doV/rDw=
+github.com/purpleclay/gitz v0.10.2 h1:fhkiQmozST30n9CZd/6YuLzhAYiiX8ochndYMKt3BA4=
+github.com/purpleclay/gitz v0.10.2/go.mod h1:oh6nG1HVcaPw9RrYONUPNBsdt/WKaS0Pwi31doV/rDw=
 github.com/purpleclay/lipgloss-theme v0.2.0 h1:46CP4xZgklAlB2LPIbP8OTTWltvcUTJv9EogVpeJtfw=
 github.com/purpleclay/lipgloss-theme v0.2.0/go.mod h1:dKN3lm6yVAaQ4BHlLJEToOeuPfWw/msTuz6QgpLmoCE=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
