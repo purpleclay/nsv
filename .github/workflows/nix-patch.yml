@@ -30,6 +30,12 @@ jobs:
         run: |
           sed -i 's/version = "[^"]*";/version = "0.10.2";/' default.nix
 
+      - name: Patch Hash
+        run: |
+          sed -i 's/\(^.*\bhash\b.*$\)/# \1/' default.nix
+
+      - name: Print
+        run: cat default.nix
 # patch: default.nix
 # version = ".*"; > set the version of the tag without the v prefix
 # hash = "sha256-tuu7BHWNl6cYlIytBzK1UOWH2kD8C5aA8CDIS1CDYJw="; > grep hash from output
