@@ -45,9 +45,16 @@ jobs:
           sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
         shell: bash
 
+      # HACK:
+      # Since the hash has now been set. Run nix-build to generate the new vendorHash
+      - name: Patch VendorHash
+        run: |
+          set +e
+          nix build 2> error.log
+          set -e
+
+          HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
+          sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
+
       - name: Print
         run: cat default.nix
-# patch: default.nix
-# version = ".*"; > set the version of the tag without the v prefix
-# hash = "sha256-tuu7BHWNl6cYlIytBzK1UOWH2kD8C5aA8CDIS1CDYJw="; > grep hash from output
-# vendorHash = "sha256-ywN9WPEvhfPJfqxXgkq1K7G9fZ9VVIAMqUTN2x0+HMg="; > grep vendorhash from output
