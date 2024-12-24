@@ -225,6 +225,8 @@ nix:
     homepage: "https://github.com/purpleclay/nsv"
     description: "A convention-based semantic versioning tool that leans on the power of conventional commits to make versioning your software a breeze!"
     license: mit
+    extra_install: |
+      installManPage ./manpages/nsv.1.gz
     post_install: |
       installShellCompletion --cmd nsv \
         --bash <($out/bin/nsv completion bash) \
