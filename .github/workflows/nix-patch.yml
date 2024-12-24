@@ -32,7 +32,7 @@ jobs:
 
       - name: Patch Hash
         run: |
-          sed -i 's/\(^.*\bhash\b.*$\)/# \1/' default.nix
+          sed -i 's/hash =/# hash =' default.nix
 
       - name: Print
         run: cat default.nix
