@@ -33,6 +33,7 @@ jobs:
       - name: Patch Hash
         run: |
           sed -i 's/hash =/# hash =/' default.nix
+          nix build
 
       - name: Print
         run: cat default.nix
