@@ -40,7 +40,7 @@ jobs:
           nix build 2> error.log
           set -e
 
-          HASH=$(grep -oP 'got:\s+sha256-\K\S+' error.log)
+          HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $1}')
           echo $HASH
         shell: bash
 
