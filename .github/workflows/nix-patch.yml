@@ -1,9 +1,8 @@
 name: nix-patch
 on:
-  # push:
-  #   tags:
-  #     - "v*.*.*"
-  pull_request:
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   nix-patch:
@@ -20,15 +19,24 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           trust_level: 5
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Strip Tag Prefix
+        id: strip_tag
+        run: |
+          TAG=${GITHUB_REF##*/}
+          STRIPPED_TAG=${TAG#v}
+          echo "::set-output name=tag::$STRIPPED_TAG"
+
       - name: Patch Version
         run: |
-          sed -i 's/version = "[^"]*";/version = "0.10.2";/' default.nix
+          sed -i 's/version = "[^"]*";/version = "${{ steps.strip_tag.outputs.tag }}";/' default.nix
 
       # HACK:
       # The most reliable way to calculate the hash for fetchFromGitHub, is to allow nix
@@ -56,5 +64,8 @@ jobs:
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
 
-      - name: Print
-        run: cat default.nix
+      - name: Commit Changes
+        run: |
+          git add default.nix
+          git commit -m "chore(deps): bump version of nsv to ${{ steps.strip_tag.outputs.tag }} [skip ci]"
+          git push
