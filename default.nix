@@ -1,7 +1,7 @@
 { lib, fetchFromGitHub, buildGo122Module }:
 
 let
-  version = "0.10.2";
+  version = "0.10.1";
 in
 buildGo122Module {
   pname = "nsv";

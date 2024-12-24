@@ -1,0 +1,36 @@
+name: nix-patch
+on:
+  # push:
+  #   tags:
+  #     - "v*.*.*"
+  pull_request:
+
+jobs:
+  nix-patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Git Clone
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          trust_level: 5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Patch Version
+        run: |
+          sed -i "s/version = \"[^"]*\";/version = \"0.10.2\";/" default.nix
+
+# patch: default.nix
+# version = ".*"; > set the version of the tag without the v prefix
+# hash = "sha256-tuu7BHWNl6cYlIytBzK1UOWH2kD8C5aA8CDIS1CDYJw="; > grep hash from output
+# vendorHash = "sha256-ywN9WPEvhfPJfqxXgkq1K7G9fZ9VVIAMqUTN2x0+HMg="; > grep vendorhash from output
