@@ -30,10 +30,19 @@ jobs:
         run: |
           sed -i 's/version = "[^"]*";/version = "0.10.2";/' default.nix
 
+      # The most reliable way to calculate the hash for fetchFromGitHub, is to allow nix
+      # build to calculate it for us. Comment out the existing hash and run nix build,
+      # grepping the new hash from the output
       - name: Patch Hash
         run: |
           sed -i 's/hash =/# hash =/' default.nix
-          nix build
+          set +e
+          nix build 2> error.log
+          set -e
+
+          HASH=$(grep -oP 'got:\s+sha256-\K\S+' error.log)
+          echo $HASH
+        shell: bash
 
       - name: Print
         run: cat default.nix
