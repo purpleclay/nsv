@@ -28,7 +28,7 @@ jobs:
 
       - name: Patch Version
         run: |
-          sed -i "s/version = \"[^"]*\";/version = \"0.10.2\";/" default.nix
+          sed -i 's/version = "[^"]*";/version = "0.10.2";/' default.nix
 
 # patch: default.nix
 # version = ".*"; > set the version of the tag without the v prefix
