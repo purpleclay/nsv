@@ -10,6 +10,7 @@ import (
 	"github.com/caarlos0/env/v11"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/muesli/termenv"
 	theme "github.com/purpleclay/lipgloss-theme"
 	"github.com/spf13/cobra"
