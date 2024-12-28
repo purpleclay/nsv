@@ -50,7 +50,7 @@ jobs:
           set -e
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
-          sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
+          sed -i "s|# hash = \"[^\"]*\";|hash = \"$HASH\";|" default.nix
         shell: bash
 
       # HACK:
@@ -62,7 +62,7 @@ jobs:
           set -e
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
-          sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
+          sed -i "s|vendorHash = \"[^\"]*\";|vendorHash = \"$HASH\";|" default.nix
 
       - name: Commit Changes
         run: |
