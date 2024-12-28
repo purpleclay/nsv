@@ -7,7 +7,7 @@ status: new
 
 # Different ways of customizing NSV
 
-`nsv` is designed to be config free and require minimal to no runtime options to release your software. If an option must be set, you have one of <u>three ways</u> to set them, ordered from highest to lowest precedence.
+`nsv` is designed to be config-free and requires minimal to no runtime options to release your software. If you need to set config, you have one of <u>three ways</u>, ordered from highest to lowest precedence.
 
 ## CLI flags
 
