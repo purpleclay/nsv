@@ -1,12 +1,12 @@
 ---
 icon: material/earth
-title: Dynamic Configuration
-description: Customize behavior with environment variables
+social:
+  cards: false
 ---
 
-# Dynamic Configuration with Environment Variables
+# Available Environment Variables
 
-If you need to customize the behavior of `nsv` you can use the supported environment variables. Environment variables provide a dynamic approach to configuration perfect for integrating `nsv` into your CI workflow.
+If you need to customize the behavior of `nsv` you can use the supported environment variables. Environment variables are perfect for running `nsv` within your CI workflow.
 
 ## Global Variables
 
@@ -15,6 +15,7 @@ If you need to customize the behavior of `nsv` you can use the supported environ
 | `LOG_LEVEL`          | the level of logging when printing to stderr <br/>(`debug`, `info`, `warn`, `error`, `fatal`)                 |
 | `NO_COLOR`           | switch to using an ASCII color profile within the terminal                                                    |
 | `NO_LOG`             | disable all log output                                                                                        |
+| `NSV_FIX_SHALLOW`    | fix a shallow clone of a repository if detected                                                               |
 | `NSV_FORMAT`         | set a go template for formatting the provided tag                                                             |
 | `NSV_MAJOR_PREFIXES` | a comma separated list of conventional commit prefixes for triggering <br/>a major semantic version increment |
 | `NSV_MINOR_PREFIXES` | a comma separated list of conventional commit prefixes for triggering <br/>a minor semantic version increment |
@@ -22,11 +23,16 @@ If you need to customize the behavior of `nsv` you can use the supported environ
 | `NSV_PRETTY`         | pretty-print the output of the next semantic version in a given format                                        |
 | `NSV_SHOW`           | show how the next semantic version was generated                                                              |
 
-## Tag Variables
+## Tag and Patch Variables
 
 | Variable Name        | Description                                                                                                                                           |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NSV_COMMIT_MESSAGE` | a custom message when committing file changes, supports go text templates.<br />The default is: `chore: tagged release {{.Tag}} {{.SkipPipelineTag}}` |
 | `NSV_DRY_RUN`        | no changes will be made to the repository                                                                                                             |
 | `NSV_HOOK`           | a user-defined hook that will be executed before the repository is tagged<br />with the next semantic version                                         |
-| `NSV_TAG_MESSAGE`    | a custom message for the annotated tag, supports go text templates.<br />The default is: `chore: tagged release <version>`                            |
+
+## Tag Variables
+
+| Variable Name        | Description                                                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NSV_TAG_MESSAGE`    | a custom message for the annotated tag, supports go text templates. The default <br/>is: `chore: tagged release {{.Tag}}`                             |

@@ -2,7 +2,6 @@
 icon: material/package-variant-closed
 social:
   cards: false
-status: new
 ---
 
 # Installing the Binary

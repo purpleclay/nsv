@@ -2,7 +2,6 @@
 icon: material/console
 social:
   cards: false
-status: new
 ---
 
 # nsv patch
@@ -24,6 +23,7 @@ Environment Variables:
 |                    | supports go text templates. The default is: "chore:    |
 |                    | patched files for release {{.Tag}}"                    |
 | NSV_DRY_RUN        | no changes will be made to the repository              |
+| NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected        |
 | NSV_FORMAT         | provide a go template for changing the default version |
 |                    | format                                                 |
 | NSV_HOOK           | a user-defined hook that will be executed before any   |
@@ -67,6 +67,7 @@ nsv patch [<path>...] [flags]
                                supports go text templates (default "chore:
                                patched files for release {{.Tag}}")
     --dry-run                  no changes will be made to the repository
+    --fix-shallow              fix a shallow clone of a repository if detected
 -f, --format string            provide a go template for changing the default
                                version format
 -h, --help                     help for tag

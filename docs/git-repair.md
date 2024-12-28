@@ -1,7 +1,6 @@
 ---
 icon: material/tools
 description: Repair a git repository ready for versioning
-status: new
 ---
 
 # Repair a repository ready for versioning
