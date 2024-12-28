@@ -52,8 +52,8 @@ jobs:
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           echo $HASH
-        # sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
         shell: bash
+        # sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
 
       # HACK:
       # Since the hash has now been set. Run nix-build to generate the new vendorHash
@@ -65,8 +65,8 @@ jobs:
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           echo $HASH
-        # sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
         shell: bash
+        # sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
 
       # - name: Commit Changes
       #   run: |
