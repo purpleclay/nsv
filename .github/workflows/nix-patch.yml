@@ -43,18 +43,15 @@ jobs:
       # The most reliable way to calculate the hash for fetchFromGitHub, is to allow nix
       # build to calculate it for us. Comment out the existing hash and run nix build,
       # grep the new hash from the output
-      - name: Comment out Hash
-        run: |
-          sed -i 's/hash =/# hash =/' default.nix
-
       - name: Patch Hash
         run: |
+          sed -i 's/hash =/# hash =/' default.nix
           set +e
           nix build 2> error.log
           set -e
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
-          sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
+        # sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
         shell: bash
 
       # HACK:
@@ -67,7 +64,7 @@ jobs:
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
-        shell: bash
+        # shell: bash
 
       # - name: Commit Changes
       #   run: |
