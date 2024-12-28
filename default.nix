@@ -1,12 +1,12 @@
-{ lib, fetchFromGitHub, buildGo122Module }:
+{ lib, fetchFromGitHub, buildGoModule }:
 
 let
   version = "0.10.2";
 in
-buildGo122Module {
+buildGoModule {
   pname = "nsv";
   inherit version;
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   src = fetchFromGitHub {
     owner = "purpleclay";
