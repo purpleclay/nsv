@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - "v*.*.*"
+  pull_request:
 
 jobs:
   nix-patch:
@@ -63,9 +64,10 @@ jobs:
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           sed -i "s/vendorHash = \"[^\"]*\";/vendorHash = \"$HASH\";/" default.nix
+        shell: bash
 
-      - name: Commit Changes
-        run: |
-          git add default.nix
-          git commit -m "chore(deps): bump version of nsv to ${{ steps.strip_tag.outputs.tag }} [skip ci]"
-          git push
+      # - name: Commit Changes
+      #   run: |
+      #     git add default.nix
+      #     git commit -m "chore(deps): bump version of nsv to ${{ steps.strip_tag.outputs.tag }} [skip ci]"
+      #     git push
