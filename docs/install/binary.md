@@ -27,12 +27,13 @@ You may need to install the `ca-certificates` package if you encounter [trust is
 sudo apt update && sudo apt install -y ca-certificates
 ```
 
-### Aur
+### Pacman (ALPM)
 
-To install from the [aur](https://archlinux.org/) using [yay](https://github.com/Jguer/yay):
+[nsv](https://aur.archlinux.org/packages/nsv) is available as a package on the AUR.
+You can install it using an AUR helper (e.g. `yay`):
 
 ```{ .sh .no-select }
-yay -S nsv-bin
+yay -S nsv
 ```
 
 ### Homebrew
