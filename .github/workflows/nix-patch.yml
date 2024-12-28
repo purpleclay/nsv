@@ -52,7 +52,7 @@ jobs:
 
           HASH=$(grep -oP 'got:\s+(sha256-\S+)' error.log | awk '{print $2}')
           sed -i "s/# hash = \"[^\"]*\";/hash = \"$HASH\";/" default.nix
-        shell: bash
+        # shell: bash
 
       # HACK:
       # Since the hash has now been set. Run nix-build to generate the new vendorHash
