@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Adhere to best practice with commit or tag gpg signing">
+        <meta name="description" content="Manage your semantic versioning without any config">
       
       
       
-        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/git-signing/">
+        <link rel="canonical" href="https://docs.purpleclay.dev/nsv/options/">
       
       
-        <link rel="prev" href="../pretty/">
+        <link rel="prev" href="../git-repair/">
       
       
-        <link rel="next" href="../git-repair/">
+        <link rel="next" href="../install/binary/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Git Signing - NSV</title>
+        <title>Setting Options - NSV</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#git-gpg-signing" class="md-skip">
+        <a href="#different-ways-of-customizing-nsv" class="md-skip">
           Skip to content
         </a>
       
@@ -145,7 +145,7 @@ and
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Git Signing
+              Setting Options
             
           </span>
         </div>
@@ -680,38 +680,10 @@ and
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.7 12.9 14 18.6h-2.3v-2.3l5.7-5.7zm3.4-.8c0 .3-.3.6-.6.9L20 15.5l-.9-.9 2.6-2.6-.6-.6-.7.7-2.3-2.3 2.2-2.1c.2-.2.6-.2.9 0l1.4 1.4c.2.2.2.6 0 .9-.2.2-.4.4-.4.6s.2.4.4.6c.3.3.6.6.5.9M3 20V4h7v5h5v1.5l2-2V8l-6-6H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm8-2.9c-.2 0-.4.1-.5.1L10 15H8.5l-2.1 1.7L7 14H5.5l-1 5H6l2.9-2.6.6 2.3h1l.5-.1z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Git Signing
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../git-signing/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.7 12.9 14 18.6h-2.3v-2.3l5.7-5.7zm3.4-.8c0 .3-.3.6-.6.9L20 15.5l-.9-.9 2.6-2.6-.6-.6-.7.7-2.3-2.3 2.2-2.1c.2-.2.6-.2.9 0l1.4 1.4c.2.2.2.6 0 .9-.2.2-.4.4-.4.6s.2.4.4.6c.3.3.6.6.5.9M3 20V4h7v5h5v1.5l2-2V8l-6-6H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm8-2.9c-.2 0-.4.1-.5.1L10 15H8.5l-2.1 1.7L7 14H5.5l-1 5H6l2.9-2.6.6 2.3h1l.5-.1z"/></svg>
@@ -728,52 +700,6 @@ and
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#importing-a-gpg-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Importing a GPG key
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#committer-impersonation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Committer impersonation
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -812,10 +738,46 @@ and
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../options/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m-2 12c-.25 0-.46-.18-.5-.42l-.37-2.65c-.63-.25-1.17-.59-1.69-.99l-2.49 1.01c-.22.08-.49 0-.61-.22l-2-3.46a.493.493 0 0 1 .12-.64l2.11-1.66L4.5 12l.07-1-2.11-1.63a.493.493 0 0 1-.12-.64l2-3.46c.12-.22.39-.31.61-.22l2.49 1c.52-.39 1.06-.73 1.69-.98l.37-2.65c.04-.24.25-.42.5-.42h4c.25 0 .46.18.5.42l.37 2.65c.63.25 1.17.59 1.69.98l2.49-1c.22-.09.49 0 .61.22l2 3.46c.13.22.07.49-.12.64L19.43 11l.07 1-.07 1 2.11 1.63c.19.15.25.42.12.64l-2 3.46c-.12.22-.39.31-.61.22l-2.49-1c-.52.39-1.06.73-1.69.98l-.37 2.65c-.04.24-.25.42-.5.42zm1.25-18-.37 2.61c-1.2.25-2.26.89-3.03 1.78L5.44 7.35l-.75 1.3L6.8 10.2a5.55 5.55 0 0 0 0 3.6l-2.12 1.56.75 1.3 2.43-1.04c.77.88 1.82 1.52 3.01 1.76l.37 2.62h1.52l.37-2.61c1.19-.25 2.24-.89 3.01-1.77l2.43 1.04.75-1.3-2.12-1.55c.4-1.17.4-2.44 0-3.61l2.11-1.55-.75-1.3-2.41 1.04a5.42 5.42 0 0 0-3.03-1.77L12.75 4z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Setting Options
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new" title="New">
+    </span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m-2 12c-.25 0-.46-.18-.5-.42l-.37-2.65c-.63-.25-1.17-.59-1.69-.99l-2.49 1.01c-.22.08-.49 0-.61-.22l-2-3.46a.493.493 0 0 1 .12-.64l2.11-1.66L4.5 12l.07-1-2.11-1.63a.493.493 0 0 1-.12-.64l2-3.46c.12-.22.39-.31.61-.22l2.49 1c.52-.39 1.06-.73 1.69-.98l.37-2.65c.04-.24.25-.42.5-.42h4c.25 0 .46.18.5.42l.37 2.65c.63.25 1.17.59 1.69.98l2.49-1c.22-.09.49 0 .61.22l2 3.46c.13.22.07.49-.12.64L19.43 11l.07 1-.07 1 2.11 1.63c.19.15.25.42.12.64l-2 3.46c-.12.22-.39.31-.61.22l-2.49-1c-.52.39-1.06.73-1.69.98l-.37 2.65c-.04.24-.25.42-.5.42zm1.25-18-.37 2.61c-1.2.25-2.26.89-3.03 1.78L5.44 7.35l-.75 1.3L6.8 10.2a5.55 5.55 0 0 0 0 3.6l-2.12 1.56.75 1.3 2.43-1.04c.77.88 1.82 1.52 3.01 1.76l.37 2.62h1.52l.37-2.61c1.19-.25 2.24-.89 3.01-1.77l2.43 1.04.75-1.3-2.12-1.55c.4-1.17.4-2.44 0-3.61l2.11-1.55-.75-1.3-2.41 1.04a5.42 5.42 0 0 0-3.03-1.77L12.75 4z"/></svg>
@@ -840,6 +802,65 @@ and
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cli-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          CLI flags
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Environment variables
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dotenv-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          DotEnv file
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1717,11 +1738,11 @@ and
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#importing-a-gpg-key" class="md-nav__link">
+  <a href="#cli-flags" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Importing a GPG key
+          CLI flags
         </span>
       
     </span>
@@ -1730,11 +1751,24 @@ and
 </li>
       
         <li class="md-nav__item">
-  <a href="#committer-impersonation" class="md-nav__link">
+  <a href="#environment-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Committer impersonation
+          Environment variables
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dotenv-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          DotEnv file
         </span>
       
     </span>
@@ -1762,17 +1796,21 @@ and
   
 
 
-<h1 id="git-gpg-signing">Git GPG signing<a class="headerlink" href="#git-gpg-signing" title="Permanent link">&para;</a></h1>
-<p>If you require GPG signing, please ensure your git config is correct before running <code>nsv</code>.</p>
-<h2 id="importing-a-gpg-key">Importing a GPG key<a class="headerlink" href="#importing-a-gpg-key" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/purpleclay/gpg-import">gpg-import</a> is a tool you can easily integrate into your CI workflow and only needs a single environment variable (<code>GPG_PRIVATE_KEY</code>) to import a GPG key and configure your git config.</p>
-<h2 id="committer-impersonation">Committer impersonation<a class="headerlink" href="#committer-impersonation" title="Permanent link">&para;</a></h2>
-<p>When tagging your repository, <code>nsv</code> will identify the person associated with the commit that triggered the release and dynamically passes these to <code>git</code> through the <code>user.name</code> and <code>user.email</code> config settings.</p>
-<p>Any of the following conditions will remove the need for impersonation:</p>
-<ol>
-<li>The repository has the <code>user.name</code> and <code>user.email</code> settings already defined in git config.</li>
-<li>The git environment variables <code>GIT_COMMITTER_NAME</code> and <code>GIT_COMMITTER_EMAIL</code> exist.</li>
-</ol>
+<h1 id="different-ways-of-customizing-nsv">Different ways of customizing NSV<a class="headerlink" href="#different-ways-of-customizing-nsv" title="Permanent link">&para;</a></h1>
+<p><code>nsv</code> is designed to be config-free and requires minimal to no runtime options to release your software. If you need to set config, you have one of <u>three ways</u>, ordered from highest to lowest precedence.</p>
+<h2 id="cli-flags">CLI flags<a class="headerlink" href="#cli-flags" title="Permanent link">&para;</a></h2>
+<p>A CLI flag is the most explicit way to set an option and will always override the other two methods.</p>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nsv<span class="w"> </span>next<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.SemVer}}&quot;</span><span class="w"> </span>--fix-shallow
+</span></code></pre></div>
+<h2 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
+<p>Environment variables provide great flexibility and support dynamic setting of options, for example, within a CI pipeline.</p>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">NSV_FORMAT</span><span class="o">=</span><span class="s2">&quot;{{.SemVer}}&quot;</span><span class="w"> </span><span class="nv">NSV_FIX_SHALLOW</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="w"> </span>nsv<span class="w"> </span>next
+</span></code></pre></div>
+<h2 id="dotenv-file">DotEnv file<a class="headerlink" href="#dotenv-file" title="Permanent link">&para;</a></h2>
+<p>A <code>.env</code> file located in the root of a project is automatically loaded at runtime and injected into the <code>nsv</code> context.</p>
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">NSV_FORMAT</span><span class="o">=</span><span class="s2">&quot;{{.SemVer}}&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">NSV_FIX_SHALLOW</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>
+</span></code></pre></div>
 
 
 
