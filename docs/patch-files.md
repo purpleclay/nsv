@@ -1,7 +1,6 @@
 ---
 icon: material/file-edit-outline
 description: Automatically patch files in your repository with the next semantic version
-status: new
 ---
 
 # Patch files with the next semantic version

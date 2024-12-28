@@ -2,7 +2,6 @@
 icon: material/sword
 social:
   cards: false
-status: new
 ---
 
 # Running with Dagger

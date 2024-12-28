@@ -2,7 +2,6 @@
 icon: material/nix
 social:
   cards: false
-status: new
 ---
 
 # Running with Nix

@@ -74,6 +74,6 @@ tasks:
   docs:
     desc: Builds and hosts the MkDocs documentation
     vars:
-      MKDOCS_MATERIAL_VERSION: '{{default "9.5.26-insiders-4.53.11" .MKDOCS_MATERIAL_VERSION}}'
+      MKDOCS_MATERIAL_VERSION: '{{default "9.5.49-insiders-4.53.14-patched" .MKDOCS_MATERIAL_VERSION}}'
     cmds:
       - docker run --rm -it -p 8000:8000 -v $PWD:/docs ghcr.io/purpleclay/mkdocs-material-insiders:{{.MKDOCS_MATERIAL_VERSION}}

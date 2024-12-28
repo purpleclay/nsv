@@ -19,6 +19,7 @@ Environment Variables:
 | NO_COLOR           | switch to using an ASCII color profile within the      |
 |                    | terminal                                               |
 | NO_LOG             | disable all log output                                 |
+| NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected        |
 | NSV_FORMAT         | provide a go template for changing the default version |
 |                    | format                                                 |
 | NSV_MAJOR_PREFIXES | a comma separated list of conventional commit prefixes |
@@ -43,6 +44,7 @@ nsv next [<path>...] [flags]
 ## Flags
 
 ```{ .text .no-select .no-copy }
+    --fix-shallow              fix a shallow clone of a repository if detected
 -f, --format string            provide a go template for changing the default
                                version format
 -h, --help                     help for next

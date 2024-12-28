@@ -53,6 +53,7 @@ nav:
       - Pretty Print: pretty.md
       - Git Signing: git-signing.md
       - Git Repair: git-repair.md
+      - Setting Options: options.md
       - Installation:
           - Binary: install/binary.md
           - From Source: install/source.md

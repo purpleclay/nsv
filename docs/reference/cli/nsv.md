@@ -45,7 +45,6 @@ nsv [command]
 completion  Generate the autocompletion script for the specified shell
 help        Help about any command
 next        Generate the next semantic version
-playground  A playground for discovering go template support
 tag         Tag the repository with the next semantic version
 version     Print build time version information
 ```
