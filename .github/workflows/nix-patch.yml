@@ -37,7 +37,7 @@ jobs:
 
       - name: Patch Version
         run: |
-          sed -i 's/version = "[^"]*";/version = "${{ steps.strip_tag.outputs.tag }}";/' default.nix
+          sed -i 's/version = "[^"]*";/version = "0.11.0";/' default.nix
 
       # HACK:
       # The most reliable way to calculate the hash for fetchFromGitHub, is to allow nix
