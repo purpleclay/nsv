@@ -1,6 +1,7 @@
 ---
 icon: material/file-edit-outline
 description: Automatically patch files in your repository with the next semantic version
+status: new
 ---
 
 # Patch files with the next semantic version
@@ -21,7 +22,9 @@ Let `nsv` patch files in your repository with the next calculated semantic versi
     nsv patch --hook "./scripts/patch.sh"
     ```
 
-Any file changes are committed with the default message `chore: patched files for release <version>`.
+Any file changes are committed with the default message `chore: patched files for release <version> [skip ci]`[^1].
+
+[^1]: `nsv` detects the CI platform and changes the commit suffix accordingly.
 
 !!! tip "Auto-patching is on the horizon."
 
