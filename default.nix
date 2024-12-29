@@ -1,7 +1,7 @@
 { lib, fetchFromGitHub, buildGoModule }:
 
 let
-  version = "0.11.0";
+  version = "0.11.1";
 in
 buildGoModule {
   pname = "nsv";
@@ -19,7 +19,7 @@ buildGoModule {
       git log -1 --format=%cI > $out/BUILD_DATE
       find "$out" -name .git -print0 | xargs -0 rm -rf
     '';
-    hash = "sha256-/cPNlYgvZuOrD2Kgjmx/8ybLiq+ARXNr7V+TVzqy7JA=";
+    hash = "sha256-V8ROLlztmhlF+xZWaujrpx1c6GgQm4R2jXYUFhDK2C8=";
   };
 
   vendorHash = "sha256-CR9yD/ksys7rc0jd7Enl14cCDpk0X1Sv84qZGIGw4ak=";
