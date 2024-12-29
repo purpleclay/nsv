@@ -2,6 +2,7 @@
 icon: material/console
 social:
   cards: false
+status: new
 ---
 
 # nsv patch
@@ -20,8 +21,9 @@ Environment Variables:
 |                    | terminal                                               |
 | NO_LOG             | disable all log output                                 |
 | NSV_COMMIT_MESSAGE | a custom message when committing file changes,         |
-|                    | supports go text templates. The default is: "chore:    |
-|                    | patched files for release {{.Tag}}"                    |
+|                    | supports go text templates. The default is:            |
+|                    | "chore: patched files for release {{.Tag}}             |
+|                    | {{.SkipPipelineTag}}"                                  |
 | NSV_DRY_RUN        | no changes will be made to the repository              |
 | NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected        |
 | NSV_FORMAT         | provide a go template for changing the default version |
@@ -65,7 +67,8 @@ nsv patch [<path>...] [flags]
 ```{ .text .no-select .no-copy }
 -M, --commit-message string    a custom message when committing file changes,
                                supports go text templates (default "chore:
-                               patched files for release {{.Tag}}")
+                               patched files for release {{.Tag}}
+                               {{.SkipPipelineTag}}")
     --dry-run                  no changes will be made to the repository
     --fix-shallow              fix a shallow clone of a repository if detected
 -f, --format string            provide a go template for changing the default
