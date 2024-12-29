@@ -4,6 +4,9 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+
 jobs:
   nix-patch:
     runs-on: ubuntu-24.04
@@ -22,7 +25,6 @@ jobs:
           trust_level: 5
           git_user_signingkey: true
           git_commit_gpgsign: true
-          git_config_global: true
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
