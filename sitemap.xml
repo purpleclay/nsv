@@ -2,118 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.purpleclay.dev/nsv/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/commands/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/configurable-prefixes/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/git-repair/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/git-signing/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/hooks/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/license/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/monorepos/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/next-version/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/options/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/patch-files/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/playground/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/pretty/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/tag-version/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/ci/dagger/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/ci/github-action/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/ci/gitlab-template/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/install/binary/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/install/source/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/env-vars/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/templating/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/cli/nsv-next/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/cli/nsv-patch/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/cli/nsv-playground/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/cli/nsv-tag/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/reference/cli/nsv/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/running/dagger/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/running/docker/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
     <url>
          <loc>https://docs.purpleclay.dev/nsv/running/nix/</loc>
-         <lastmod>2024-12-28</lastmod>
+         <lastmod>2024-12-29</lastmod>
     </url>
 </urlset>
