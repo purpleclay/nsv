@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	commitMessageTmpl   = "chore: patched files for release {{.Tag}}"
+	commitMessageTmpl   = "chore: patched files for release {{.Tag}} {{.SkipPipelineTag}}"
 	commitTmpl          *template.Template
 	errRequiredHookFlag = errors.New("a hook must be provided when patching files")
 
@@ -30,7 +30,7 @@ Environment Variables:
 | NO_LOG             | disable all log output                                         |
 | NSV_COMMIT_MESSAGE | a custom message when committing file changes, supports go     |
 |                    | text templates. The default is: "chore: patched files for      |
-|                    | release {{.Tag}}"                                              |
+|                    | release {{.Tag}} {{.SkipPipelineTag}}"                         |
 | NSV_DRY_RUN        | no changes will be made to the repository                      |
 | NSV_FIX_SHALLOW    | fix a shallow clone of a repository if detected                |
 | NSV_FORMAT         | provide a go template for changing the default version format  |
