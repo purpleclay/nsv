@@ -33,7 +33,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}
           STRIPPED_TAG=${TAG#v}
-          echo "::set-output name=tag::$STRIPPED_TAG"
+          echo "tag=${STRIPPED_TAG}" >> $GITHUB_OUTPUT
 
       - name: Patch Version
         run: |
