@@ -4,7 +4,12 @@ FROM alpine:3.21
 # renovate: datasource=github-tags depName=purpleclay/gpg-import versioning=semver
 ENV GPG_IMPORT_VERSION=0.4.0
 
-RUN apk add --no-cache git git-lfs gnupg tini curl
+RUN apk add --no-cache bash \
+    curl \
+    git \
+    git-lfs \
+    gnupg \
+    tini
 RUN sh -c "$(curl https://raw.githubusercontent.com/purpleclay/gpg-import/main/scripts/install)" -- -v ${GPG_IMPORT_VERSION}
 
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
