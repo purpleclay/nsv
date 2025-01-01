@@ -227,6 +227,7 @@ func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Optio
 		if cfg, err = impersonateConfig(gitc, ver); err != nil {
 			return err
 		}
+		opts.Logger.Info("any tag will be annotated as", "user", cfg[0], "email", cfg[1])
 	}
 
 	rel := release{
@@ -235,7 +236,7 @@ func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Optio
 		SkipPipelineTag: ci.Detect().SkipPipelineTag,
 	}
 
-	hash, err := stageAndCommit(gitc, cfg, ver.Diffs, rel)
+	hash, err := stageAndCommit(gitc, cfg, ver.Diffs, rel, opts)
 	if err != nil {
 		return err
 	}
@@ -244,6 +245,7 @@ func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Optio
 		hash = ver.Log[0].Hash
 	}
 
+	opts.Logger.Debug("inputs to annotated tag template", "tag", rel.Tag, "prev_tag", rel.PrevTag, "skip_ci", rel.SkipPipelineTag)
 	var buf bytes.Buffer
 	tagTmpl.Execute(&buf, rel)
 
@@ -255,6 +257,7 @@ func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Optio
 		return err
 	}
 
+	opts.Logger.Info("tagged release with", "msg", buf.String(), "hash", hash)
 	return nil
 }
 
@@ -264,6 +267,7 @@ func pushAll(gitc *git.Client, tags []string, opts *Options) error {
 	}
 
 	_, err := gitc.Push(git.WithRefSpecs(tags...))
+	opts.Logger.Debug("pushed all changes to origin", "ref_specs", tags)
 	return err
 }
 

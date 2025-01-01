@@ -7,9 +7,11 @@ func checkAndHealRepository(gitc *git.Client, opts Options) error {
 	if err != nil {
 		return err
 	}
+	opts.Logger.Debug("repository summary", "detached", repo.DetachedHead, "shallow",
+		repo.ShallowClone, "ref", repo.DefaultBranch)
 
 	if repo.ShallowClone {
-		opts.Logger.Warn("repository is a shallow clone and history may be missing")
+		opts.Logger.Warn("repository is a shallow clone and history may be missing", "depth", repo.CloneDepth)
 
 		if opts.FixShallow {
 			opts.Logger.Info("fixing shallow clone by restoring history and tags")

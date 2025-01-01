@@ -174,6 +174,7 @@ func commitChanges(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Opti
 		if cfg, err = impersonateConfig(gitc, ver); err != nil {
 			return err
 		}
+		opts.Logger.Info("any changes will be committed as", "user", cfg[0], "email", cfg[1])
 	}
 
 	rel := release{
@@ -182,11 +183,11 @@ func commitChanges(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Opti
 		SkipPipelineTag: ci.Detect().SkipPipelineTag,
 	}
 
-	_, err = stageAndCommit(gitc, cfg, ver.Diffs, rel)
+	_, err = stageAndCommit(gitc, cfg, ver.Diffs, rel, opts)
 	return err
 }
 
-func stageAndCommit(gitc *git.Client, cfg []string, changes []git.FileDiff, rel release) (string, error) {
+func stageAndCommit(gitc *git.Client, cfg []string, changes []git.FileDiff, rel release, opts *Options) (string, error) {
 	if len(changes) == 0 {
 		return "", nil
 	}
@@ -200,6 +201,7 @@ func stageAndCommit(gitc *git.Client, cfg []string, changes []git.FileDiff, rel 
 		return "", err
 	}
 
+	opts.Logger.Debug("inputs to patch commit template", "tag", rel.Tag, "prev_tag", rel.PrevTag, "skip_ci", rel.SkipPipelineTag)
 	var buf bytes.Buffer
 	commitTmpl.Execute(&buf, rel)
 
@@ -217,5 +219,6 @@ func stageAndCommit(gitc *git.Client, cfg []string, changes []git.FileDiff, rel 
 	if err != nil {
 		return "", err
 	}
+	opts.Logger.Info("committed patched files", "msg", buf.String(), "hash", ext[1])
 	return ext[1], nil
 }
