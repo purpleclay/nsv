@@ -27,7 +27,7 @@ sed -i "s/^version\: $NSV_PREV_TAG/version\: $NSV_NEXT_TAG/" "${NSV_WORKING_DIRE
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	logs := gittest.Log(t)
+	logs := gittest.RemoteLog(t)
 	assert.Equal(t, "chore: patched files for release 0.2.0 [skip ci]", logs[0].Message)
 	assert.Equal(t, "version: 0.2.0", readFile(t, "Chart.yaml"))
 }

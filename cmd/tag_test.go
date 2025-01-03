@@ -27,10 +27,10 @@ echo -n $NSV_NEXT_TAG > VERSION`)
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	tags := gittest.Tags(t)
+	tags := gittest.RemoteTags(t)
 	require.ElementsMatch(t, []string{"0.1.0", "0.2.0"}, tags)
 
-	logs := gittest.Log(t)
+	logs := gittest.RemoteLog(t)
 	assert.Equal(t, "chore: patched files for release 0.2.0 [skip ci]", logs[0].Message)
 
 	out := gittest.Show(t, "0.2.0")
@@ -46,7 +46,7 @@ func TestTagSkipsImpersonationIfGitConfigExists(t *testing.T) {
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	tags := gittest.Tags(t)
+	tags := gittest.RemoteTags(t)
 	require.Len(t, tags, 1)
 	out := gittest.Show(t, tags[0])
 	assert.Contains(t, out, "Tagger: poison-ivy <poison-ivy@dc.com>")
@@ -63,7 +63,7 @@ func TestTagSkipsImpersonationIfGitEnvVarsExist(t *testing.T) {
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	tags := gittest.Tags(t)
+	tags := gittest.RemoteTags(t)
 	require.Len(t, tags, 1)
 	out := gittest.Show(t, tags[0])
 	assert.Contains(t, out, "Tagger: joker <joker@dc.com>")
@@ -79,7 +79,7 @@ func TestTagWithTemplatedTagMessage(t *testing.T) {
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	tags := gittest.Tags(t)
+	tags := gittest.RemoteTags(t)
 	require.Len(t, tags, 2)
 	out := gittest.Show(t, tags[1])
 	assert.Contains(t, out, "chore: tagged 0.2.0 from 0.1.1")
@@ -102,7 +102,7 @@ echo -n $NSV_NEXT_TAG > VERSION`)
 	err := cmd.Execute()
 	require.NoError(t, err)
 
-	logs := gittest.Log(t)
+	logs := gittest.RemoteLog(t)
 	assert.Equal(t, "chore: tagged 0.3.0 from 0.2.1", logs[0].Message)
 }
 
