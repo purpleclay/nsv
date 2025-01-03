@@ -147,6 +147,7 @@ func doPatch(gitc *git.Client, opts *Options) error {
 	}
 
 	if len(vers) == 0 {
+		opts.Logger.Info("nothing to release for given paths", "paths", opts.Paths)
 		return nil
 	}
 
@@ -219,6 +220,6 @@ func stageAndCommit(gitc *git.Client, cfg []string, changes []git.FileDiff, rel 
 	if err != nil {
 		return "", err
 	}
-	opts.Logger.Info("committed patched files", "msg", buf.String(), "hash", ext[1])
+	opts.Logger.Info("committed patched files", "commit", buf.String(), "hash", ext[1])
 	return ext[1], nil
 }

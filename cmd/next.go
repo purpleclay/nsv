@@ -156,6 +156,7 @@ func doNext(gitc *git.Client, opts *Options) error {
 	}
 
 	if len(vers) == 0 {
+		opts.Logger.Info("nothing to release for given paths", "paths", opts.Paths)
 		return nil
 	}
 

@@ -201,6 +201,7 @@ func doTag(gitc *git.Client, opts *Options) error {
 	}
 
 	if len(vers) == 0 {
+		opts.Logger.Info("nothing to release for given paths", "paths", opts.Paths)
 		return nil
 	}
 
@@ -257,7 +258,7 @@ func commitAndTag(gitc *git.Client, ver *nsv.Next, impersonate bool, opts *Optio
 		return err
 	}
 
-	opts.Logger.Info("tagged release with", "msg", buf.String(), "hash", hash)
+	opts.Logger.Info("tagged release with", "annotation", buf.String(), "hash", hash)
 	return nil
 }
 
@@ -267,7 +268,7 @@ func pushAll(gitc *git.Client, tags []string, opts *Options) error {
 	}
 
 	_, err := gitc.Push(git.WithRefSpecs(tags...))
-	opts.Logger.Debug("pushed all changes to origin", "ref_specs", tags)
+	opts.Logger.Debug("pushed all changes to origin", "tags", tags)
 	return err
 }
 
