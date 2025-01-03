@@ -377,7 +377,7 @@ func bump(ver Tag, format string, inc Increment, cmd Command) (string, error) {
 }
 
 func execHook(gitc *git.Client, hook string, env []string, logger *log.Logger) ([]git.FileDiff, error) {
-	logger.Info("executing custom hook", "cmd", hook)
+	logger.Info("executing custom hook", "cmd", hook, "env", env)
 	if err := exec(hook, env); err != nil {
 		return nil, err
 	}
