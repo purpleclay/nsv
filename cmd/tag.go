@@ -267,8 +267,28 @@ func pushAll(gitc *git.Client, tags []string, opts *Options) error {
 		return nil
 	}
 
-	_, err := gitc.Push(git.WithRefSpecs(tags...))
-	opts.Logger.Debug("pushed all changes to origin", "tags", tags)
+	// NOTE: this won't work when if the repository has a detached HEAD
+	branch, err := gitc.Exec("git branch --show-current")
+	if err != nil {
+		return err
+	}
+
+	notPushed, err := gitc.Exec(fmt.Sprintf("git log %s --not --remotes", branch))
+	if err != nil {
+		return err
+	}
+
+	if notPushed == "" && len(tags) == 0 {
+		opts.Logger.Debug("nothing to push to remote")
+		return nil
+	}
+
+	var refs []string
+	refs = append(refs, branch)
+	refs = append(refs, tags...)
+
+	_, err = gitc.Push(git.WithRefSpecs(refs...))
+	opts.Logger.Debug("pushed all changes to remote", "ref_specs", refs)
 	return err
 }
 
