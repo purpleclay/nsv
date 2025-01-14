@@ -78,5 +78,3 @@ Runtime customization of this template is available. For example, you can enforc
     ```{ .sh .no-select }
     nsv next --format "{{.SemVer}}"
     ```
-
-Head over to the [playground](./playground.md) to discover more.
