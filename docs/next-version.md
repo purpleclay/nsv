@@ -59,7 +59,7 @@ ui/0.2.1,search/0.3.0
 
 ## Version template customization
 
-Internally `nsv` utilizes a go template when constructing the next semantic version:
+Internally, `nsv` utilizes a go template when constructing the next semantic version:
 
 ```{ .sh .no-select }
 {{.Prefix}}{{.Version}}
@@ -78,3 +78,20 @@ Runtime customization of this template is available. For example, you can enforc
     ```{ .sh .no-select }
     nsv next --format "{{.SemVer}}"
     ```
+Or you could enforce a prefix on all of your tags:
+
+=== "ENV"
+
+    ```{ .sh .no-select }
+    NSV_FORMAT="ui/{{.SemVer}}" nsv next
+    ```
+
+=== "CLI"
+
+    ```{ .sh .no-select }
+    nsv next --format "ui/{{.SemVer}}"
+    ```
+
+!!! tip "Tag prefixes are used by nsv when scanning for previous versions"
+
+    This is incredibly helpful if you want to maintain multiple tags within a monorepo, as each tag will be versioned independently.
