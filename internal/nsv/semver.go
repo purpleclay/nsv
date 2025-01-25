@@ -73,8 +73,17 @@ func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 		}
 	}
 
+	var tagPrefix string
+	if opts.VersionFormat != "" {
+		if idx := strings.LastIndex(opts.VersionFormat, "/"); idx != -1 {
+			opts.Logger.Debug("custom tag format includes prefix")
+			tagPrefix = opts.VersionFormat[:idx-1]
+		}
+	}
+
 	if relPath == git.RelativeAtRoot {
-		return &gitContext{TagPrefix: "", LogPath: relPath}, nil
+		opts.Logger.Debug("resolved git context", "tag_prefix", tagPrefix, "log_path", relPath)
+		return &gitContext{TagPrefix: tagPrefix, LogPath: relPath}, nil
 	}
 
 	logPath := relPath
@@ -82,7 +91,9 @@ func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 		logPath = git.RelativeAtRoot
 	}
 
-	tagPrefix := filepath.Base(relPath)
+	if tagPrefix == "" {
+		tagPrefix = filepath.Base(relPath)
+	}
 
 	opts.Logger.Debug("resolved git context", "tag_prefix", tagPrefix, "log_path", logPath)
 	return &gitContext{

@@ -235,6 +235,23 @@ func TestNextVersionWithFormat(t *testing.T) {
 	assert.Equal(t, "custom/v0.1.0", next.Tag)
 }
 
+func TestNextVersionResolvesTagUsingFormat(t *testing.T) {
+	log := `(main) feat: extend existing helm chart to deploy ui
+feat: add a ui for easy searching and management of data
+(tag: search/0.1.1) fix: search filters were not being applied in correct order
+(tag: search/0.1.0) feat: extend search through customizable filters`
+	format := "ui/{{ .Version }}"
+
+	gittest.InitRepository(t, gittest.WithLog(log))
+	gitc, _ := git.NewClient()
+
+	next, err := nsv.NextVersion(gitc, nsv.Options{VersionFormat: format, Logger: noopLogger})
+
+	require.NoError(t, err)
+	require.NotNil(t, next)
+	assert.Equal(t, "ui/0.1.0", next.Tag)
+}
+
 func TestNextVersionWithHook(t *testing.T) {
 	log := `> (main, origin/main) feat: support patching files using a hook
 > (tag: 0.1.0) feat: ensure diffs can be displayed in the summary`
