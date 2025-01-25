@@ -1830,7 +1830,7 @@ and
 <div class="language-text no-select no-copy highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ui/0.2.1,search/0.3.0
 </span></code></pre></div>
 <h2 id="version-template-customization">Version template customization<a class="headerlink" href="#version-template-customization" title="Permanent link">&para;</a></h2>
-<p>Internally <code>nsv</code> utilizes a go template when constructing the next semantic version:</p>
+<p>Internally, <code>nsv</code> utilizes a go template when constructing the next semantic version:</p>
 <div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">{{</span>.Prefix<span class="o">}}{{</span>.Version<span class="o">}}</span>
 </span></code></pre></div>
 <p>Runtime customization of this template is available. For example, you can enforce explicit semantic version usage:</p>
@@ -1846,7 +1846,23 @@ and
 </div>
 </div>
 </div>
-<p>Head over to the <a href="../playground/">playground</a> to discover more.</p>
+<p>Or you could enforce a prefix on all of your tags:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">ENV</label><label for="__tabbed_3_2">CLI</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">NSV_FORMAT</span><span class="o">=</span><span class="s2">&quot;ui/{{.SemVer}}&quot;</span><span class="w"> </span>nsv<span class="w"> </span>next
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-sh no-select highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>nsv<span class="w"> </span>next<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;ui/{{.SemVer}}&quot;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tag prefixes are used by nsv when scanning for previous versions</p>
+<p>This is incredibly helpful if you want to maintain multiple tags within a monorepo, as each tag will be versioned independently.</p>
+</div>
 
 
 
