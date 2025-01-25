@@ -1,7 +1,7 @@
 { lib, fetchFromGitHub, buildGoModule }:
 
 let
-  version = "0.12.0";
+  version = "0.12.1";
 in
 buildGoModule {
   pname = "nsv";
@@ -19,10 +19,10 @@ buildGoModule {
       git log -1 --format=%cI > $out/BUILD_DATE
       find "$out" -name .git -print0 | xargs -0 rm -rf
     '';
-    hash = "sha256-237VgC1n4pTigB40PnuLAqQyC9/X7ebn/n2CyZvPhUM=";
+    hash = "sha256-qhU8ONGprrgBL2gYQj/yN7iRf0v2tod73ThysmU4AfM=";
   };
 
-  vendorHash = "sha256-x5R2eAGEfVZWo+eh7KwMd0Q5aKx95qgVvrOrT6suh8g=";
+  vendorHash = "";
 
   meta = with lib; {
     homepage = "https://github.com/purpleclay/nsv";
