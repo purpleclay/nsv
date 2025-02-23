@@ -16,7 +16,7 @@ require (
 	github.com/purpleclay/gitz v0.11.0
 	github.com/purpleclay/lipgloss-theme v0.2.0
 	github.com/saracen/walker v0.1.4
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	gotest.tools/v3 v3.5.2
 	mvdan.cc/sh/v3 v3.10.0
@@ -37,7 +37,7 @@ require (
 	github.com/muesli/mango-pflag v0.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
