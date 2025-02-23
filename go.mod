@@ -11,7 +11,7 @@ require (
 	github.com/muesli/mango-cobra v1.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/roff v0.1.0
-	github.com/muesli/termenv v0.15.2
+	github.com/muesli/termenv v0.16.0
 	github.com/purpleclay/chomp v0.4.0
 	github.com/purpleclay/gitz v0.11.0
 	github.com/purpleclay/lipgloss-theme v0.2.0
@@ -40,7 +40,7 @@ require (
 	github.com/spf13/pflag v1.0.6 // indirect
 	golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.25.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
