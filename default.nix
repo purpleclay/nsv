@@ -22,7 +22,7 @@ buildGoModule {
     hash = "sha256-qhU8ONGprrgBL2gYQj/yN7iRf0v2tod73ThysmU4AfM=";
   };
 
-  vendorHash = "";
+  vendorHash = "sha256-x5R2eAGEfVZWo+eh7KwMd0Q5aKx95qgVvrOrT6suh8g=";
 
   meta = with lib; {
     homepage = "https://github.com/purpleclay/nsv";
