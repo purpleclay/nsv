@@ -27,7 +27,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
