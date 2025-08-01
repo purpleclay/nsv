@@ -2,7 +2,7 @@
 FROM alpine:3.21
 
 # renovate: datasource=github-tags depName=purpleclay/gpg-import versioning=semver
-ENV GPG_IMPORT_VERSION=0.4.0
+ENV GPG_IMPORT_VERSION=0.5.0
 
 RUN apk add --no-cache bash \
     curl \
