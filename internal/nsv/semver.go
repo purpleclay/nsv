@@ -77,7 +77,7 @@ func resolveContext(gitc *git.Client, opts Options) (*gitContext, error) {
 	if opts.VersionFormat != "" {
 		if idx := strings.LastIndex(opts.VersionFormat, "/"); idx != -1 {
 			opts.Logger.Debug("custom tag format includes prefix")
-			tagPrefix = opts.VersionFormat[:idx-1]
+			tagPrefix = opts.VersionFormat[:idx]
 		}
 	}
 
@@ -170,7 +170,7 @@ func (t Tag) Format(format string) string {
 }
 
 func (t Tag) Prerelease() bool {
-	return len(t.Pre) > 0
+	return t.Pre != ""
 }
 
 func (t Tag) PrereleaseWithLabel(label string) bool {
@@ -227,7 +227,7 @@ func NextVersion(gitc *git.Client, opts Options) (*Next, error) {
 			opts.PatchPrefixes,
 		).DetectIncrement(log.Commits)
 
-		convInfo := []interface{}{"increment", inc.String()}
+		convInfo := []any{"increment", inc.String()}
 		if match.Index != noMatchIdx {
 			convInfo = append(convInfo,
 				"pref",
