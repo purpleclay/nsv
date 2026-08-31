@@ -12,12 +12,12 @@ require (
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/roff v0.1.0
 	github.com/muesli/termenv v0.16.0
-	github.com/purpleclay/chomp v0.4.0
+	github.com/purpleclay/chomp v0.7.1
 	github.com/purpleclay/gitz v0.11.2
 	github.com/purpleclay/lipgloss-theme v0.2.0
 	github.com/saracen/walker v0.1.4
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	gotest.tools/v3 v3.5.2
 	mvdan.cc/sh/v3 v3.12.0
 )
