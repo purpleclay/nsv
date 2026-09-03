@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/charmbracelet/lipgloss v1.1.0
+	github.com/charmbracelet/lipgloss/v2 v2.0.6
 	github.com/charmbracelet/log v0.4.2
 	github.com/joho/godotenv v1.5.1
 	github.com/muesli/mango-cobra v1.2.0
