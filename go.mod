@@ -1,10 +1,10 @@
 module github.com/purpleclay/nsv
 
-go 1.23.4
+go 1.26.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/caarlos0/env/v11 v11.3.1
+	github.com/caarlos0/env/v11 v11.4.2
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/log v0.4.2
 	github.com/joho/godotenv v1.5.1
